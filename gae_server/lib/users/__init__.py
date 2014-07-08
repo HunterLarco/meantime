@@ -21,6 +21,7 @@ def create(email, password):
   user.UID = getUID(email, password)
   user.email = email
   user.brute_force_record = dict()
+  user.locked = False
   user.put()
   
   return dict(
@@ -37,10 +38,13 @@ def create(email, password):
 """
 ' Return constants
 """
-INCORRECT_LOGIN = 0
-SUCCESSFUL_LOGIN = 1
-EMAIL_IS_USED = 2
-BRUTE_SUSPECTED = 3
+INCORRECT_LOGIN = 'U0'
+SUCCESSFUL_LOGIN = 'U1'
+EMAIL_IS_USED = 'U2'
+BRUTE_SUSPECTED = 'U3'
+USER_DOESNT_EXIST = 'U4'
+SUCCESS = 'U5'
+USER_LOCKED = 'U6'
 
 
 
@@ -57,14 +61,12 @@ BRUTE_SUSPECTED = 3
 """
 ' Recieves a webapp2 instance, email, and password
 ' Attempts to log in and set cookies
-' Returns a error constant (INCORRECT_LOGIN, SUCCESSFUL_LOGIN)
+' Returns a error constant (INCORRECT_LOGIN, BRUTE_SUSPECTED)
 """
-def login(Webapp2Instance, email, password):
+def login(email, password):
+  user = User.query(User.email == email).get()
+  
   if validate(email, password) == INCORRECT_LOGIN:
-    user = User.query(User.email == email).get()
-    
-    if user == None:
-      return INCORRECT_LOGIN
     
     from time import time
     key = int(time())/(60*60*24)
@@ -82,27 +84,45 @@ def login(Webapp2Instance, email, password):
       if key-date in user.brute_force_record:
         count += user.brute_force_record[key-date]
       if count > f(date):
+        lock(user)
         return BRUTE_SUSPECTED
     
     return INCORRECT_LOGIN
   
-  UID = getUID(email, password)
+  UID = user.UID
   
   cookieData = sessions.create(UID)
   
-  from .. import cookies
-  shim = cookies.CookieShim(Webapp2Instance)
-  shim.set('UID',  cookieData['UID'])
-  shim.set('ULID', cookieData['ULID'])
-  shim.set('SID',  cookieData['SID'])
-  
-  return SUCCESSFUL_LOGIN
+  return {
+    'uid': cookieData['UID'],
+    'ulid': cookieData['ULID'],
+    'sid': cookieData['SID']
+  }
 
 
 
 
 
 
+
+
+
+
+
+
+
+"""
+' Locks a user, takes either the entity of the UID
+' Returns an error constant
+"""
+def lock(user):
+  if isinstance(user, basestring):
+    user = User.query(User.UID == user).get()
+    if user == None:
+      return USER_DOESNT_EXIST
+  user.locked = True
+  user.put()
+  return SUCCESS
 
 
 
@@ -150,18 +170,24 @@ def validate(email, password):
 """
 ' Recieves a webapp instance and determines if the session is valid in addition to watching the session
 ' Returns a session error constant
+'     From users/sessions.py (SESSION_DOESNT_EXIST, WATCHING, SUCCESS, INCORRECT_SID)
+'     From users/__init__.py (USER_DOESNT_EXIST, USER_LOCKED)
 """
-def checkSession(Webapp2Instance):
+def checkSession(UID, ULID, SID):
   from .. import cookies
   shim = cookies.CookieShim(Webapp2Instance)
-  status = sessions.validate(shim.get('UID'), shim.get('ULID'), shim.get('SID'))
+  status = sessions.validate(UID, ULID, SID)
   
-  if status == sessions.SESSION_DOESNT_EXIST:
-    shim.remove('UID')
-    shim.remove('ULID')
-    shim.remove('SID')
-  elif status == sessions.INCORRECT_SID:
-    sessions.watch(shim.get('UID'), shim.get('ULID'))
+  if status == sessions.INCORRECT_SID:
+    sessions.watch(UID, ULID)
+    return status
+  
+  user = User.query(User.UID == UID).get()
+  if user == None:
+    return USER_DOESNT_EXIST
+  
+  if user.locked:
+    return USER_LOCKED
   
   return status
 
@@ -208,4 +234,5 @@ class User(ndb.Model):
   UID = ndb.StringProperty(indexed=True)
   email = ndb.StringProperty(indexed=True)
   brute_force_record = ndb.PickleProperty(indexed=False)
+  locked = ndb.BooleanProperty(indexed=False)
   

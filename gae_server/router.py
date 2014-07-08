@@ -19,7 +19,7 @@ class SignupTest(webapp2.RequestHandler):
       Signup<br/>
       <form action='/signup' method='post'>
         <input name='email'/><br/>
-        <input name='password'/><br/>
+        <input type='password' name='password'/><br/>
         <input type='submit'/>
       </form>
     """)
@@ -72,6 +72,10 @@ class StatusTest(webapp2.RequestHandler):
       self.response.out.write('success')
     elif status == users.sessions.SESSION_DOESNT_EXIST:
       self.response.out.write('session doesn\'t exist')
+    elif status == users.USER_DOESNT_EXIST:
+      self.response.out.write('user doesn\'t exist')
+    elif status == users.USER_LOCKED:
+      self.response.out.write('user locked')
     else:
       self.response.out.write('failure')
 

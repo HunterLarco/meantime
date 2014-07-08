@@ -2,8 +2,8 @@ from google.appengine.ext import ndb
 
 class Session(ndb.Model):
   """Models an individual session entry."""
-  SID = ndb.StringProperty()
-  watching = ndb.BooleanProperty()
+  SID = ndb.StringProperty(indexed=False)
+  watching = ndb.BooleanProperty(indexed=False)
 
 
 
@@ -18,10 +18,10 @@ class Session(ndb.Model):
 """
 ' Return constants
 """
-SESSION_DOESNT_EXIST = 0
-INCORRECT_SID = 1
-WATCHING = 2
-SUCCESS = 3
+SESSION_DOESNT_EXIST = 'S0'
+INCORRECT_SID = 'S1'
+WATCHING = 'S2'
+SUCCESS = 'S3'
 
 
 
@@ -113,9 +113,12 @@ def watch(UID, ULID):
 
 
 
+
+
+
 """
 ' Recieves a UID, ULID, and SID and checks if the user may log in using the session associated with these values
-' Returns an error code
+' Returns an error code (SESSION_DOESNT_EXIST, WATCHING, SUCCESS, INCORRECT_SID)
 """
 def validate(UID, ULID, SID):
   if UID == None or ULID == None or SID == None:

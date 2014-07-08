@@ -14,7 +14,7 @@ handlers:
   static_dir: resources
 
 - url: .*
-  script: router.app
+  script: app.app
 
 libraries:
 - name: webapp2
