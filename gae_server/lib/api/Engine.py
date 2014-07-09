@@ -3,7 +3,7 @@ import response
 
 
 ### Purpose
-# this function takes a dictionary name and method name to run an API MAP, really an example will make it clear. It essentially allows remote access to selective functions within the system through the API engine. Callback functions may be used in get requests with the URL parameter 'callback'.
+# this function takes a dictionary name and method name to run an API MAP, really an example will make it clear. It essentially allows remote access to selective functions within the system through the API engine. Callback functions may be used in get requests with the URL parameter 'callback'. Also the kwarg 'additionalPayload' contains data to be added to the api response.
 ### NOTE
 # GET API requests must use the get dictionary
 ### Example Usage
@@ -15,7 +15,7 @@ import response
 #   def post(self, dictionary, method):
 #     KFE2.API.Engine.delegate(self, dictionary, method, API_HANDLERS_MAP)
 # app = ('/admin/api/([^/]+)/([^/]+).*', AdminAPIAccess)
-def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP):
+def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP, additionalPayload={}):
   # set the response as a JSON <or javascript>
   Webapp2Instance.response.headers['Content-Type'] = "application/javascript"
   ### Load the dictionary and the method in that dictionary from the Permissions Map ###
@@ -29,29 +29,28 @@ def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP):
       # used so that if the request isn't a post, then the 'get' dictionary is required and so that the request body isn't parsed
       if Webapp2Instance.request.method == 'POST':
         if DictionaryName == 'get':# 'get' dictionary is exclusively used for GET requests
-          Webapp2Instance.response.out.write(response.throw(103, compiled=True))
-          return
+          result = response.throw(103)
         from json import loads as ParseJSON
         payload = ParseJSON(Webapp2Instance.request.body)
         payload['__Webapp2Instance__'] = Webapp2Instance
         result = func(payload)
-        Webapp2Instance.response.out.write(response.compile(response.reply() if result == None else result))
-        return
-      if DictionaryName == 'get':
-        # if there is a callback function specified, use it
-        result = func(Webapp2Instance)
         result = response.reply() if result == None else result
-        if Webapp2Instance.request.get('callback') != None and Webapp2Instance.request.get('callback') != '':
-          data = '%s(%s);' % (Webapp2Instance.request.get('callback'), response.compile(result))
-        else:
-          data = response.compile(result)
-        Webapp2Instance.response.out.write(data)
-        return
-      Webapp2Instance.response.out.write(response.throw(102, compiled=True))
-      return
+      else:
+        if DictionaryName == 'get':
+          # if there is a callback function specified, use it
+          result = func(Webapp2Instance)
+          result = response.reply() if result == None else result
+          result = dict(result.items() + additionalPayload.items())
+          if Webapp2Instance.request.get('callback') != None and Webapp2Instance.request.get('callback') != '':
+            data = '%s(%s);' % (Webapp2Instance.request.get('callback'), response.compile(result))
+          else:
+            data = response.compile(result)
+          Webapp2Instance.response.out.write(data)
+          return
+        result = response.throw(102)
     else:
-      Webapp2Instance.response.out.write(response.throw(100, (DictionaryName, MethodName), compiled=True))
-      return
+      result = response.throw(100, (DictionaryName, MethodName))
   else:
-    Webapp2Instance.response.out.write(response.throw(101, DictionaryName, compiled=True))
-    return
+    result = response.throw(101, DictionaryName)
+  result = dict(result.items() + additionalPayload.items())
+  Webapp2Instance.response.out.write(response.compile(result))

@@ -270,6 +270,7 @@ window.onload = function(){
   var data = document.getElementById('data');
   data.removeAttribute('id');
   data.addEventListener('keyup', BuildData);
+  data.addEventListener('keydown', removeTab);
   
   var send = document.getElementById('send');
   send.removeAttribute('id');
@@ -405,6 +406,11 @@ window.onload = function(){
     }
   }
   
+  function removeTab(event){
+    if(event.which == 9)
+      event.preventDefault();
+  }
+  
   function BuildData(event){
     var lines = data.value.split('\n'),
         json = {},
@@ -440,9 +446,9 @@ window.onload = function(){
   
   function CheckSession(data){
     if(!data['setsession']) return;
-    sidtoken.value =  data['session']['sid'];
-    ulidtoken.value = data['session']['ulid'];
-    uidtoken.value =  data['session']['uid'];
+    if(!!data.session.sid)  sidtoken.value =  data['session']['sid'];
+    if(!!data.session.ulid) ulidtoken.value = data['session']['ulid'];
+    if(!!data.session.uid)  uidtoken.value =  data['session']['uid'];
   }
   
   function PrettyPrint(data, elem){

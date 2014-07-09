@@ -13,7 +13,12 @@ __ERROR__RESPONSES__ = {
   # users
   200 : "Email Alread In Use",
   201 : "Incorrect Login Credentials",
-  202 : "Brute Force Suspected"
+  202 : "Brute Force Suspected",
+  203 : "User Doesn't Exist",
+  204 : "User Account Locked",
+  
+  #sessions:
+  300 : "Session Doesn't Exist"
 }
 
 # throw error response

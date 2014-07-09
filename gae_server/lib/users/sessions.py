@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 
 class Session(ndb.Model):
   """Models an individual session entry."""
+  expiration = ndb.DateTimeProperty(indexed=False)
   SID = ndb.StringProperty(indexed=False)
   watching = ndb.BooleanProperty(indexed=False)
 
@@ -21,7 +22,6 @@ class Session(ndb.Model):
 SESSION_DOESNT_EXIST = 'S0'
 INCORRECT_SID = 'S1'
 WATCHING = 'S2'
-SUCCESS = 'S3'
 
 
 
@@ -50,18 +50,15 @@ def create(UID):
   ULID = sha384(ULID).hexdigest()
   ULID = sha256(ULID).hexdigest()
   
-  salt = ''.join(chr(rand.randint(0,255)) for x in range(20))
-  SID = salt
-  SID = sha384(SID).hexdigest()
-  SID = sha256(SID).hexdigest()
-  
   session = Session(parent=ndb.Key('UID', UID, 'ULID', ULID))
-  session.SID = SID
+  
+  createSID(session)
+  
   session.watching = False
   session.put()
   
   return dict(
-    SID = SID,
+    SID = session.SID,
     ULID = ULID,
     UID = UID
   )
@@ -80,8 +77,39 @@ def create(UID):
 
 
 """
+' Given a session, create a new SID for it and expiration
+' Returns nothing
+"""
+def createSID(session):
+  from hashlib import sha256, sha384
+  import random
+  
+  rand = random.SystemRandom()
+  
+  salt = ''.join(chr(rand.randint(0,255)) for x in range(20))
+  SID = salt
+  SID = sha384(SID).hexdigest()
+  SID = sha256(SID).hexdigest()
+  
+  import datetime
+  expiration = datetime.datetime.now() + datetime.timedelta(hours=1)
+
+  session.expiration = expiration
+  session.SID = SID
+
+
+
+
+
+
+
+
+
+
+
+"""
 ' Recieves a UID and ULID then sets the watching boolean to true
-' Returns an error constant
+' Returns an error constant (SESSION_DOESNT_EXIST)
 """
 def watch(UID, ULID):
   if UID == None or ULID == None:
@@ -95,8 +123,6 @@ def watch(UID, ULID):
   
   session.watching = True
   session.put()
-  
-  return SUCCESS
 
 
 
@@ -118,7 +144,7 @@ def watch(UID, ULID):
 
 """
 ' Recieves a UID, ULID, and SID and checks if the user may log in using the session associated with these values
-' Returns an error code (SESSION_DOESNT_EXIST, WATCHING, SUCCESS, INCORRECT_SID)
+' Returns an error code (SESSION_DOESNT_EXIST, WATCHING, INCORRECT_SID, or new SID)
 """
 def validate(UID, ULID, SID):
   if UID == None or ULID == None or SID == None:
@@ -136,4 +162,9 @@ def validate(UID, ULID, SID):
   if session.SID != SID:
     return INCORRECT_SID
   
-  return SUCCESS
+  import datetime
+  now = datetime.datetime.now()
+  if now > session.expiration:
+    createSID(session)
+    session.put()
+    return session.SID

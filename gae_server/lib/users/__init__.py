@@ -56,8 +56,6 @@ USER_LOCKED = 'U6'
 
 
 
-
-
 """
 ' Recieves a webapp2 instance, email, and password
 ' Attempts to log in and set cookies
@@ -170,17 +168,23 @@ def validate(email, password):
 """
 ' Recieves a webapp instance and determines if the session is valid in addition to watching the session
 ' Returns a session error constant
-'     From users/sessions.py (SESSION_DOESNT_EXIST, WATCHING, SUCCESS, INCORRECT_SID)
+'     From users/sessions.py (SESSION_DOESNT_EXIST) or OnSuccess (new SID)
 '     From users/__init__.py (USER_DOESNT_EXIST, USER_LOCKED)
+' OnSuccess returns nothing or a new SID
 """
 def checkSession(UID, ULID, SID):
-  from .. import cookies
-  shim = cookies.CookieShim(Webapp2Instance)
   status = sessions.validate(UID, ULID, SID)
+  
+  if status == sessions.SESSION_DOESNT_EXIST:
+    return status
   
   if status == sessions.INCORRECT_SID:
     sessions.watch(UID, ULID)
-    return status
+    user = User.query(User.UID == UID).get()
+    if user == None:
+      return USER_DOESNT_EXIST
+    lock(user)
+    return USER_LOCKED
   
   user = User.query(User.UID == UID).get()
   if user == None:
