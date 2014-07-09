@@ -47,7 +47,9 @@ class Guest:
         payload['email'],
         payload['password']
       )
-      if status == users.INCORRECT_LOGIN:
+      if status == users.USER_DOESNT_EXIST:
+        return response.throw(203)
+      elif status == users.INCORRECT_LOGIN:
         return response.throw(201)
       elif status == users.BRUTE_SUSPECTED:
         return response.throw(202)
@@ -84,3 +86,43 @@ class Guest:
 # authenticated user map
 class AuthUser:
   pass
+
+
+
+
+
+
+
+
+
+class LockedUser:
+  class user:
+    @require('email', 'password')
+    def login(self, payload):
+      from .. import users
+      status = users.login(
+        payload['email'],
+        payload['password']
+      )
+      if status == users.USER_DOESNT_EXIST:
+        return response.throw(203)
+      elif status == users.INCORRECT_LOGIN:
+        return response.throw(201)
+      elif status == users.BRUTE_SUSPECTED:
+        return response.throw(202)
+      else:
+        users.sessions.clearWatchingSID(
+          payload['uid'],
+          payload['ulid'],
+          payload['sid']
+        )
+        return response.reply({
+          'setsession': True,
+          'session': status,
+          'userlocked': False
+        })
+      
+      
+      
+      
+      

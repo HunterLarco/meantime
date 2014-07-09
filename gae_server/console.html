@@ -220,9 +220,9 @@ div.request div.label.SID:after{
   <div>
     <div class='tag'>Request</div>
     <div class='authtoken'>
-      <div class='label UID'><input type='text' disabled id='uid'/></div>
-      <div class='label ULID'><input type='text' disabled id='ulid'/></div>
-      <div class='label SID'><input type='text' disabled id='sid'/></div>
+      <div class='label UID'><input type='text' id='uid'/></div>
+      <div class='label ULID'><input type='text' id='ulid'/></div>
+      <div class='label SID'><input type='text' id='sid'/></div>
     </div>
     <div class='url'>
       /api/ <input type='text' id='url' placeholder='URL'/>
@@ -451,6 +451,11 @@ window.onload = function(){
     if(!!data.session.uid)  uidtoken.value =  data['session']['uid'];
   }
   
+  function CheckLocked(data){
+    if(!data['userlocked']) return;
+    alert('The User Is Locked: Please Log In');
+  }
+  
   function PrettyPrint(data, elem){
     var elem = elem || responseframe;
     var singletab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -497,6 +502,8 @@ window.onload = function(){
   
   
   send.addEventListener('click', function(){
+    responseframe.innerHTML = 'Working...';
+    
     var request = new Request('/api/'+url.value);
     
     var clone = JSON.parse(JSON.stringify(sendData));
@@ -507,6 +514,7 @@ window.onload = function(){
     
     function callback(data){
       CheckSession(data);
+      CheckLocked(data);
       PrettyPrint(data);
     }
     

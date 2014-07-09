@@ -59,10 +59,13 @@ USER_LOCKED = 'U6'
 """
 ' Recieves a webapp2 instance, email, and password
 ' Attempts to log in and set cookies
-' Returns a error constant (INCORRECT_LOGIN, BRUTE_SUSPECTED)
+' Returns a error constant (INCORRECT_LOGIN, BRUTE_SUSPECTED, USER_DOESNT_EXIST)
 """
 def login(email, password):
   user = User.query(User.email == email).get()
+  
+  if user == None:
+    return USER_DOESNT_EXIST
   
   if validate(email, password) == INCORRECT_LOGIN:
     
@@ -91,6 +94,8 @@ def login(email, password):
   
   cookieData = sessions.create(UID)
   
+  unlock(user)
+  
   return {
     'uid': cookieData['UID'],
     'ulid': cookieData['ULID'],
@@ -110,8 +115,8 @@ def login(email, password):
 
 
 """
-' Locks a user, takes either the entity of the UID
-' Returns an error constant
+' Locks a user, takes either the entity or the UID
+' Returns an error constant (USER_DOESNT_EXIST, SUCCESS)
 """
 def lock(user):
   if isinstance(user, basestring):
@@ -119,6 +124,23 @@ def lock(user):
     if user == None:
       return USER_DOESNT_EXIST
   user.locked = True
+  user.put()
+  sendLockedEmail(user)
+  return SUCCESS
+
+
+
+
+"""
+' Unlocks a user, takes either the entity or the UID
+' Returns an error constant (USER_DOESNT_EXIST, SUCCESS)
+"""
+def unlock(user):
+  if isinstance(user, basestring):
+    user = User.query(User.UID == user).get()
+    if user == None:
+      return USER_DOESNT_EXIST
+  user.locked = False
   user.put()
   return SUCCESS
 
@@ -168,7 +190,7 @@ def validate(email, password):
 """
 ' Recieves a webapp instance and determines if the session is valid in addition to watching the session
 ' Returns a session error constant
-'     From users/sessions.py (SESSION_DOESNT_EXIST) or OnSuccess (new SID)
+'     From users/sessions.py (SESSION_DOESNT_EXIST, HACKER_FOUND) or OnSuccess (new SID)
 '     From users/__init__.py (USER_DOESNT_EXIST, USER_LOCKED)
 ' OnSuccess returns nothing or a new SID
 """
@@ -177,6 +199,12 @@ def checkSession(UID, ULID, SID):
   
   if status == sessions.SESSION_DOESNT_EXIST:
     return status
+  
+  if status == sessions.HACKER_FOUND:
+    return status
+  
+  if status == sessions.WATCHING:
+    return USER_LOCKED
   
   if status == sessions.INCORRECT_SID:
     sessions.watch(UID, ULID)
@@ -195,6 +223,28 @@ def checkSession(UID, ULID, SID):
   
   return status
 
+
+
+
+
+
+
+
+
+"""
+' Recieves a user entity
+' sends the email notification to the given user that their account has been locked
+' Returns nothing
+"""
+def sendLockedEmail(user):
+  from google.appengine.api import mail
+
+  message = mail.EmailMessage(sender="meantime <info.meantime@gmail.com>",
+                              subject="There is suspicious activity on your account")
+  message.to = user.email
+  message.body = 'Please log back in'
+
+  message.send()
 
 
 

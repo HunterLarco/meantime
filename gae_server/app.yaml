@@ -1,5 +1,5 @@
-application: moment
-version: 1
+application: capaching
+version: 0-0-0
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -12,6 +12,11 @@ handlers:
   static_dir: images
 - url: /resources
   static_dir: resources
+
+- url: /console
+  static_files: console.html
+  upload: static
+  login: admin
 
 - url: .*
   script: app.app

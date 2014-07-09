@@ -30,11 +30,12 @@ def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP, addi
       if Webapp2Instance.request.method == 'POST':
         if DictionaryName == 'get':# 'get' dictionary is exclusively used for GET requests
           result = response.throw(103)
-        from json import loads as ParseJSON
-        payload = ParseJSON(Webapp2Instance.request.body)
-        payload['__Webapp2Instance__'] = Webapp2Instance
-        result = func(payload)
-        result = response.reply() if result == None else result
+        else:
+          from json import loads as ParseJSON
+          payload = ParseJSON(Webapp2Instance.request.body)
+          payload['__Webapp2Instance__'] = Webapp2Instance
+          result = func(payload)
+          result = response.reply() if result == None else result
       else:
         if DictionaryName == 'get':
           # if there is a callback function specified, use it
@@ -52,5 +53,5 @@ def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP, addi
       result = response.throw(100, (DictionaryName, MethodName))
   else:
     result = response.throw(101, DictionaryName)
-  result = dict(result.items() + additionalPayload.items())
+  result = dict(additionalPayload.items() + result.items())
   Webapp2Instance.response.out.write(response.compile(result))

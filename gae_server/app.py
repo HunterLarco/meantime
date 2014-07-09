@@ -21,7 +21,10 @@ class APIHandler(webapp2.RequestHandler):
     elif status == users.USER_DOESNT_EXIST:
       self.response.out.write(api.response.throw(203, compiled=True))
     elif status == users.USER_LOCKED:
-      self.response.out.write(api.response.throw(204, compiled=True))
+      self.RunLockedUser(*args)
+    elif status == users.sessions.HACKER_FOUND:
+      self.response.out.write(api.response.throw(002, compiled=True))
+      # TODO, stop them
     else:
       if status == None:
         self.RunAuthUser(*args)
@@ -32,6 +35,9 @@ class APIHandler(webapp2.RequestHandler):
             'sid': status
           }
         })
+  
+  def RunLockedUser(self, dictionary, method):
+    api.delegate(self, dictionary, method, api.Permissions.LockedUser, additionalPayload={'userlocked':True})
   
   def RunGuest(self, dictionary, method):
     api.delegate(self, dictionary, method, api.Permissions.Guest)

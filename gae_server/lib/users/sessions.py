@@ -5,6 +5,7 @@ class Session(ndb.Model):
   expiration = ndb.DateTimeProperty(indexed=False)
   SID = ndb.StringProperty(indexed=False)
   watching = ndb.BooleanProperty(indexed=False)
+  watchingTokens = ndb.PickleProperty(indexed=False)
 
 
 
@@ -22,6 +23,7 @@ class Session(ndb.Model):
 SESSION_DOESNT_EXIST = 'S0'
 INCORRECT_SID = 'S1'
 WATCHING = 'S2'
+HACKER_FOUND = 'S3'
 
 
 
@@ -54,6 +56,7 @@ def create(UID):
   
   createSID(session)
   
+  session.watchingTokens = []
   session.watching = False
   session.put()
   
@@ -137,6 +140,36 @@ def watch(UID, ULID):
 
 
 
+"""
+' Given a UID, ULID, and SID. Clears the SID form the suspicious users list: 'watchingTokens' array.
+' Returns an error constant (SESSION_DOESNT_EXIST)
+"""
+def clearWatchingSID(UID, ULID, SID):
+  if UID == None or ULID == None:
+    return SESSION_DOESNT_EXIST
+  
+  ancestor_key = ndb.Key('UID', UID, 'ULID', ULID)
+  session = Session.query(ancestor=ancestor_key).get()
+  
+  if session == None:
+    return SESSION_DOESNT_EXIST
+  
+  if SID in session.watchingTokens:
+    session.watchingTokens.remove(SID)
+    session.put()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -157,9 +190,13 @@ def validate(UID, ULID, SID):
     return SESSION_DOESNT_EXIST
   
   if session.watching:
+    if SID in session.watchingTokens and len(session.watchingTokens) == 1:
+      return HACKER_FOUND
     return WATCHING
   
   if session.SID != SID:
+    session.watchingTokens.append(SID)
+    session.watchingTokens.append(session.SID)
     return INCORRECT_SID
   
   import datetime
