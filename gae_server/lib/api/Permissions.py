@@ -66,29 +66,6 @@ class Guest:
       return response.reply({
         'version' : '0.0.0 Beta'
       })
-      
-      
-    def status(self, webapp2):
-      from .. import users
-      status = users.checkSession(webapp2)
-      if status == users.sessions.WATCHING:
-        return response.reply({'status' : 'sessions.watching'})
-      elif status == users.sessions.SUCCESS:
-        return response.reply({'status' : 'sessions.success'})
-      elif status == users.sessions.SESSION_DOESNT_EXIST:
-        return response.reply({'status' : 'sessions.session_doesnt_exist'})
-      elif status == users.USER_DOESNT_EXIST:
-        return response.reply({'status' : 'users.user_doesnt_exist'})
-      elif status == users.USER_LOCKED:
-        return response.reply({'status' : 'users.locked'})
-      elif status == users.sessions.INCORRECT_SID:
-        return response.reply({'status' : 'sessions.incorrect_sid'})
-      else:
-        return response.reply({'status' : 'unknown status'})
-
-
-
-
 
 
 

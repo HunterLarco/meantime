@@ -11,12 +11,13 @@ body{
 }
 
 
-div.memory{
+div.response{
   background:rgb(240,240,240);
   display:inline-block;
   float:left;
   width:40%;
   height:100%;
+  overflow:scroll;
 }
 
 div.request{
@@ -36,39 +37,15 @@ div.title{
   color:rgb(255,255,255);
   border-bottom:1px solid rgb(153,28,28);
 }
-
-div.table{
-  margin-top:8px;
-}
-div.table div.mem div.line:nth-child(odd){
-  background:rgb(255,255,255);
-}
-div.table div.header{
-  font-weight:bold;
-  margin-bottom:4px;
-}
-div.table div.line{
-  white-space:nowrap;
-  padding:4px 0px;
-}
-div.table div.line div{
-  display:inline-block;
-  text-align:center;
-}
-div.table div.line div.key{
-  width:30%;
-}
-div.table div.line div.value{
-  width:70%;
-}
-
-
-div.request div.tag{
+div.tag{
   font-size:13px;
   background:rgb(240,240,240);
   padding:4px 0px;
   text-align:center;
   margin-bottom:8px;
+}
+div.response div.tag{
+  background:rgb(220,220,220);
 }
 
 div.request div.authtoken{
@@ -102,6 +79,12 @@ div.button{
   outline:none;
   cursor:pointer;
   text-align:center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 div.button:hover{
   border-bottom:2px solid rgb(66,133,244);
@@ -125,8 +108,21 @@ div.request div.response{
 }
 
 
+div.request div.paneholder{
+  position:relative;
+}
+div.request div.pane{
+  width:50%;
+  display:inline-block;
+  vertical-align:top;
+}
+div.request div.pane.dv{
+  position:absolute;
+  top:0px;
+  bottom:0px;
+}
 div.request div.data{
-  margin:20px;
+  margin:20px 10px 20px 20px;
   padding:10px;
   border:1px solid rgb(102,102,102);
 }
@@ -135,8 +131,21 @@ div.request div.data textarea{
   outline:none;
   width:100%;
   max-width:100%;
-  min-height:120px;
+  min-height:250px;
 }
+div.request div.datavisualizer{
+  border-bottom:4px solid rgb(210,210,210);
+  background:rgb(240,240,240);
+  padding:10px;
+  position:absolute;
+  left:10px;
+  right:20px;
+  top:20px;
+  bottom:20px;
+  overflow:scroll;
+}
+
+
 div.button.send{
   margin:0px 20px;
   display:block;
@@ -144,21 +153,6 @@ div.button.send{
 
 div.response div.frame{
   padding:20px;
-}
-div.response div.frame label.s{
-  color:green;
-}
-div.response div.frame label.n{
-  color:red;
-}
-div.response div.frame label.b{
-  color:rgb(255, 140, 0);
-}
-div.response div.frame label.nl{
-  color:rgb(0, 78, 208);
-}
-div.response div.frame label.o{
-  color:rgb(180,180,180);
 }
 
 div.request div.label{
@@ -189,6 +183,23 @@ div.request div.label.SID:after{
   font-size:14px;
   color:#1A1A1A;
   line-height:22px;
+  white-space:nowrap;
+  overflow:scroll;
+}
+.console label.s{
+  color:green;
+}
+.console label.n{
+  color:red;
+}
+.console label.b{
+  color:rgb(255, 140, 0);
+}
+.console label.nl{
+  color:rgb(0, 78, 208);
+}
+.console label.o{
+  color:rgb(180,180,180);
 }
 
 </style>
@@ -199,28 +210,10 @@ div.request div.label.SID:after{
 <body>
 
 
-<div class='memory panel'>
-  <div class='title'>Memory</div>
-  <div class='table'>
-    <div class='line header'>
-      <div class='key'>Key</div>
-      <div class='value'>Value</div>
-    </div>
-    <div class='mem' id='mem'>
-      <div class='line'>
-        <div class='key'>Key</div>
-        <div class='value'>Value</div>
-      </div>
-      <div class='line'>
-        <div class='key'>Key</div>
-        <div class='value'>Value</div>
-      </div>
-      <div class='line'>
-        <div class='key'>Key</div>
-        <div class='value'>Value</div>
-      </div>
-    </div>
-  </div>
+<div class='response panel'>
+  <div class='title'>API Response</div>
+  <div class='tag'>Response</div>
+  <div id='responsetext' class='frame console'>No Responses Yet</div>
 </div>
 <div class='request panel'>
   <div class='title'>Request Panel</div>
@@ -232,17 +225,22 @@ div.request div.label.SID:after{
       <div class='label SID'><input type='text' disabled id='sid'/></div>
     </div>
     <div class='url'>
-      /api/ <input type='text' id='url' placeholder='url'/>
+      /api/ <input type='text' id='url' placeholder='URL'/>
       <div class='spacer'></div>
       GET <input type='radio' name='method' value='get'/>
       POST <input type='radio' name='method' value='post' checked/>
     </div>
-    <div class='data'><textarea id='data' class='console'></textarea></div>
+    <div class='paneholder'>
+      <div class='pane'>
+        <div class='data'>
+          <textarea id='data' class='console' placeholder='JSON Data'></textarea>
+        </div>
+      </div><!--
+   --><div class='pane dv'>
+        <div class='datavisualizer console' id='dv'></div>
+      </div>
+    </div>
     <div class='button send' id='send'>Send</div>
-  </div>
-  <div class='response'>
-    <div class='tag' id='tag'>Response</div>
-    <div id='responsetext' class='frame console'>No Responses Yet</div>
   </div>
 </div>
 
@@ -269,15 +267,15 @@ window.onload = function(){
   var url = document.getElementById('url');
   url.removeAttribute('id');
   
-  var tag = document.getElementById('tag');
-  tag.removeAttribute('id');
-  
   var data = document.getElementById('data');
   data.removeAttribute('id');
-  data.addEventListener('keyup', BuildData)
+  data.addEventListener('keyup', BuildData);
   
   var send = document.getElementById('send');
   send.removeAttribute('id');
+  
+  var dv = document.getElementById('dv');
+  dv.removeAttribute('id');
   
   function getMethod(){
     var elems = document.getElementsByName('method');
@@ -286,49 +284,159 @@ window.onload = function(){
         return elem.value
   }
   
-  function BuildData(event){
-    var lines = data.value.split('\n'),
-        json = {};
-    for(var i=0,line; line=lines[i++];){
-      var linedata = line.match(/^([^\s]*)\s+(bool|string|object|array|number|null)/);
-      if(!linedata) continue;
-      key = linedata[1];
-      type = linedata[2];
-      var linecontent;
-      switch(type){
+  function CheckStrict(json, line){
+    var linedata = line.match(/^([^\s]*)\s+(bool|string|object|array|number|null)/);
+    if(!linedata) return;
+    key = linedata[1];
+    type = linedata[2];
+    switch(type){
+      case 'string':
+        var rest = line.match(/^[^\s]*\s+string\s+(.+)/);
+        if(!rest) return;
+        rest = rest[1];
+        json[key] = rest;
+      break;
+      case 'bool':
+        var bool = line.match(/^[^\s]*\s+bool\s+(true|false)/);
+        if(!bool) return;
+        bool = bool[1];
+        json[key] = bool=='true';
+      break;
+      case 'object':
+        json[key] = {};
+        return json[key];
+      break;
+      case 'array':
+        json[key] = [];
+        return json[key];
+      break;
+      case 'number':
+        var number = line.match(/^[^\s]*\s+number\s+([0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)/);
+        if(!number) return;
+        number = number[1];
+        json[key] = parseFloat(number);
+      break;
+      case 'null':
+        json[key] = null;
+      break;
+    }
+  }
+  
+  function CheckShortCuts(json, line){
+    var number = /[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+/,
+        bool = /true|false/;
+    var shortcutdata = line.match(/^([^\s]*)\s+((?:[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)|true|false|null)\s*$/),
+        isshortcut = !!shortcutdata;
+    if(isshortcut){
+      var key = shortcutdata[1],
+          unknown = shortcutdata[2];
+      if(!!unknown.match(number)){
+        json[key] = parseFloat(unknown);
+        return true;
+      }else if(!!unknown.match(bool)){
+        json[key] = unknown=='true';
+        return true;
+      }else if(unknown == 'null'){
+        json[key] = null;
+        return true;
+      }
+    }else{
+      var words = line.split(' ')
+      if(words.length > 1){
+        var match = line.match(/^[^\s]*\s+(.+)$/);
+        if(!words[1].match(/^(?:bool|string|object|array|number|null)$/) && !!match){
+          json[words[0]] = match[1];
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  function CheckArrayCommands(json, line){
+    var number = /[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+/,
+        bool = /true|false/;
+    var data = line.match(/^(bool|string|number)\s+/);
+    if(!data){
+      if(!!line.match(/^null\s*$/)){
+        json.push(null);
+        return json[json.length-1];
+      }
+      if(!!line.match(/^object\s*$/)){
+        json.push({});
+        return json[json.length-1];
+      }
+      if(!!line.match(/^array\s*$/)){
+        json.push([]);
+        return json[json.length-1];
+      }
+      var unknown = line.match(/^((?:[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)|true|false|null)\s*$/);
+      if(!unknown){
+        if(!!line) json.push(line);
+        return;
+      }
+      unknown = unknown[1];
+      if(!!unknown.match(number)){
+        json.push(parseFloat(unknown));
+      }else if(!!unknown.match(bool)){
+        json.push(unknown=='true');
+      }
+    }else{
+      switch(data[1]){
         case 'string':
-          var rest = line.match(/^[^\s]*\s+string\s+(.+)/);
-          if(!rest) continue;
+          var rest = line.match(/^string\s+(.+)/);
+          if(!rest) return;
           rest = rest[1];
-          json[key] = rest;
+          json.push(rest);
         break;
         case 'bool':
-          var bool = line.match(/^[^\s]*\s+bool\s+(true|false)/);
-          if(!bool) continue;
+          var bool = line.match(/^bool\s+(true|false)/);
+          if(!bool) return;
           bool = bool[1];
-          json[key] = bool=='true';
-        break;
-        case 'object':
-          // TODO
-        break;
-        case 'array':
-          // TODO
+          json.push(bool=='true');
         break;
         case 'number':
-          var number = line.match(/^[^\s]*\s+number\s+([0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)/);
-          if(!number) continue;
+          var number = line.match(/^number\s+([0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)/);
+          if(!number) return;
           number = number[1];
-          json[key] = parseFloat(number);
-        break;
-        case 'null':
-          json[key] = null;
+          json.push(parseFloat(number));
         break;
       }
     }
-    tag.innerHTML = 'JSON Package';
-    PrettyPrint(json);
+  }
+  
+  function BuildData(event){
+    var lines = data.value.split('\n'),
+        json = {},
+        targets = [json];
+    for(var i=0; i<lines.length; i++){
+      var line = lines[i];
+      if(!!line.match(/^end\s*$/)){
+        if(targets.length > 1)
+          targets.splice(targets.length-1,1);
+        continue;
+      }
+      var target = targets[targets.length-1];
+      if(target.constructor == Array){
+        var response = CheckArrayCommands(target, line);
+        if(!!response) targets.push(response);
+        continue;
+      }
+      if(!CheckShortCuts(target, line)){
+        var response = CheckStrict(target, line);
+        if(!!response) targets.push(response);
+      }
+    }
+    PrettyPrint(json, dv);
     sendData = json;
   }
+  
+  
+  
+  
+  
+  
+
   
   function CheckSession(data){
     if(!data['setsession']) return;
@@ -337,39 +445,39 @@ window.onload = function(){
     uidtoken.value =  data['session']['uid'];
   }
   
-  function PrettyPrint(data){
-    CheckSession(data);
+  function PrettyPrint(data, elem){
+    var elem = elem || responseframe;
     var singletab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
     function recurse(object, tabs){
       for(key in object){
         if(object[key] == null){
-          responseframe.innerHTML += tabs+key+' : \<label class="nl">null\</label>\<br/>';
+          elem.innerHTML += tabs+key+' : \<label class="nl">null\</label>\<br/>';
           continue;
         }
         switch(object[key].constructor){
           case String:
-            responseframe.innerHTML += tabs+key+' : \<label class="s">'+object[key]+'\</label>\<br/>';
+            elem.innerHTML += tabs+key+' : \<label class="s">'+object[key]+'\</label>\<br/>';
           break;
           case Array:
-            responseframe.innerHTML += tabs+key+' : \<label class="o"> Array ['+object[key].length+']\</label>\<br/>';
+            elem.innerHTML += tabs+key+' : \<label class="o"> Array ['+object[key].length+']\</label>\<br/>';
             recurse(object[key], tabs+singletab)
           break;
           case Number:
-            responseframe.innerHTML += tabs+key+' : \<label class="n">'+object[key]+'\</label>\<br/>';
+            elem.innerHTML += tabs+key+' : \<label class="n">'+object[key]+'\</label>\<br/>';
           break;
           case Boolean:
-            responseframe.innerHTML += tabs+key+' : \<label class="b">'+object[key]+'\</label>\<br/>';
+            elem.innerHTML += tabs+key+' : \<label class="b">'+object[key]+'\</label>\<br/>';
           break;
           case Object:
-            responseframe.innerHTML += tabs+key+' : \<label class="o"> Object {'+Object.keys(object[key]).length+'}\</label>\<br/>';
+            elem.innerHTML += tabs+key+' : \<label class="o"> Object {'+Object.keys(object[key]).length+'}\</label>\<br/>';
             recurse(object[key], tabs+singletab)
           break;
         }
       }
     }
-    responseframe.innerHTML = '{\<br/>';
+    elem.innerHTML = '\<label class="o"> Object {'+Object.keys(data).length+'}\</label> {\<br/>';
     recurse(data, singletab)
-    responseframe.innerHTML += '}'
+    elem.innerHTML += '}'
   }
   
   
@@ -385,16 +493,21 @@ window.onload = function(){
   send.addEventListener('click', function(){
     var request = new Request('/api/'+url.value);
     
-    if(!!sidtoken.value)  pack['sid'] = sidtoken.value;
-    if(!!uidtoken.value)  pack['uid'] = uidtoken.value;
-    if(!!ulidtoken.value) pack['ulid'] = ulidtoken.value;
+    var clone = JSON.parse(JSON.stringify(sendData));
     
-    tag.innerHTML = 'Response';
+    if(!!sidtoken.value)  clone['sid'] = sidtoken.value;
+    if(!!uidtoken.value)  clone['uid'] = uidtoken.value;
+    if(!!ulidtoken.value) clone['ulid'] = ulidtoken.value;
+    
+    function callback(data){
+      CheckSession(data);
+      PrettyPrint(data);
+    }
     
     if(getMethod() == 'post')
-      request.post(sendData, PrettyPrint);
+      request.post(clone, callback);
     else
-      request.get(PrettyPrint)
+      request.get(callback)
   });
   
 }
