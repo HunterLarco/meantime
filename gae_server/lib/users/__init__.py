@@ -8,7 +8,7 @@ import sessions
 ' Recieves an email and password
 ' Returns the UID of the created user entity or an error constant (EMAIL_IS_USED)
 """
-def create(email, password):
+def create(email, password, entity):
   user = User.query(User.email == email).get()
   if user != None:
     return EMAIL_IS_USED
@@ -22,6 +22,7 @@ def create(email, password):
   user.email = email
   user.brute_force_record = dict()
   user.locked = False
+  user.entity = entity.key
   user.put()
   
   return dict(
@@ -289,4 +290,5 @@ class User(ndb.Model):
   email = ndb.StringProperty(indexed=True)
   brute_force_record = ndb.PickleProperty(indexed=False)
   locked = ndb.BooleanProperty(indexed=False)
+  entity = ndb.KeyProperty(indexed=False)
   

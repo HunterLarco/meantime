@@ -32,18 +32,21 @@ class Guest:
   class user:
     @require('email', 'password')
     def signup(self, payload):
+      from .. import capusers
       from .. import users
-      status = users.create(
+      status = capusers.create(
         payload['email'],
-        payload['password']
+        payload['password'],
       )
       if status == users.EMAIL_IS_USED:
         return response.throw(200)
   
+  
     @require('email', 'password')
     def login(self, payload):
       from .. import users
-      status = users.login(
+      from .. import capusers
+      status = capusers.login(
         payload['email'],
         payload['password']
       )
@@ -85,7 +88,8 @@ class Guest:
 
 # authenticated user map
 class AuthUser:
-  pass
+  class points:
+    pass
 
 
 
@@ -100,7 +104,8 @@ class LockedUser:
     @require('email', 'password')
     def login(self, payload):
       from .. import users
-      status = users.login(
+      from .. import capusers
+      status = capusers.login(
         payload['email'],
         payload['password']
       )
