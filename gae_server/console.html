@@ -409,6 +409,10 @@ window.onload = function(){
   function removeTab(event){
     if(event.which == 9)
       event.preventDefault();
+    if(event.shiftKey && event.which == 83){
+      send.click();
+      event.preventDefault();
+    }
   }
   
   function BuildData(event){
@@ -453,7 +457,7 @@ window.onload = function(){
   
   function CheckLocked(data){
     if(!data['userlocked']) return;
-    alert('The User Is Locked: Please Log In');
+    responseframe.innerHTML = 'The User Is Locked: Please Log In';
   }
   
   function PrettyPrint(data, elem){
@@ -518,10 +522,14 @@ window.onload = function(){
       PrettyPrint(data);
     }
     
+    function OnError(message){
+      responseframe.innerHTML = message;
+    }
+    
     if(getMethod() == 'post')
-      request.post(clone, callback);
+      request.post(clone, callback, OnError);
     else
-      request.get(callback)
+      request.get(callback, OnError)
   });
   
 }

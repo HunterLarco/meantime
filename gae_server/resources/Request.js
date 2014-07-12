@@ -1,7 +1,7 @@
 var Request = function RequestHandler(url){
   var self = this;
   self.URL = url;
-  var _callback, xmlhttp;
+  var _callback, xmlhttp, _onerror;
   function OnError(){
     alert('Request Error!');
   }
@@ -11,20 +11,22 @@ var Request = function RequestHandler(url){
         var data = JSON.parse(event.target.response);
         _callback(data);
       }else{
-        alert('xmlhttp.status = '+xmlhttp.status);
+        _onerror('ERROR</br>xmlhttp.status = '+xmlhttp.status)
       };
     };
   }
-  self.post = function RequestJSSend(data,callback){
+  self.post = function RequestJSSend(data,callback,onerror){
     _callback = callback || new Function();
+    _onerror = onerror || new Function();
     var data = data || {};
     xmlhttp.onreadystatechange=OnResponse;
     xmlhttp.onerror=OnError;
     xmlhttp.open("POST",url,true);
     xmlhttp.send(JSON.stringify(data));
   };
-  self.get = function RequestJSSend(callback){
+  self.get = function RequestJSSend(callback,onerror){
     _callback = callback || new Function();
+    _onerror = onerror || new Function();
     xmlhttp.onreadystatechange=OnResponse;
     xmlhttp.onerror=OnError;
     xmlhttp.open("GET",url,true);
