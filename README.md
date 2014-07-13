@@ -1,5 +1,5 @@
-#TimeCap
+#meantime
 
-Hunter Larco&ensp;·&ensp;Alex Cantrell
+[Hunter Larco](http://larcolabs.appspot.com)&ensp;·&ensp;Alex Cantrell
 
-> Time Capsule is a application designed to provide users with the means to pass content much like a time capsule.
+> meantime is a application designed to provide users with the means to pass content much like a time capsule.
