@@ -1,0 +1,485 @@
+<!DOCTYPE>
+<html>
+<head>
+<style type='text/css'>
+
+body{
+  padding:0px;
+  margin:0px;
+  font-family:arial;
+  font-size:15px;
+}
+
+
+input{
+  padding: 6px 7px !important;
+}
+
+
+
+div.shard{
+  padding-bottom:20px;
+  border-bottom:4px solid rgb(200,200,200);
+  background:rgb(240,240,240);
+  margin:20px;
+  display:inline-block;
+  overflow:hidden;
+  color:rgb(51,51,51);
+  vertical-align:top;
+}
+
+
+div.shard div.input{
+  margin:2px 20px;
+  position:relative;
+  display:inline-block;
+}
+div.shard div.input span{
+  position:absolute;
+  right:0px;
+  top:0px;
+  font-size:14px;
+  padding:8px 7px;
+  color:rgb(200,200,200);
+}
+div.shard div.divider{
+  margin:20px 0px;
+  height:8px;
+  background:white;
+}
+div.shard div.button{
+  margin:4px 20px;
+  display:block;
+}
+div.shard div.stats{
+  margin:0px 20px;
+  background:rgb(255,255,255);
+  border-bottom:1px solid rgb(220,220,220);
+  padding:12px;
+  line-height:28px;
+  color:rgb(180,180,180);
+}
+div.shard div.stats label{
+  color:rgb(51,51,51);
+}
+
+
+div.shard div.title{
+  padding:16px 0px;
+  text-align:center;
+  font-size:18px;
+  background:rgb(203,78,78);
+  color:rgb(255,255,255);
+  border-bottom:1px solid rgb(153,28,28);
+  margin-bottom:20px;
+  box-shadow:0px 1px 2px rgba(0,0,0,0.4);
+}
+
+
+div.shard div.options{
+  padding:12px 20px;
+  line-height:22px;
+}
+
+
+input[type='radio']{
+	padding:0px !important;
+	margin:0px;
+	background:rgb(248,248,248);
+	appearance:none;
+	-webkit-appearance:none;
+  -moz-appearance:none;
+  outline:none;
+	width:12px;
+	height:12px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	border-radius:2px;
+	-moz-box-shadow:inset 0px 0px 1px rgb(200,200,200);
+	-webkit-box-shadow:inset 0px 0px 1px rgb(200,200,200);
+	box-shadow:inset 0px 0px 1px rgb(200,200,200);
+	border:1px solid rgb(200,200,200);
+	cursor:pointer;
+  margin-right:8px;
+}
+input[type='radio']:hover:not(:disabled){
+  border:1px solid rgb(180,180,180);
+}
+input[type='radio']:active:not(:disabled){
+  border:1px solid rgb(77,144,254);
+}
+input[type='radio']:checked{
+	border:1px solid rgb(77,144,254) !important;
+	background:rgb(248,248,255) !important;
+}
+input[type='radio']:disabled{
+  cursor:not-allowed;
+}
+
+</style>
+<meta charset='UTF-8' NAME='Author' CONTENT='Hunter Larco' />
+<title>Shard Testing Console</title>
+<script src='/resources/Request.js'></script>
+<link rel="stylesheet" type="text/css" href="/resources/Forms.css"></link>
+<script src='/resources/Request.js'></script>
+</head>
+<body>
+
+
+
+<script type='text/javascript'>
+
+
+window.onload = function(){
+  
+  var counters = 0;
+  
+  
+  function CreateShard(){
+    var shard = document.createElement('div');
+    shard.setAttribute('class', 'shard');
+        var title = document.createElement('div');
+        title.setAttribute('class', 'title');
+        title.innerHTML = 'Counter N.' + ++counters;
+        shard.appendChild(title);
+        var inputname = document.createElement('div');
+        inputname.setAttribute('class', 'input');
+            var iname = document.createElement('input');
+            iname.setAttribute('type', 'text');
+            iname.setAttribute('placeholder', 'Counter Name');
+            inputname.appendChild(iname);
+            inputname.appendChild(document.createElement('br'));
+            var namespan = document.createElement('span');
+            namespan.innerHTML = 'Name';
+            inputname.appendChild(namespan);
+        shard.appendChild(inputname);
+        shard.appendChild(document.createElement('br'));
+        var inputvalue = document.createElement('div');
+        inputvalue.setAttribute('class', 'input');
+            var ivalue = document.createElement('input');
+            ivalue.setAttribute('type', 'text');
+            ivalue.setAttribute('placeholder', 'Counter Value');
+            ivalue.disabled = true;
+            inputvalue.appendChild(ivalue);
+            inputvalue.appendChild(document.createElement('br'));
+            var valuespan = document.createElement('span');
+            valuespan.innerHTML = 'Value';
+            inputvalue.appendChild(valuespan);
+        shard.appendChild(inputvalue);
+        shard.appendChild(document.createElement('br'));
+        var options = document.createElement('div');
+        options.setAttribute('class', 'options');
+            var noshards = document.createElement('input');
+            noshards.setAttribute('type', 'radio');
+            noshards.setAttribute('name', 'package');
+            noshards.checked = true;
+            options.appendChild(noshards);
+            options.appendChild(document.createTextNode(' No Shards'));
+            options.appendChild(document.createElement('br'));
+            var fixedshards = document.createElement('input');
+            fixedshards.setAttribute('type', 'radio');
+            fixedshards.setAttribute('name', 'package');
+            options.appendChild(fixedshards);
+            options.appendChild(document.createTextNode(' Fixed Shards'));
+        shard.appendChild(options);
+        var updatebutton = document.createElement('div');
+        updatebutton.setAttribute('class', 'button');
+        updatebutton.innerHTML = 'Force Update';
+        shard.appendChild(updatebutton);
+        var divider = document.createElement('div');
+        divider.setAttribute('class', 'divider');
+        shard.appendChild(divider);
+        var attempts = document.createElement('div');
+        attempts.setAttribute('class', 'input');
+            var iattempts = document.createElement('input');
+            iattempts.setAttribute('type', 'text');
+            iattempts.setAttribute('placeholder', 'Increment Attemps');
+            attempts.appendChild(iattempts);
+            attempts.appendChild(document.createElement('br'));
+            var attemptsspan = document.createElement('span');
+            attemptsspan.innerHTML = 'Attempts';
+            attempts.appendChild(attemptsspan);
+        shard.appendChild(attempts);
+        shard.appendChild(document.createElement('br'));
+        var attemptsfq = document.createElement('div');
+        attemptsfq.setAttribute('class', 'input');
+            var iattemptsfq = document.createElement('input');
+            iattemptsfq.setAttribute('type', 'text');
+            iattemptsfq.setAttribute('placeholder', 'Attempts Per Second');
+            attemptsfq.appendChild(iattemptsfq);
+            attemptsfq.appendChild(document.createElement('br'));
+            var attemptsfqspan = document.createElement('span');
+            attemptsfqspan.innerHTML = 'Attemps Per Second';
+            attemptsfq.appendChild(attemptsfqspan);
+        shard.appendChild(attemptsfq);
+        shard.appendChild(document.createElement('br'));
+        var recshards = document.createElement('div');
+        recshards.setAttribute('class', 'input');
+            var irecshards = document.createElement('input');
+            irecshards.setAttribute('type', 'text');
+            irecshards.setAttribute('placeholder', 'Recommended Shards');
+            recshards.appendChild(irecshards);
+            recshards.appendChild(document.createElement('br'));
+            var recshardsspan = document.createElement('span');
+            recshardsspan.innerHTML = 'Recommended Shards';
+            recshards.appendChild(recshardsspan);
+        shard.appendChild(recshards);
+        var runbutton = document.createElement('div');
+        runbutton.setAttribute('class', 'button');
+        runbutton.innerHTML = 'Run &amp; Save';
+        shard.appendChild(runbutton);
+        var divider = document.createElement('div');
+        divider.setAttribute('class', 'divider');
+        shard.appendChild(divider);
+        var stats = document.createElement('div');
+        stats.setAttribute('class', 'stats');
+            stats.appendChild(document.createTextNode('Completed Attempts '));
+            var completed = document.createElement('label');
+            completed.innerHTML = '0';
+            stats.appendChild(completed);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Failed Attempts '));
+            var failed = document.createElement('label');
+            failed.innerHTML = '0';
+            stats.appendChild(failed);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Initial Value '));
+            var initialValue = document.createElement('label');
+            initialValue.innerHTML = '?';
+            stats.appendChild(initialValue);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Final Value '));
+            var finalValue = document.createElement('label');
+            finalValue.innerHTML = '?';
+            stats.appendChild(finalValue);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Difference '));
+            var difference = document.createElement('label');
+            difference.innerHTML = '?';
+            stats.appendChild(difference);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Elapsed Time '));
+            var elapsedtime = document.createElement('label');
+            elapsedtime.innerHTML = '?';
+            stats.appendChild(elapsedtime);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Expected Time '));
+            var expectedtime = document.createElement('label');
+            expectedtime.innerHTML = '?';
+            stats.appendChild(expectedtime);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Shards Available '));
+            var shardsavailable = document.createElement('label');
+            shardsavailable.innerHTML = '?';
+            stats.appendChild(shardsavailable);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Shards Used '));
+            var shardsused = document.createElement('label');
+            shardsused.innerHTML = '?';
+            stats.appendChild(shardsused);
+        shard.appendChild(stats);
+    
+    var shardData = {
+      shard: shard,
+      title: title,
+      runbutton: runbutton,
+      updatebutton: updatebutton,
+      inputs: {
+        name: iname,
+        value: ivalue,
+        attempts: iattempts,
+        attemptsfq: iattemptsfq,
+        recshards: irecshards
+      },
+      radios: {
+        noshards: noshards,
+        fixedshards: fixedshards
+      },
+      completed: completed,
+      failed: failed,
+      initialValue: initialValue,
+      finalValue: finalValue,
+      elapsedtime: elapsedtime,
+      expectedtime: expectedtime,
+      difference: difference,
+      shardsavailable: shardsavailable,
+      shardsused: shardsused
+    }
+    
+    iattempts.addEventListener('keypress', AllowOnlyNumbers);
+    iattemptsfq.addEventListener('keypress', AllowOnlyNumbers);
+    irecshards.addEventListener('keypress', AllowOnlyNumbers);
+    
+    runbutton.addEventListener('click', function(){
+      RunShard(shardData);
+    });
+    
+    updatebutton.addEventListener('click', function(){
+      if(shardData.inputs.name.value.length == 0){
+        shardData.inputs.value.value = 'Invalid Counter Name';
+        return;
+      }
+      function OnError(message){
+        shardData.inputs.value.value = message;
+      }
+      function Callback(event){
+        if(event.stat == 'fail')
+          return OnError(event.message);
+        shardData.inputs.value.value = event.value;
+      }
+      shardData.inputs.value.value = 'Working...';
+      GetShardValue(shardData, Callback, OnError);
+    });
+    
+    document.body.insertBefore(shard, document.body.firstChild);
+  }
+  
+  
+  
+  function AllowOnlyNumbers(event){
+    var charCode = (event.which) ? event.which : event.keyCode;
+    if(charCode > 31 && (charCode < 48 || charCode > 57))
+      event.preventDefault();
+  }
+  
+  
+  
+  function FormatTime(s) {
+    var ms = s % 1000;
+    s = (s - ms) / 1000;
+    var secs = s % 60;
+    s = (s - secs) / 60;
+    var mins = s % 60;
+    var hrs = (s - mins) / 60;
+    return hrs + 'h : ' + mins + 'm : ' + secs + '.' + ms + 's';
+  }     
+  
+  
+  
+  function GetShardValue(data, Callback, OnError){
+    var request = new Request('/api/admin/shards/get');
+    request.post({
+      'name': data.inputs.name.value
+    }, Callback, OnError);
+  }
+  
+  
+  
+  function DoPost(data, postcallback){
+    var request = new Request('/api/admin/shards/increment');
+    function OnError(){
+      data.failed.innerHTML = parseInt(data.failed.innerHTML)+1;
+      DoPost(data);
+    }
+    function Callback(){
+      data.completed.innerHTML = parseInt(data.completed.innerHTML)+1;
+      var total = parseInt(data.completed.innerHTML),
+          expected = parseInt(data.inputs.attempts.value);
+      if(total == expected){
+        postcallback();
+      }
+    }
+    request.post({
+      'name': data.inputs.name.value,
+      'recommended_shards': data.inputs.recshards.value
+    }, Callback, OnError);
+  }
+  
+  
+  function RunShard(data){
+    if(data.inputs.name.value.length == 0){
+      data.inputs.value.value = 'Invalid Counter Name';
+      return;
+    }
+    
+    // disabled all buttons and inputs beside the update button
+    for(var key in data.inputs)
+      data.inputs[key].disabled = true;
+    for(var key in data.radios){
+      data.radios[key].disabled = true;
+      data.radios[key].removeAttribute('name');
+    }
+    data.shard.removeChild(data.runbutton);
+    
+    // important globals
+    var starttime,
+        initialtitle = data.title.innerHTML;
+    
+    // begin the runner and set title to working
+    data.title.innerHTML += ' (working)';
+    init();
+    
+    // find the current shard value and then begin, on error try again
+    function init(){
+      GetShardValue(data, DoAllPosts, init);
+    }
+    
+    // once all increments are completed, this is run
+    function OnFinish(){
+      var elapsedtime = Date.now()-starttime;
+      function OnComplete(event){
+        if(event.stat == 'fail')
+          return getFinalValue();
+        
+        var finalValue = event.value;
+        data.finalValue.innerHTML = finalValue;
+        data.difference.innerHTML = finalValue - parseInt(data.initialValue.innerHTML);
+        data.elapsedtime.innerHTML = FormatTime(elapsedtime);
+        
+        CheckShards();
+        
+        function CheckShards(){
+          var request = new Request('/api/admin/shards/profile');
+          request.post({
+            'name': data.inputs.name.value
+          }, ShardCheckFinished, CheckShards);
+        }
+        
+        function ShardCheckFinished(event){
+          data.shardsused.innerHTML = event.shards_used;
+          data.shardsavailable.innerHTML = event.shards_available;
+          data.title.innerHTML = initialtitle + ' (finished)';
+          CreateShard();
+        }
+      }
+      function getFinalValue(){
+        GetShardValue(data, OnComplete, getFinalValue);
+      }
+      getFinalValue();
+    }
+    
+    // runs all of the posts
+    function DoAllPosts(event){
+      if(event.stat == 'fail')
+        return init();
+      
+      var times = parseInt(data.inputs.attempts.value),
+          fq = parseInt(data.inputs.attemptsfq.value);
+  
+      data.expectedtime.innerHTML = FormatTime(1000/fq*times);
+    
+      starttime = Date.now();
+      
+      data.initialValue.innerHTML = event.value;
+    
+      for(var i=0; i<times; i++){
+        setTimeout(function(){
+          DoPost(data, OnFinish);
+        }, 1000/fq*i);
+      }
+    }
+    
+    
+  }
+  
+  
+  
+  
+  
+  CreateShard();
+}
+
+
+</script>
+</body>
+</html>

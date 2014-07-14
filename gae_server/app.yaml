@@ -13,8 +13,8 @@ handlers:
 - url: /resources
   static_dir: resources
 
-- url: /console
-  static_files: console.html
+- url: /admin/([^/]+)
+  static_files: admin_tools/\1.html
   upload: static
   login: admin
 

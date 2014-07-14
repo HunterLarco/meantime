@@ -3,7 +3,7 @@ var Request = function RequestHandler(url){
   self.URL = url;
   var _callback, xmlhttp, _onerror;
   function OnError(){
-    alert('Request Error!');
+    _onerror('Request Error!');
   }
   function OnResponse(event){
     if (xmlhttp.readyState==4){

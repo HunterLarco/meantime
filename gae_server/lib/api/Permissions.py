@@ -27,6 +27,50 @@ def require(*keys):
 
 
 
+
+
+
+
+
+
+
+class Admin:
+  class shards:
+    @require('name')
+    def profile(self, payload):
+      from .. import shards
+      data = shards.profile(payload['name'])
+      return response.reply(data);
+    
+    @require('name')
+    def increment(self, payload):
+      from .. import shards
+      if 'recommended_shards' in payload:
+        shards.increase_shards(
+          payload['name'],
+          int(payload['recommended_shards'])
+        );
+      shards.increment(payload['name'])
+    
+    @require('name')
+    def get(self, payload):
+      from .. import shards
+      return response.reply({
+        'value': shards.get_count(payload['name'])
+      })
+
+
+
+
+
+
+
+
+
+
+
+
+
 # guest access map
 class Guest:
   class user:
