@@ -65,7 +65,7 @@ def get_count(name):
         for counter in ndb.get_multi(all_keys):
             if counter is not None:
                 total += counter.count
-        memcache.add(name, total, 60)
+        memcache.add(name, total)
     return total
 
 
@@ -80,10 +80,10 @@ def increment(name):
     DATA = dict(tries=0)
     _increment(name, config.num_shards, DATA)
     
-    memcache.decr(name, delta=DATA['tries']-1)
+    memcache.delete(name)
     
     if DATA['tries'] > 1:
-      increase_shards(name, config.num_shards+1)
+      increase_shards(name, config.num_shards+2)
 
 
 @ndb.transactional
@@ -104,7 +104,6 @@ def _increment(name, num_shards, retrydata):
     counter.count += 1
     counter.put()
     
-    memcache.incr(name, initial_value=0)
     retrydata['tries'] += 1
 
 
