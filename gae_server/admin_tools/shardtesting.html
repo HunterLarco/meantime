@@ -379,10 +379,12 @@ window.onload = function(){
         postcallback();
       }
     }
-    request.post({
-      'name': data.inputs.name.value,
-      'recommended_shards': data.inputs.recshards.value
-    }, Callback, OnError);
+    var postdata = {
+      'name': data.inputs.name.value
+    };
+    if(data.inputs.recshards.value.length > 0)
+      postdata.recommended_shards = data.inputs.name.value;
+    request.post(postdata, Callback, OnError);
   }
   
   
