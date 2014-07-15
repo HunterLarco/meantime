@@ -49,7 +49,7 @@ class Admin:
         shards.increase_shards(
           payload['name'],
           int(payload['recommended_shards'])
-        );
+        )
       shards.increment(payload['name'])
     
     @require('name')

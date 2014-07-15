@@ -116,6 +116,11 @@ input[type='radio']:disabled{
   cursor:not-allowed;
 }
 
+div.shard canvas{
+  height:120px;
+  display:block;
+}
+
 </style>
 <meta charset='UTF-8' NAME='Author' CONTENT='Hunter Larco' />
 <title>Shard Testing Console</title>
@@ -167,21 +172,6 @@ window.onload = function(){
             inputvalue.appendChild(valuespan);
         shard.appendChild(inputvalue);
         shard.appendChild(document.createElement('br'));
-        var options = document.createElement('div');
-        options.setAttribute('class', 'options');
-            var noshards = document.createElement('input');
-            noshards.setAttribute('type', 'radio');
-            noshards.setAttribute('name', 'package');
-            noshards.checked = true;
-            options.appendChild(noshards);
-            options.appendChild(document.createTextNode(' No Shards'));
-            options.appendChild(document.createElement('br'));
-            var fixedshards = document.createElement('input');
-            fixedshards.setAttribute('type', 'radio');
-            fixedshards.setAttribute('name', 'package');
-            options.appendChild(fixedshards);
-            options.appendChild(document.createTextNode(' Fixed Shards'));
-        shard.appendChild(options);
         var updatebutton = document.createElement('div');
         updatebutton.setAttribute('class', 'button');
         updatebutton.innerHTML = 'Force Update';
@@ -277,7 +267,22 @@ window.onload = function(){
             var shardsused = document.createElement('label');
             shardsused.innerHTML = '?';
             stats.appendChild(shardsused);
+            stats.appendChild(document.createElement('br'));
+            stats.appendChild(document.createTextNode('Average Response Time '));
+            var averageresponsetime = document.createElement('label');
+            averageresponsetime.innerHTML = '?';
+            stats.appendChild(averageresponsetime);
         shard.appendChild(stats);
+        var divider = document.createElement('div');
+        divider.setAttribute('class', 'divider');
+        shard.appendChild(divider);
+        var graph = document.createElement('div');
+        graph.setAttribute('class', 'stats');
+            var div = document.createElement('div');
+                var canvas = document.createElement('canvas');
+                div.appendChild(canvas);
+            graph.appendChild(div);
+        shard.appendChild(graph);
     
     var shardData = {
       shard: shard,
@@ -291,10 +296,6 @@ window.onload = function(){
         attemptsfq: iattemptsfq,
         recshards: irecshards
       },
-      radios: {
-        noshards: noshards,
-        fixedshards: fixedshards
-      },
       completed: completed,
       failed: failed,
       initialValue: initialValue,
@@ -303,7 +304,9 @@ window.onload = function(){
       expectedtime: expectedtime,
       difference: difference,
       shardsavailable: shardsavailable,
-      shardsused: shardsused
+      shardsused: shardsused,
+      canvas: canvas,
+      averageresponsetime: averageresponsetime
     }
     
     iattempts.addEventListener('keypress', AllowOnlyNumbers);
@@ -365,6 +368,116 @@ window.onload = function(){
   
   
   
+  function findLineByLeastSquares(values_x, values_y) {
+      var sum_x = 0;
+      var sum_y = 0;
+      var sum_xy = 0;
+      var sum_xx = 0;
+      var count = 0;
+
+      /*
+       * We'll use those variables for faster read/write access.
+       */
+      var x = 0;
+      var y = 0;
+      var values_length = values_x.length;
+
+      if (values_length != values_y.length) {
+          throw new Error('The parameters values_x and values_y need to have same size!');
+      }
+
+      /*
+       * Nothing to do.
+       */
+      if (values_length === 0) {
+          return [ [], [] ];
+      }
+
+      /*
+       * Calculate the sum for each of the parts necessary.
+       */
+      for (var v = 0; v < values_length; v++) {
+          x = values_x[v];
+          y = values_y[v];
+          sum_x += x;
+          sum_y += y;
+          sum_xx += x*x;
+          sum_xy += x*y;
+          count++;
+      }
+
+      /*
+       * Calculate m and b for the formular:
+       * y = x * m + b
+       */
+      var m = (count*sum_xy - sum_x*sum_y) / (count*sum_xx - sum_x*sum_x);
+      var b = (sum_y/count) - (m*sum_x)/count;
+
+      return {
+        m: m,
+        b: b
+      }
+  }
+  
+  
+  
+  function UpdateGraph(data){
+    var canvas = data.canvas,
+        ctx = canvas.ctx,
+        total = canvas.total,
+        used = canvas.used,
+        last_update = canvas.last_update,
+        width = canvas.width,
+        height = canvas.height,
+        now = Date.now(),
+        x = used/total*width,
+        y = (now-last_update)/2;
+    ctx.beginPath();
+    ctx.arc(
+      x,
+      height - y,
+      1,
+      0, Math.PI*2, true
+    );
+    ctx.fill();
+    canvas.last_update = now;
+    canvas.used++;
+    canvas.values_x.push(x);
+    canvas.values_y.push(y);
+  }
+  
+  
+  
+  function FinalizeGraph(data){
+    var canvas = data.canvas,
+        ctx = canvas.ctx,
+        total = canvas.total,
+        height = canvas.height,
+        width = canvas.width,
+        partitions = 3,
+        partition_size = Math.ceil(canvas.values_x.length/partitions);
+    ctx.strokeStyle = 'rgb(200,0,0)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for(var p=0; p<partitions; p++){
+      var xvals = canvas.values_x.slice(p*partition_size, p*partition_size+partition_size),
+          yvals = canvas.values_y.slice(p*partition_size, p*partition_size+partition_size),
+          line = findLineByLeastSquares(xvals, yvals),
+          m = line.m,
+          b = line.b,
+          partition_width = Math.ceil(width/partitions);
+      for(var x=0; x<partition_width; x++){
+        var funct = x==0 ? ctx.moveTo : ctx.lineTo;
+        funct.call(ctx, x+p*partition_width, height - (m*x+b));
+      }
+    }
+    ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgb(0,0,0)';
+  }
+  
+  
+  
   function DoPost(data, postcallback){
     var request = new Request('/api/admin/shards/increment');
     function OnError(){
@@ -372,6 +485,7 @@ window.onload = function(){
       DoPost(data);
     }
     function Callback(){
+      UpdateGraph(data);
       data.completed.innerHTML = parseInt(data.completed.innerHTML)+1;
       var total = parseInt(data.completed.innerHTML),
           expected = parseInt(data.inputs.attempts.value);
@@ -383,7 +497,7 @@ window.onload = function(){
       'name': data.inputs.name.value
     };
     if(data.inputs.recshards.value.length > 0)
-      postdata.recommended_shards = data.inputs.name.value;
+      postdata.recommended_shards = data.inputs.recshards.value;
     request.post(postdata, Callback, OnError);
   }
   
@@ -441,6 +555,16 @@ window.onload = function(){
           data.shardsused.innerHTML = event.shards_used;
           data.shardsavailable.innerHTML = event.shards_available;
           data.title.innerHTML = initialtitle + ' (finished)';
+          
+          FinalizeGraph(data);
+          
+          var averageResponseTime = 0;
+          for(var i=0; i<data.canvas.values_y.length; i++)
+            averageResponseTime += data.canvas.values_y[i];
+          averageResponseTime /= data.canvas.values_y.length;
+          
+          data.averageresponsetime.innerHTML = averageResponseTime+'ms';
+          
           CreateShard();
         }
       }
@@ -460,7 +584,14 @@ window.onload = function(){
   
       data.expectedtime.innerHTML = FormatTime(1000/fq*times);
     
-      starttime = Date.now();
+      data.canvas.ctx = data.canvas.getContext('2d');
+      data.canvas.total = times;
+      data.canvas.used = 0;
+      data.canvas.values_x = [];
+      data.canvas.values_y = [];
+      data.canvas.width = data.canvas.parentElement.offsetWidth;
+      data.canvas.height = data.canvas.parentElement.offsetHeight;
+      data.canvas.last_update = starttime = Date.now();
       
       data.initialValue.innerHTML = event.value;
     

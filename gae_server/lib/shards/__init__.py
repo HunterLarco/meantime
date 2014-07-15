@@ -76,11 +76,18 @@ def increment(name):
         name: The name of the counter.
     """
     config = GeneralCounterShardConfig.get_or_insert(name)
-    _increment(name, config.num_shards)
+    
+    DATA = dict(retries=0)
+    _increment(name, config.num_shards, DATA)
+    
+    memcache.incr(name, initial_value=0)
+    
+    if DATA['retries'] > 1:
+      increase_shards(name, config.num_shards+1)
 
 
 @ndb.transactional
-def _increment(name, num_shards):
+def _increment(name, num_shards, retrydata):
     """Transactional helper to increment the value for a given sharded counter.
 
     Also takes a number of shards to determine which shard will be used.
@@ -96,8 +103,8 @@ def _increment(name, num_shards):
         counter = GeneralCounterShard(id=shard_key_string)
     counter.count += 1
     counter.put()
-    # Memcache increment does nothing if the name is not a key in memcache
-    memcache.incr(name)
+    
+    retrydata['retries'] += 1
 
 
 @ndb.transactional
