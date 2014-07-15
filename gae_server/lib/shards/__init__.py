@@ -77,12 +77,12 @@ def increment(name):
     """
     config = GeneralCounterShardConfig.get_or_insert(name)
     
-    DATA = dict(retries=0)
+    DATA = dict(tries=0)
     _increment(name, config.num_shards, DATA)
     
-    memcache.incr(name, initial_value=0)
+    memcache.decr(name, delta=DATA['tries']-1)
     
-    if DATA['retries'] > 1:
+    if DATA['tries'] > 1:
       increase_shards(name, config.num_shards+1)
 
 
@@ -104,7 +104,8 @@ def _increment(name, num_shards, retrydata):
     counter.count += 1
     counter.put()
     
-    retrydata['retries'] += 1
+    memcache.incr(name, initial_value=0)
+    retrydata['tries'] += 1
 
 
 @ndb.transactional
