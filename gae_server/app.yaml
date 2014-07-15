@@ -15,7 +15,7 @@ handlers:
 
 - url: /admin/([^/]+)
   static_files: admin_tools/\1.html
-  upload: static
+  upload: admin_tools/([^/]+).html
   login: admin
 
 - url: .*
