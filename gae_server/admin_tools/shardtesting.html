@@ -431,7 +431,7 @@ window.onload = function(){
         height = canvas.height,
         now = Date.now(),
         x = used/total*width,
-        y = (now-last_update)/2;
+        y = (now-last_update)/(1/2)/1000*height;
     ctx.beginPath();
     ctx.arc(
       x,
@@ -563,7 +563,7 @@ window.onload = function(){
             averageResponseTime += data.canvas.values_y[i];
           averageResponseTime /= data.canvas.values_y.length;
           
-          data.averageresponsetime.innerHTML = averageResponseTime+'ms';
+          data.averageresponsetime.innerHTML = Math.round(1000*averageResponseTime)/1000+'ms';
           
           CreateShard();
         }
