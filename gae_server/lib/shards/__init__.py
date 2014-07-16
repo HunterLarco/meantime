@@ -60,7 +60,7 @@ class DynamicCounter(ndb.Model):
         for counter in ndb.get_multi(all_keys):
             if counter is not None:
                 total += counter.count
-        memcache.add(name, total)
+        memcache.add(name, total, 60)
     return total
   
   
@@ -76,8 +76,7 @@ class DynamicCounter(ndb.Model):
     DATA = dict(tries=0)
     self._increment(DATA, amount)
     
-    name = self.getName()
-    memcache.delete(name)
+    ndb.transaction(lambda: memcache.incr(self.getName(), delta=amount))
     
     if DATA['tries'] > 1:
       self._increase_shards(2)
