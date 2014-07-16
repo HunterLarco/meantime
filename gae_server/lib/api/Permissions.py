@@ -39,24 +39,19 @@ class Admin:
     @require('name')
     def profile(self, payload):
       from .. import shards
-      data = shards.profile(payload['name'])
+      data = shards.getOrCreate(payload['name']).profile()
       return response.reply(data);
     
     @require('name')
     def increment(self, payload):
       from .. import shards
-      if 'recommended_shards' in payload:
-        shards.increase_shards(
-          payload['name'],
-          int(payload['recommended_shards'])
-        )
-      shards.increment(payload['name'])
+      shards.getOrCreate(payload['name']).add(1)
     
     @require('name')
     def get(self, payload):
       from .. import shards
       return response.reply({
-        'value': shards.get_count(payload['name'])
+        'value': shards.getOrCreate(payload['name']).getValue()
       })
 
 

@@ -203,17 +203,6 @@ window.onload = function(){
             attemptsfq.appendChild(attemptsfqspan);
         shard.appendChild(attemptsfq);
         shard.appendChild(document.createElement('br'));
-        var recshards = document.createElement('div');
-        recshards.setAttribute('class', 'input');
-            var irecshards = document.createElement('input');
-            irecshards.setAttribute('type', 'text');
-            irecshards.setAttribute('placeholder', 'Recommended Shards');
-            recshards.appendChild(irecshards);
-            recshards.appendChild(document.createElement('br'));
-            var recshardsspan = document.createElement('span');
-            recshardsspan.innerHTML = 'Recommended Shards';
-            recshards.appendChild(recshardsspan);
-        shard.appendChild(recshards);
         var runbutton = document.createElement('div');
         runbutton.setAttribute('class', 'button');
         runbutton.innerHTML = 'Run &amp; Save';
@@ -293,8 +282,7 @@ window.onload = function(){
         name: iname,
         value: ivalue,
         attempts: iattempts,
-        attemptsfq: iattemptsfq,
-        recshards: irecshards
+        attemptsfq: iattemptsfq
       },
       completed: completed,
       failed: failed,
@@ -311,7 +299,6 @@ window.onload = function(){
     
     iattempts.addEventListener('keypress', AllowOnlyNumbers);
     iattemptsfq.addEventListener('keypress', AllowOnlyNumbers);
-    irecshards.addEventListener('keypress', AllowOnlyNumbers);
     
     runbutton.addEventListener('click', function(){
       RunShard(shardData);
@@ -493,12 +480,9 @@ window.onload = function(){
         postcallback();
       }
     }
-    var postdata = {
+    request.post({
       'name': data.inputs.name.value
-    };
-    if(data.inputs.recshards.value.length > 0)
-      postdata.recommended_shards = data.inputs.recshards.value;
-    request.post(postdata, Callback, OnError);
+    }, Callback, OnError);
   }
   
   
