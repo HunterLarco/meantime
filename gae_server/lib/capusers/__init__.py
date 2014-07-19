@@ -1,4 +1,5 @@
 from .. import users
+from .. import shards
 
 
 
@@ -12,8 +13,27 @@ from google.appengine.ext import ndb
 
 class CapUser(ndb.Model):
   """Models an individual user entry."""
-  points = ndb.IntegerProperty(indexed=False)
+  
+  def getPointsCounter(self):
+    return shards.getOrCreate(str(self.key),
+           namespace=self.__class__.__name__+'_PointShards')
 
+  def getPoints(self):
+    return self.getPointsCounter().getValue()
+
+  def addPoints(self, amount):
+    counter = self.getPointsCounter()
+    counter.add(amount)
+
+  def spendPoints(self, amount):
+    counter = self.getPointsCounter()
+    if counter.getValue() < amount:
+      return NOT_ENOUGH_PTS
+    counter.add(-amount)
+
+
+
+  
 
 
 
@@ -28,41 +48,6 @@ NOT_ENOUGH_PTS = 'CP0'
 
 
 
-
-
-
-
-
-
-"""
-' Recieves a user and amount of points to spend
-' Uses those points, BUT DOES NOT SAVE THE ENTITY
-' Returns error constant (NOT_ENOUGH_PTS)
-"""
-def spendPoints(user, amount):
-  if user.points < amount:
-    return NOT_ENOUGH_PTS
-  
-  user.points -= amount
-
-
-
-
-
-
-
-
-
-
-
-
-"""
-' Recieves a user and amount of points to spend
-' Gives those points to the account, BUT DOES NOT SAVE THE ENTITY
-' Returns nothing
-"""
-def transactPoints(user, amount):
-  user.points += amount
 
 
 
@@ -104,7 +89,6 @@ def login(email, password):
 """
 def create(email, password):
   user = CapUser()
-  user.points = 0
   user.put()
 
   status = users.create(email,password,user)

@@ -2,6 +2,7 @@
 ' Common Package Imports
 """
 import sessions
+from google.appengine.ext import ndb
 
 
 """
@@ -27,13 +28,26 @@ USER_LOCKED = 'U6'
 '   locked - a boolean determining if the user can be used or not
 '   entity - the entity linked to this user for additional data
 """
-from google.appengine.ext import ndb
 class User(ndb.Model):
   UID = ndb.StringProperty(indexed=True)
   email = ndb.StringProperty(indexed=True)
   brute_force_record = ndb.PickleProperty(indexed=False)
   locked = ndb.BooleanProperty(indexed=False)
-  entity = ndb.KeyProperty(indexed=False)
+  entity_key = ndb.KeyProperty(indexed=False)
+
+
+"""
+' PURPOSE
+'   Given a UID, return the entity associated with the corresponding
+'   User entity. This is used when accessing the app via sessions.
+' PARAMETERS
+'   <String uid>
+' RETURNS
+'   Entity or None
+"""
+def get(uid):
+  user = getUserByUID(uid)
+  return None if not user else (None if not user.entity_key else user.entity_key.get())
 
 
 """
@@ -191,7 +205,7 @@ def create(email, password, entity=None):
   user.email = email
   user.brute_force_record = dict()
   user.locked = False
-  user.entity = entity.key
+  user.entity_key = entity.key
   user.put()
   
   return dict(

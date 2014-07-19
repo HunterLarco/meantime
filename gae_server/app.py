@@ -11,11 +11,14 @@ import webapp2
 class APIHandler(webapp2.RequestHandler):
   def route(self, *args):
     from json import loads as ParseJSON
+    
     payload = ParseJSON(self.request.body)
     uid = payload['uid'] if 'uid' in payload else None
     sid = payload['sid'] if 'sid' in payload else None
     ulid = payload['ulid'] if 'ulid' in payload else None
+    
     status = users.checkSession(uid, ulid, sid)
+    
     if status == users.sessions.SESSION_DOESNT_EXIST:
       self.RunGuest(*args)
     elif status == users.USER_DOESNT_EXIST:
@@ -26,15 +29,12 @@ class APIHandler(webapp2.RequestHandler):
       self.response.out.write(api.response.throw(002, compiled=True))
       # TODO, stop them
     else:
-      if status == None:
-        self.RunAuthUser(*args)
-      else:
-        self.RunAuthUser(*args, additionalPayload={
-          'setsession': True,
-          'session': {
-            'sid': status
-          }
-        })
+      self.RunAuthUser(*args, additionalPayload={
+        'setsession': True,
+        'session': {
+          'sid': status
+        }
+      } if status != None else {})
   
   def RunLockedUser(self, dictionary, method):
     api.delegate(self, dictionary, method, api.Permissions.LockedUser, additionalPayload={'userlocked':True})

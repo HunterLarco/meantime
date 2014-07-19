@@ -22,6 +22,17 @@ def require(*keys):
   return decorator
 
 
+# assumes the presense of UID
+def loaduser(funct):
+  def reciever(self, payload):
+    from .. import users
+    user_entity = users.get(
+      payload['uid']
+    )
+    if user_entity == None:
+      return response.throw(203)
+    return funct(self, payload, user=user_entity)
+  return reciever
 
 
 
@@ -128,7 +139,13 @@ class Guest:
 # authenticated user map
 class AuthUser:
   class points:
-    pass
+    @loaduser
+    def get(self, payload, user=None):
+      return response.reply({
+        'value': user.getPointsCounter().getValue()
+      })
+        
+
 
 
 

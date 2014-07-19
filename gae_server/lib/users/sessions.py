@@ -220,6 +220,10 @@ def validate(UID, ULID, SID):
   import datetime
   now = datetime.datetime.now()
   if now > session.expiration:
-    createSID(session)
+    
+    SID_Data = formSID()
+    session.SID = SID_Data['SID']
+    session.expiration = SID_Data['expiration']
     session.put()
+    
     return session.SID

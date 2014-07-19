@@ -20,9 +20,7 @@ from google.appengine.api import memcache
 '   1 - when a new DynamicShard is created
 """
 def getOrCreate(name, namespace=None):
-  if namespace != None:
-    name = namespace+'-'+name
-  return DynamicCounter.get_or_insert(name)
+  return DynamicCounter.get_or_insert(name, namespace=namespace)
 
 
 # -------------------------------------------------------- START OF ENTITY -------------------------------------------------------- #
@@ -125,7 +123,7 @@ class DynamicCounter(ndb.Model):
   '   Nothing
   """
   def getName(self):
-    return self.key.pairs()[0][1]
+    return self.key.id()
   
   
   """
