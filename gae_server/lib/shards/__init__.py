@@ -72,7 +72,7 @@ class DynamicCounter(ndb.Model):
   """
   def add(self, amount):
     DATA = dict(tries=0)
-    self._increment(DATA, amount)
+    self._add(DATA, amount)
     
     ndb.transaction(lambda: memcache.incr(self.getName(), delta=amount))
     
@@ -97,7 +97,7 @@ class DynamicCounter(ndb.Model):
   '   times.
   """
   @ndb.transactional
-  def _increment(self, retrydata, amount):
+  def _add(self, retrydata, amount):
     import random
     
     name = self.getName()

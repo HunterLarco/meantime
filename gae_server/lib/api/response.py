@@ -1,4 +1,6 @@
-# all error responses
+"""
+' Error Responses
+"""
 __ERROR__RESPONSES__ = {
   000 : "An unexpected error occurred",
   001 : "Parameter Missing",
@@ -21,28 +23,51 @@ __ERROR__RESPONSES__ = {
   300 : "Session Doesn't Exist"
 }
 
-# throw error response
-def throw(code, dataStruct=(), compiled=False):# dataStruct is used to add data to the messages and compile determines if the response should be auto-compiled
-  # format the response
+
+"""
+' PURPOSE
+'   Throws an error response, consisting of a error code
+'   and error message.
+' PARAMETERS
+'   <int code>
+'   <Tuple dataStruct>
+'   <boolean **kwarg compiled>
+' RETURNS
+'   A dict
+' NOTES
+'   1. the 'dataStruct' is used to customize information in an error message
+'   2. when compiled is true the dict is serialized into JSON format
+"""
+def throw(code, dataStruct=(), compiled=False):
   response = {
     'stat' : 'fail',
     'code' : code,
     'message' : __ERROR__RESPONSES__[code] % dataStruct
   }
-  # return the response <compile if specicfied>
-  if compiled:
-    return compile(response)
-  else:
-    return response
+  return compile(response) if compiled else response
 
 
-# returns a successful response
+"""
+' PURPOSE
+'   Returns a successful response. May take additional data to add to the response.
+' PARAMETERS
+'   <Dict **kwarg data>
+' RETURNS
+'   A dict
+"""
 def reply(data={}):
   data['stat'] = 'ok'
   return data
 
 
-# compiles response for output
+"""
+' PURPOSE
+'   JSON serializes a given dict
+' PARAMETERS
+'   <Dict JSON>
+' RETURNS
+'   A string
+"""
 def compile(JSON):
   import json
   return json.dumps(JSON)
