@@ -1,40 +1,95 @@
 from lib import users
 from lib import api
+from lib.caps import uploader
 
 import webapp2
+
+
+
+
+
+
+
+
+class AuthRequestHandler(webapp2.RequestHandler):
+  SESSION_DOESNT_EXIST = users.sessions.SESSION_DOESNT_EXIST
+  USER_DOESNT_EXIST = users.USER_DOESNT_EXIST
+  USER_LOCKED = users.USER_LOCKED
+  HACKER_FOUND = users.sessions.HACKER_FOUND
+  SUCCESS = 'auth_router_success'
+  
+  status = None
+  sid = None
+  
+  
+  def __init__(self, *args, **kwargs):
+    super(AuthRequestHandler, self).__init__(*args, **kwargs)
+    
+    from json import loads as ParseJSON
+    
+    if self.request.method == 'GET':
+      uid = None
+      sid = None
+      ulid = None
+    else:
+      payload = ParseJSON(self.request.body)
+      uid = payload['uid'] if 'uid' in payload else None
+      sid = payload['sid'] if 'sid' in payload else None
+      ulid = payload['ulid'] if 'ulid' in payload else None
+    
+    status = users.checkSession(uid, ulid, sid)
+    
+    if  (status == self.SESSION_DOESNT_EXIST or
+         status == self.USER_DOESNT_EXIST    or
+         status == self.USER_LOCKED          or
+         status == self.HACKER_FOUND)         :
+       self.status = status
+       return
+    
+    self.status = self.SUCCESS
+    
+    if status == None:
+      return
+    
+    self.sid = status
+  
+  def hasSID(self):
+    return SID != None
+    
+    
+    
+    
+    
+  
+
+
+
 
 
 """
 ' Get requests always run through Guest permissions
 ' Throws errors 203 and 204 and those from Permissions
 """
-class APIHandler(webapp2.RequestHandler):
+class APIHandler(AuthRequestHandler):
   def route(self, *args):
-    from json import loads as ParseJSON
-    
-    payload = ParseJSON(self.request.body)
-    uid = payload['uid'] if 'uid' in payload else None
-    sid = payload['sid'] if 'sid' in payload else None
-    ulid = payload['ulid'] if 'ulid' in payload else None
-    
-    status = users.checkSession(uid, ulid, sid)
-    
-    if status == users.sessions.SESSION_DOESNT_EXIST:
+    if self.status == self.SESSION_DOESNT_EXIST:
       self.RunGuest(*args)
-    elif status == users.USER_DOESNT_EXIST:
+    elif self.status == self.USER_DOESNT_EXIST:
       self.response.out.write(api.response.throw(203, compiled=True))
-    elif status == users.USER_LOCKED:
+    elif self.status == self.USER_LOCKED:
       self.RunLockedUser(*args)
-    elif status == users.sessions.HACKER_FOUND:
+    elif self.status == self.HACKER_FOUND:
       self.response.out.write(api.response.throw(002, compiled=True))
       # TODO, stop them
-    else:
+    elif self.status == self.SUCCESS:
       self.RunAuthUser(*args, additionalPayload={
         'setsession': True,
         'session': {
-          'sid': status
+          'sid': self.sid
         }
-      } if status != None else {})
+      } if self.hasSID() else {})
+    else:
+      self.response.out.write(api.response.throw(000, compiled=True))
   
   def RunLockedUser(self, dictionary, method):
     api.delegate(self, dictionary, method, api.Permissions.LockedUser, additionalPayload={'userlocked':True})
@@ -49,6 +104,11 @@ class APIHandler(webapp2.RequestHandler):
     self.route(*args)
   def get(self, dictionary, method):
     self.RunGuest(dictionary, method)
+
+
+
+
+
 
 
 
@@ -77,6 +137,13 @@ class AdminAPIHandler(webapp2.RequestHandler):
 
 
 
+
+
+
+
+
+
+
 """
 ' Throws error 003
 """
@@ -91,8 +158,23 @@ class MainHandler(webapp2.RequestHandler):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 app = webapp2.WSGIApplication([
-                ('/api/([^/]+)/([^/]+)/?', APIHandler),
-                ('/api/admin/([^/]+)/([^/]+)/?', AdminAPIHandler),
-                ('/.*', MainHandler)
+                ('/api/([^/]+)/([^/]+)/?',         APIHandler),
+                ('/api/admin/([^/]+)/([^/]+)/?',   AdminAPIHandler),
+                ('/data/setup_upload/?',           uploader.SetupHandler),
+                ('/data/upload/?',                 uploader.UploadHandler),
+                ('/data/(.*)/?',                   uploader.DownloadHandler),
+                ('/.*',                            MainHandler)
               ], debug=True)
