@@ -212,6 +212,11 @@ window.onload = function(){
         shard.appendChild(divider);
         var stats = document.createElement('div');
         stats.setAttribute('class', 'stats');
+            stats.appendChild(document.createTextNode('Test Completed '));
+            var testcompleted = document.createElement('label');
+            testcompleted.innerHTML = '?';
+            stats.appendChild(testcompleted);
+            stats.appendChild(document.createElement('br'));
             stats.appendChild(document.createTextNode('Completed Attempts '));
             var completed = document.createElement('label');
             completed.innerHTML = '0';
@@ -294,7 +299,8 @@ window.onload = function(){
       shardsavailable: shardsavailable,
       shardsused: shardsused,
       canvas: canvas,
-      averageresponsetime: averageresponsetime
+      averageresponsetime: averageresponsetime,
+      testcompleted: testcompleted
     }
     
     iattempts.addEventListener('keypress', AllowOnlyNumbers);
@@ -335,13 +341,16 @@ window.onload = function(){
   
   
   function FormatTime(s) {
+    function chop(num){
+      return Math.round(num*10)/10;
+    }
     var ms = s % 1000;
     s = (s - ms) / 1000;
     var secs = s % 60;
     s = (s - secs) / 60;
     var mins = s % 60;
     var hrs = (s - mins) / 60;
-    return hrs + 'h : ' + mins + 'm : ' + secs + '.' + ms + 's';
+    return chop(hrs) + 'h : ' + chop(mins) + 'm : ' + chop(secs) + 's : ' + chop(ms) + 'ms';
   }     
   
   
@@ -466,6 +475,17 @@ window.onload = function(){
   
   
   function DoPost(data, postcallback){
+    if(parseInt(data.failed.innerHTML) >= 500){
+      data.completed.innerHTML = parseInt(data.completed.innerHTML)+1;
+      var total = parseInt(data.completed.innerHTML),
+          expected = parseInt(data.inputs.attempts.value);
+      if(total == expected){
+        postcallback();
+        datatestcompleted.innerHTML = 'False';
+        alert('Test Aborted Due to too Many Errors');
+      }
+      return;
+    };
     var request = new Request('/api/admin/shards/increment');
     function OnError(){
       data.failed.innerHTML = parseInt(data.failed.innerHTML)+1;
@@ -477,6 +497,7 @@ window.onload = function(){
       var total = parseInt(data.completed.innerHTML),
           expected = parseInt(data.inputs.attempts.value);
       if(total == expected){
+        data.testcompleted.innerHTML = 'True';
         postcallback();
       }
     }

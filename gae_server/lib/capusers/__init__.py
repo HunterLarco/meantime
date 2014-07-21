@@ -78,6 +78,27 @@ class CapUser(ndb.Model):
     if counter.getValue() < amount:
       return NOT_ENOUGH_PTS
     counter.add(-amount)
+  
+  
+  
+  """
+  ' PURPOSE
+  '   Creates a capsule for this user; using the user as the parent entity
+  '   for the capsule.
+  ' PARAMETERS
+  '   <BlobKey clue>
+  '   <BlobKey content>
+  '   <String clue_answer>
+  ' RETURNS
+  '   Nothing
+  """
+  def createCapsule(self, clue, content, clue_answer):
+    from ..caps import Capsule
+    cap = Capsule(parent=self.key)
+    cap.clue = clue
+    cap.content = content
+    cap.clue_answer = clue_answer
+    cap.put()
 
 
 # -------------------------------------------------------- END OF ENTITY -------------------------------------------------------- #
@@ -117,5 +138,5 @@ def create(email, password):
   status = users.create(email,password,user)
   
   if status == users.EMAIL_IS_USED:
-    user.delete()
+    user.key.delete()
     return status

@@ -144,6 +144,12 @@ class AuthUser:
       return response.reply({
         'value': user.getPointsCounter().getValue()
       })
+  class upload:
+    def geturl(self, payload):
+      from .. import caps
+      return response.reply({
+        'url': caps.uploader.getUrl()
+      })
         
 
 

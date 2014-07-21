@@ -30,7 +30,8 @@ div.button:active{
 
 
 
-input[type='text']{
+input[type='text'],
+input[type='password']{
   width:300px;
   padding:5px 7px;
   border:1px solid rgb(200,200,200);
@@ -39,13 +40,16 @@ input[type='text']{
   border-radius: 2px;
   outline:none;
 }
-input[type='text']:hover:not(:disabled):not(:focus){
+input[type='text']:hover:not(:disabled):not(:focus),
+input[type='password']:hover:not(:disabled):not(:focus){
   border:1px solid rgb(180,180,180);
 }
-input[type='text']:focus{
+input[type='text']:focus,
+input[type='password']:focus{
   border:1px solid #4285f4;
   box-shadow:0px 0px 1px #4285f4;
 }
-input[type='text']:disabled{
+input[type='text']:disabled,
+input[type='password']:disabled{
   cursor:not-allowed;
 }

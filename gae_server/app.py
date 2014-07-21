@@ -54,7 +54,7 @@ class AuthRequestHandler(webapp2.RequestHandler):
     self.sid = status
   
   def hasSID(self):
-    return SID != None
+    return self.sid != None
     
     
     
@@ -173,7 +173,6 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
                 ('/api/([^/]+)/([^/]+)/?',         APIHandler),
                 ('/api/admin/([^/]+)/([^/]+)/?',   AdminAPIHandler),
-                ('/data/setup_upload/?',           uploader.SetupHandler),
                 ('/data/upload/?',                 uploader.UploadHandler),
                 ('/data/(.*)/?',                   uploader.DownloadHandler),
                 ('/.*',                            MainHandler)

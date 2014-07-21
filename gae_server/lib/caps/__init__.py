@@ -12,9 +12,12 @@ from .. import shards
 
 
 
+
+
+
 class Capsule(ndb.Model):
-  blob_key = ndb.BlobProperty(indexed=False)
-  clue = ndb.BlobProperty(indexed=False)
+  content = ndb.BlobKeyProperty(indexed=False)
+  clue = ndb.BlobKeyProperty(indexed=False)
   clue_answer = ndb.StringProperty(indexed=False)
   
   def getAttemptsCounter(self):
@@ -24,7 +27,12 @@ class Capsule(ndb.Model):
   def getAttempts(self):
     return self.getAttemptsCounter().getValue()
 
+  def _strip(self, string):
+    import re
+    string = re.sub(r'[^\w]', '', string)
+    return string.lower()
+
   def attempt(self, guess):
     self.getAttemptsCounter().add(1)
-    return guess == self.clue_answer
+    return _strip(guess) == _strip(self.clue_answer)
     # TODO stop words
