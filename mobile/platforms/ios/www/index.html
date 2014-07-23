@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<style>
+
+
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:white;
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    margin:0px;
+    padding:0px;
+    overflow:hidden;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+
+
+div.app{
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background:rgb(230,230,230);
+}
+
+
+div.swipeFrame{
+  height:100%;
+  width:auto;
+  overflow:hidden;
+}
+div.swipeFrame div.swipe-wrap{
+  height:100%;
+}
+div.pane{
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  background:white;
+  position:relative;
+  float:left;
+}
+
+
+
+
+
+
+div.signup{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:rgb(255,255,255);
+}
+div.signup.complete{
+  display:none;
+}
+div.signup.anim{
+  -webkit-transition:opacity 500ms ease-in;
+  -webkit-transform: translate3d(0, 0, 0);
+  opacity:0;
+}
+div.signup.anim div.form{
+  bottom:-50px;
+  -webkit-transition:bottom 500ms ease-in;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+div.signup.anim div.logo{
+  top:-100px;
+  -webkit-transition:top 500ms ease-in;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+div.signup div.form{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  width:100%;
+  font-family:'lato';
+  font-weight:300;
+}
+div.signup div.button{
+  padding:18px 0px 26px 0px;
+  font-size:15px;
+  color:rgb(160,160,160);
+  text-align:center;
+  border-top:1px solid rgb(230,230,230);
+  height:20px;
+  line-height:20px;
+}
+div.signup div.button img{
+  display:none;
+}
+div.signup div.button.loading img{
+  display:inline;
+}
+div.signup div.button.loading label{
+  display:none;
+}
+div.signup input[type='text'],
+div.signup input[type='password'],
+div.signup input[type='email']{
+  padding:11px 9px;
+  border:none;
+  outline:none;
+  border-top:1px solid rgb(230,230,230);
+  width:100%;
+  box-shadow:none;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  font-size:15px;
+  -webkit-appearance: none;
+}
+div.signup div.logo{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:243px;
+  background:url('images/logo.png') no-repeat center center;
+}
+
+
+
+
+
+
+div.pane.self{
+  background:rgb(229,243,251);
+  overflow:hidden;
+}
+
+
+
+
+
+div.header{
+  height:52px;
+  position:relative;
+  line-height:52px;
+  background:rgb(255,255,255);
+}
+div.header div.text{
+  position:absolute;
+  width:100%;
+  text-align:center;
+  color:rgb(155,212,242);
+  font-size:21px;
+  font-family:'lato';
+  font-weight:300;
+}
+div.header div.lbutton{
+  float:left;
+  height:52px;
+  width:52px;
+}
+
+
+
+
+
+div.nav{
+  background:rgb(240,240,240);
+  padding:18px;
+  box-shadow:0px 2px 4px rgba(0,0,0,0.2);
+}
+
+
+
+
+
+div.gifts{
+  z-index:-1;
+  position:absolute;
+  top:108px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  padding:2px 8px;
+  -webkit-overflow-scrolling: touch;
+}
+div.gifts div.gift{
+  margin:12px 0px;
+  background:rgb(255,255,255);
+  height:68px;
+  position:relative;
+}
+div.gifts div.gift div.image{
+  height:48px;
+  width:48px;
+  margin:10px;
+  background:rgb(240,240,240);
+  float:left;
+}
+div.gifts div.gift div.text{
+  position:absolute;
+  left:68px;
+  right:0px;
+  top:0px;
+  padding:13px 0px;
+  font-family:'lato';
+  font-weight:300;
+  font-size:11px;
+  color:rgb(142,142,142);
+  overflow:hidden;
+  white-space:nowrap;
+}
+div.gifts div.gift div.text div.title{
+  font-size:15px;
+  color:rgb(0,0,0);
+  margin:3px 0px;
+}
+
+div.statusbar{
+  height:20px;
+  background:rgb(255,255,255);
+}
+
+
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<title>Giftie</title>
+<link rel="stylesheet" type="text/css" href="resources/CSS/resets.css"></link>
+<link rel='stylesheet' href='resources/CSS/lato.css'/></link>
+<script src='resources/Scripts/swipe.js'></script>
+<script src='resources/Scripts/Request.js'></script>
+<script src='resources/Scripts/fastclick.js'></script>
+<script type="text/javascript" src="cordova.js"></script>
+</head>
+<body>
+  
+  
+
+<div class='app'>
+  <div id='appbody' class='swipe swipeFrame'>
+    <div class='swipe-wrap'>
+       <div class='pane self'>
+         
+         <div class='statusbar'></div>
+         
+         <div class='header'>
+           <div class='lbutton'></div>
+           <div class='rbutton'></div>
+           <div class='text'>giftie</div>
+         </div>
+       
+         <div class='nav'></div>
+     
+         <div class='gifts'>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Laney Larco</div>
+               <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Prince Leah</div>
+               <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Richard Branson</div>
+               <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Laney Larco</div>
+               <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Prince Leah</div>
+               <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Richard Branson</div>
+               <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Laney Larco</div>
+               <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Prince Leah</div>
+               <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+             </div>
+           </div>
+           <div class='gift'>
+             <div class='image'></div>
+             <div class='text'>
+               <div class='title'>Richard Branson</div>
+               <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+             </div>
+           </div>
+         </div>
+         
+         <div class='signup' id='signup_form'>
+           <div class='logo'></div>
+           <div class='form'>
+             <input type='text' placeholder='first name'/>
+             <input type='text' placeholder='last name'/>
+             <input type='email' id='signupemail' placeholder='email address'/>
+             <input type='password' id='signuppassword' placeholder='password'/>
+             <div class='button' id='signupbutton'><label>sign up</label><img src='images/loading.gif'/></div>
+           </div>
+         </div>
+       </div>
+       <div class='pane' style='background:yellow;'></div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type='text/javascript'>
+
+
+var app = {
+  gateway: 'http://capaching.appspot.com/api/',
+  alert: function(message, title){
+    if (navigator.notification)
+      navigator.notification.alert(message, null, title, 'OK');
+    else
+      alert(title ? (title + ": " + message) : message);
+  },
+  loadElement: function(id){
+    var elem = document.getElementById(id);
+    elem.removeAttribute('id');
+    return elem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+function OnDeviceReady(){
+  FastClick.attach(document.body);
+  
+  
+  
+  
+  
+  
+  Request.loadGateway(app.gateway);
+  
+  
+  
+  
+  
+  var SignupForm = new (function(){
+    var self = this;
+    
+    var working = false;
+    
+    
+    self.onclick = OnClick;
+    
+    
+    
+    function Stop(){
+      signupbutton.setAttribute('class', 'button');
+      working = false;
+    }
+    
+    function OnSuccess(event){
+      if(event.stat == 'fail'){
+        app.alert(event.message, 'Oh No!');
+        Stop();
+        return;
+      }
+      signup_form.setAttribute('class','signup anim');
+      setTimeout(function(){
+        signup_form.setAttribute('class','signup complete');
+        InitSwipePanes();
+      }, 500);
+    }
+    
+    function OnError(message){
+      app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
+      Stop();
+    }
+    
+    function Send(event){
+      setTimeout(function(){
+        OnSuccess({stat:'ok'})
+      }, 1000);
+      
+      return;
+      var request = new Request('user/signup');
+      request.post({
+        'email': signup_email.value,
+        'password': signup_password.value
+      }, OnSuccess, OnError);
+    }
+    
+    function OnClick(){
+      if(working) return;
+      working = true;
+      signupbutton.setAttribute('class', 'button loading');
+      Send()
+    }
+    
+  })();
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  function InitSwipePanes(){
+    var appbody = app.loadElement('appbody');
+    window.mySwipe = Swipe(appbody, {
+      continuous: false,
+      startSlide: 0,
+      callback: function(index, element) {},
+      // disableScroll: true
+      // stopPropagation: true,
+      // transitionEnd: function(index, element) {}
+    });
+  }
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  var signup_email = app.loadElement('signupemail'),
+      signup_password = app.loadElement('signuppassword'),
+      signup_form = app.loadElement('signup_form');
+  
+  
+  var signupbutton = app.loadElement('signupbutton');
+  signupbutton.addEventListener('click', SignupForm.onclick);
+  
+  
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('deviceready', OnDeviceReady, false);
+window.onload = OnDeviceReady;
+</script>
+</body>
+</html>
