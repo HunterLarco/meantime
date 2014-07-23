@@ -30,23 +30,36 @@ body {
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:white;
     background-attachment:fixed;
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     font-size:12px;
     margin:0px;
     padding:0px;
     overflow:hidden;
     -ms-touch-action: manipulation;
     touch-action: manipulation;
+    font-family:'lato';
+    font-weight:300;
+}
+
+
+
+
+div.statusbar{
+  position:fixed;
+  top:0px;
+  left:0px;
+  height:20px;
+  width:100%;
+  background:rgb(255,255,255);
 }
 
 
 
 div.app{
   position:fixed;
-  top:0px;
+  top:20px;
   left:0px;
   width:100%;
-  height:100%;
+  bottom:0px;
   background:rgb(240,240,240);
 }
 
@@ -64,7 +77,7 @@ div.pane{
   height:100%;
   overflow-x:hidden;
   overflow-y:scroll;
-  background:white;
+  background:rgb(240,240,240);
   position:relative;
   float:left;
   display:none;
@@ -83,6 +96,7 @@ div.signup{
   height:100%;
   overflow:hidden;
   background:rgb(255,255,255);
+  z-index:2;
 }
 div.signup.complete{
   display:none;
@@ -92,8 +106,6 @@ div.signup div.form{
   bottom:0px;
   left:0px;
   width:100%;
-  font-family:'lato';
-  font-weight:300;
 }
 div.signup div.button{
   padding:18px 0px 26px 0px;
@@ -123,8 +135,8 @@ div.signup input[type='email']{
   width:100%;
   box-shadow:none;
   -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  border-radius: 0px;
+  -moz-border-radius:    0px;
+  border-radius:         0px;
   font-size:15px;
   -webkit-appearance: none;
 }
@@ -149,8 +161,6 @@ div.signup div.logo div.text{
   text-align:center;
   color:rgb(155,212,242);
   font-size:21px;
-  font-family:'lato';
-  font-weight:300;
   width:100%;
   left:0px;
   top:50%;
@@ -164,20 +174,32 @@ div.signup div.logo div.text{
 
 
 div.pane.self{
-  background:rgb(240,240,240);
   overflow:hidden;
 }
 
 
 
 
-
+div.headerbackground{
+  opacity:0.96;
+  background:rgb(255,255,255);
+  height:52px;
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  z-index:0;
+}
 div.header{
   height:52px;
-  position:relative;
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
   line-height:52px;
-  background:rgb(255,255,255);
   box-shadow:0px 1px 3px rgb(240,240,240);
+  border-bottom:1px solid rgb(240,240,240);
+  z-index:1;
 }
 div.header div.text{
   position:absolute;
@@ -186,8 +208,6 @@ div.header div.text{
   text-align:center;
   color:rgb(155,212,242);
   font-size:21px;
-  font-family:'lato';
-  font-weight:300;
 }
 div.header div.lbutton{
   float:left;
@@ -212,18 +232,26 @@ div.header div.rbutton{
 
 
 
+.scrollable{
+  -webkit-overflow-scrolling: touch;
+}
+
+
+
 
 div.gifts{
   z-index:-1;
   position:absolute;
-  top:73px;
+  top:0px;
   left:0px;
   right:0px;
   bottom:0px;
   overflow-x:hidden;
   overflow-y:scroll;
   padding:2px 8px;
-  -webkit-overflow-scrolling: touch;
+}
+div.gifts div.filler{
+  height:52px;
 }
 div.gifts div.gift{
   margin:12px 0px;
@@ -260,8 +288,6 @@ div.gifts div.gift div.text{
   right:0px;
   top:0px;
   padding:13px 0px;
-  font-family:'lato';
-  font-weight:300;
   font-size:11px;
   color:rgb(142,142,142);
   overflow:hidden;
@@ -273,10 +299,7 @@ div.gifts div.gift div.text div.title{
   margin:3px 0px;
 }
 
-div.statusbar{
-  height:20px;
-  background:rgb(255,255,255);
-}
+
 
 
 
@@ -299,10 +322,59 @@ div.pane.initial{
 
 div.buttonshaker{
   position:absolute;
+  top:0px;
+  left:0px;
   width:100%;
   height:100%;
 }
 
+
+
+
+
+
+
+
+
+
+div.settings div.picture img{
+  -webkit-border-radius: 50%;
+  -moz-border-radius:    50%;
+  border-radius:         50%;
+  border:10px solid rgb(255,255,255);
+  width:110px;
+  height:110px;
+  display:block;
+  margin:40px auto 30px auto;
+}
+div.settings div.picture div{
+  text-align:center;
+  margin-top:20px;
+  font-size:15px;
+  margin-bottom:40px;
+}
+div.settings div.bar{
+  height:1px;
+  background:rgb(220,220,220);
+}
+div.settings div.item{
+  color:rgb(152,211,243);
+  padding:14px 20px;
+  font-size:16px;
+  background:rgb(255,255,255);
+  border-bottom:1px solid rgb(220,220,220);
+  line-height:20px;
+}
+div.settings div.item *{
+  vertical-align:middle;
+}
+div.settings div.item img{
+  height:23px;
+  margin-right:20px;
+}
+div.settings div.filler{
+  height:40px;
+}
 
 </style>
 <html>
@@ -323,6 +395,9 @@ div.buttonshaker{
 </head>
 <body>
 
+
+
+<div class='statusbar'></div>
   
 
 <div class='app'>
@@ -330,24 +405,31 @@ div.buttonshaker{
     <div class='swipe-wrap'>
       
       
-      <div class='pane settings'></div>
+      <div class='pane settings scrollable'>
+        <div class='picture'>
+          <img src='https://avatars3.githubusercontent.com/u/2695807?s=460'/>
+          <div>Hunter Larco</div>
+        </div>
+        <div class='bar'></div>
+        <div class='item'><img src='images/gear.png'/><label>App Settings</label></div>
+        <div class='item'><img src='images/question.png'/><label>Support</label></div>
+        <div class='item'><img src='images/mail.png'/><label>Contact Meantime</label></div>
+        <div class='item'><img src='images/share.png'/><label>Share Meantime</label></div>
+        <div class='item'><img src='images/arrow.png'/><label>Logout</label></div>
+        <div class='filler'></div>
+      </div>
       
       
       <div class='pane self initial'>
-        
         <div class='buttonshaker' id='buttonshaker'>
-         
-          <div class='statusbar'></div>
-         
           <div class='header'>
             <div class='lbutton' id='settingsbutton'></div>
             <div class='rbutton' id='plusbutton'></div>
             <div class='text'>giftie</div>
           </div>
-       
-          <div class='nav'></div>
-     
-          <div class='gifts'>
+          <div class='headerbackground'></div>
+          <div class='gifts scrollable'>
+            <div class='filler'></div>
             <div class='gift read sent'>
               <div class='image'></div>
               <div class='text'>
@@ -412,9 +494,6 @@ div.buttonshaker{
               </div>
             </div>
           </div>
-         
-         
-         
           <div class='signup' id='signup_form'>
             <div class='logo'>
               <div class='image'></div>
@@ -429,8 +508,6 @@ div.buttonshaker{
             </div>
           </div>
         </div>
-        
-        
       </div>
     
        
@@ -497,7 +574,7 @@ var SignupForm = new (function(){
   
   var working = false;
   
-  self.onclick = OnClick;
+  self.submit = Submit;
   
   function Stop(){
     signupbutton.setAttribute('class', 'button');
@@ -532,7 +609,7 @@ var SignupForm = new (function(){
     }, OnSuccess, OnError);
   }
   
-  function OnClick(){
+  function Submit(){
     if(working) return;
     working = true;
     signupbutton.setAttribute('class', 'button loading');
@@ -606,16 +683,16 @@ function OnDeviceReady(){
   
   
   // -------------- bind html buttons -------------- //
-  signupbutton.addEventListener('click', SignupForm.onclick);
+  signupbutton.addEventListener('click', SignupForm.submit);
 
   settingsbutton.addEventListener('click', function(){
-    Transition.Bounce(600, function(percent){
+    Transition.Bounce(500, function(percent){
       buttonshaker.style.left = Math.round(10*percent*34)/10+'px';
     });
   });
 
   plusbutton.addEventListener('click', function(){
-    Transition.Bounce(600, function(percent){
+    Transition.Bounce(500, function(percent){
       buttonshaker.style.left = -Math.round(10*percent*34)/10+'px';
     });
   });
