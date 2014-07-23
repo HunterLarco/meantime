@@ -47,7 +47,7 @@ div.app{
   left:0px;
   width:100%;
   height:100%;
-  background:rgb(230,230,230);
+  background:rgb(240,240,240);
 }
 
 
@@ -67,6 +67,7 @@ div.pane{
   background:white;
   position:relative;
   float:left;
+  display:none;
 }
 
 
@@ -85,21 +86,6 @@ div.signup{
 }
 div.signup.complete{
   display:none;
-}
-div.signup.anim{
-  -webkit-transition:opacity 500ms ease-in;
-  -webkit-transform: translate3d(0, 0, 0);
-  opacity:0;
-}
-div.signup.anim div.form{
-  bottom:-50px;
-  -webkit-transition:bottom 500ms ease-in;
-  -webkit-transform: translate3d(0, 0, 0);
-}
-div.signup.anim div.logo{
-  top:-100px;
-  -webkit-transition:top 500ms ease-in;
-  -webkit-transform: translate3d(0, 0, 0);
 }
 div.signup div.form{
   position:absolute;
@@ -148,7 +134,28 @@ div.signup div.logo{
   left:0px;
   right:0px;
   bottom:243px;
-  background:url('images/logo.png') no-repeat center center;
+}
+div.signup div.logo div.image{
+  position:absolute;
+  width:90px;
+  height:90px;
+  background:url('images/present.png') no-repeat;
+  background-size:90px 90px;
+  top:50%;
+  left:50%;
+  margin:-57px 0px 0px -45px;
+}
+div.signup div.logo div.text{
+  text-align:center;
+  color:rgb(155,212,242);
+  font-size:21px;
+  font-family:'lato';
+  font-weight:300;
+  width:100%;
+  left:0px;
+  top:50%;
+  margin-top:53px;
+  position:absolute;
 }
 
 
@@ -157,7 +164,7 @@ div.signup div.logo{
 
 
 div.pane.self{
-  background:rgb(229,243,251);
+  background:rgb(240,240,240);
   overflow:hidden;
 }
 
@@ -170,10 +177,12 @@ div.header{
   position:relative;
   line-height:52px;
   background:rgb(255,255,255);
+  box-shadow:0px 1px 3px rgb(240,240,240);
 }
 div.header div.text{
   position:absolute;
-  width:100%;
+  left:74px;
+  right:74px;
   text-align:center;
   color:rgb(155,212,242);
   font-size:21px;
@@ -182,19 +191,23 @@ div.header div.text{
 }
 div.header div.lbutton{
   float:left;
-  height:52px;
-  width:52px;
+  height:40px;
+  width:40px;
+  margin:6px;
+  background:url(images/settings.png) no-repeat;
+  background-size:40px 40px;
+  margin-left: 22px;
+}
+div.header div.rbutton{
+  float:right;
+  height:40px;
+  width:40px;
+  margin:6px;
+  background:url(images/plus.png) no-repeat;
+  background-size:40px 40px;
+  margin-right: 22px;
 }
 
-
-
-
-
-div.nav{
-  background:rgb(240,240,240);
-  padding:18px;
-  box-shadow:0px 2px 4px rgba(0,0,0,0.2);
-}
 
 
 
@@ -203,7 +216,7 @@ div.nav{
 div.gifts{
   z-index:-1;
   position:absolute;
-  top:108px;
+  top:73px;
   left:0px;
   right:0px;
   bottom:0px;
@@ -219,12 +232,28 @@ div.gifts div.gift{
   position:relative;
 }
 div.gifts div.gift div.image{
-  height:48px;
-  width:48px;
-  margin:10px;
-  background:rgb(240,240,240);
+  height:40px;
+  width:40px;
+  margin:14px;
+  background:url(images/present-unread.png) no-repeat;
+  background-size:40px 40px;
   float:left;
+  position:relative;
 }
+div.gifts div.gift.read div.image{
+  background-image: url(images/present-read.png);
+}
+div.gifts div.gift.sent div.image:after{
+  content:'';
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:40px;
+  height:40px;
+  background:url(images/arrow_skin.png) no-repeat;
+  background-size:40px 40px;
+}
+
 div.gifts div.gift div.text{
   position:absolute;
   left:68px;
@@ -250,6 +279,31 @@ div.statusbar{
 }
 
 
+
+
+
+
+
+
+div.app.signedin div.pane{
+  display:block;
+}
+div.pane.initial{
+  display:block;
+}
+
+
+
+
+
+
+div.buttonshaker{
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+
+
 </style>
 <html>
 <head>
@@ -264,105 +318,125 @@ div.statusbar{
 <script src='resources/Scripts/swipe.js'></script>
 <script src='resources/Scripts/Request.js'></script>
 <script src='resources/Scripts/fastclick.js'></script>
+<script src='resources/Scripts/Transition.js'></script>
 <script type="text/javascript" src="cordova.js"></script>
 </head>
 <body>
-  
+
   
 
 <div class='app'>
   <div id='appbody' class='swipe swipeFrame'>
     <div class='swipe-wrap'>
-       <div class='pane self'>
+      
+      
+      <div class='pane settings'></div>
+      
+      
+      <div class='pane self initial'>
+        
+        <div class='buttonshaker' id='buttonshaker'>
          
-         <div class='statusbar'></div>
+          <div class='statusbar'></div>
          
-         <div class='header'>
-           <div class='lbutton'></div>
-           <div class='rbutton'></div>
-           <div class='text'>giftie</div>
-         </div>
+          <div class='header'>
+            <div class='lbutton' id='settingsbutton'></div>
+            <div class='rbutton' id='plusbutton'></div>
+            <div class='text'>giftie</div>
+          </div>
        
-         <div class='nav'></div>
+          <div class='nav'></div>
      
-         <div class='gifts'>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Laney Larco</div>
-               <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Prince Leah</div>
-               <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Richard Branson</div>
-               <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Laney Larco</div>
-               <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Prince Leah</div>
-               <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Richard Branson</div>
-               <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Laney Larco</div>
-               <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Prince Leah</div>
-               <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-             </div>
-           </div>
-           <div class='gift'>
-             <div class='image'></div>
-             <div class='text'>
-               <div class='title'>Richard Branson</div>
-               <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-             </div>
-           </div>
-         </div>
+          <div class='gifts'>
+            <div class='gift read sent'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Laney Larco</div>
+                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+              </div>
+            </div>
+            <div class='gift read'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Prince Leah</div>
+                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Richard Branson</div>
+                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Laney Larco</div>
+                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+              </div>
+            </div>
+            <div class='gift sent'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Prince Leah</div>
+                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+              </div>
+            </div>
+            <div class='gift sent'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Richard Branson</div>
+                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Laney Larco</div>
+                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Prince Leah</div>
+                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Richard Branson</div>
+                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+              </div>
+            </div>
+          </div>
          
-         <div class='signup' id='signup_form'>
-           <div class='logo'></div>
-           <div class='form'>
-             <input type='text' placeholder='first name'/>
-             <input type='text' placeholder='last name'/>
-             <input type='email' id='signupemail' placeholder='email address'/>
-             <input type='password' id='signuppassword' placeholder='password'/>
-             <div class='button' id='signupbutton'><label>sign up</label><img src='images/loading.gif'/></div>
-           </div>
-         </div>
-       </div>
-       <div class='pane' style='background:yellow;'></div>
+         
+         
+          <div class='signup' id='signup_form'>
+            <div class='logo'>
+              <div class='image'></div>
+              <div class='text'>giftie</div>
+            </div>
+            <div class='form'>
+              <input type='text' placeholder='first name'/>
+              <input type='text' placeholder='last name'/>
+              <input type='email' id='signupemail' placeholder='email address'/>
+              <input type='password' id='signuppassword' placeholder='password'/>
+              <div class='button' id='signupbutton'><label>sign up</label><img src='images/loading.gif'/></div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div>
+    
+       
+      <div class='pane send'></div>
+    
+    
     </div>
   </div>
 </div>
@@ -384,6 +458,22 @@ var app = {
     var elem = document.getElementById(id);
     elem.removeAttribute('id');
     return elem;
+  },
+  setupLibraries: function(){
+    FastClick.attach(document.body);
+    Request.loadGateway(app.gateway);
+  },
+  loadElements: function(){
+    var elements = [
+      'signupemail',
+      'signuppassword',
+      'signupbutton',
+      'settingsbutton',
+      'plusbutton',
+      'buttonshaker'
+    ];
+    for(var i,variable; variable=elements[i++];)
+      window[variable] = app.loadElement(variable);
   }
 }
 
@@ -399,101 +489,57 @@ var app = {
 
 
 
-function OnDeviceReady(){
-  FastClick.attach(document.body);
+
+
+
+var SignupForm = new (function(){
+  var self = this;
   
+  var working = false;
   
+  self.onclick = OnClick;
   
-  
-  
-  
-  Request.loadGateway(app.gateway);
-  
-  
-  
-  
-  
-  var SignupForm = new (function(){
-    var self = this;
-    
-    var working = false;
-    
-    
-    self.onclick = OnClick;
-    
-    
-    
-    function Stop(){
-      signupbutton.setAttribute('class', 'button');
-      working = false;
-    }
-    
-    function OnSuccess(event){
-      if(event.stat == 'fail'){
-        app.alert(event.message, 'Oh No!');
-        Stop();
-        return;
-      }
-      signup_form.setAttribute('class','signup anim');
-      setTimeout(function(){
-        signup_form.setAttribute('class','signup complete');
-        InitSwipePanes();
-      }, 500);
-    }
-    
-    function OnError(message){
-      app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
-      Stop();
-    }
-    
-    function Send(event){
-      setTimeout(function(){
-        OnSuccess({stat:'ok'})
-      }, 1000);
-      
-      return;
-      var request = new Request('user/signup');
-      request.post({
-        'email': signup_email.value,
-        'password': signup_password.value
-      }, OnSuccess, OnError);
-    }
-    
-    function OnClick(){
-      if(working) return;
-      working = true;
-      signupbutton.setAttribute('class', 'button loading');
-      Send()
-    }
-    
-  })();
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  function InitSwipePanes(){
-    var appbody = app.loadElement('appbody');
-    window.mySwipe = Swipe(appbody, {
-      continuous: false,
-      startSlide: 0,
-      callback: function(index, element) {},
-      // disableScroll: true
-      // stopPropagation: true,
-      // transitionEnd: function(index, element) {}
-    });
+  function Stop(){
+    signupbutton.setAttribute('class', 'button');
+    working = false;
   }
-
-
   
+  function OnSuccess(event){
+    if(event.stat == 'fail'){
+      app.alert(event.message, 'Oh No!');
+      Stop();
+      return;
+    }
+    FadeSignup();
+    InitSwipePanes();
+  }
+  
+  function OnError(message){
+    app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
+    Stop();
+  }
+  
+  function Send(event){
+    setTimeout(function(){
+      OnSuccess({stat:'ok'})
+    }, 1000);
+    
+    return;
+    var request = new Request('user/signup');
+    request.post({
+      'email': signupemail.value,
+      'password': signuppassword.value
+    }, OnSuccess, OnError);
+  }
+  
+  function OnClick(){
+    if(working) return;
+    working = true;
+    signupbutton.setAttribute('class', 'button loading');
+    Send()
+  }
+  
+})();
 
 
 
@@ -510,20 +556,69 @@ function OnDeviceReady(){
 
 
 
+
+function InitSwipePanes(){
+  var appbody = app.loadElement('appbody');
+  appbody.parentElement.setAttribute('class', 'app signedin');
+  window.mySwipe = Swipe(appbody, {
+    continuous: false,
+    startSlide: 1,
+    callback: function(index, element) {}
+    // disableScroll: true
+    // stopPropagation: true,
+    // transitionEnd: function(index, element) {}
+  });
+}
+
+
+
+function FadeSignup(){
+  var signup_form = app.loadElement('signup_form')
+  Transition.EaseInOut(250, function(percent){
+    signup_form.style.opacity = 1-percent;
+  }, function(){
+    signup_form.style.display = 'none';
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function OnDeviceReady(){
+  // -------------- load libraries and important HTML elements -------------- //
+  app.setupLibraries();
+  app.loadElements();
   
   
-  
-  
-  
-  var signup_email = app.loadElement('signupemail'),
-      signup_password = app.loadElement('signuppassword'),
-      signup_form = app.loadElement('signup_form');
-  
-  
-  var signupbutton = app.loadElement('signupbutton');
+  // -------------- bind html buttons -------------- //
   signupbutton.addEventListener('click', SignupForm.onclick);
-  
-  
+
+  settingsbutton.addEventListener('click', function(){
+    Transition.Bounce(600, function(percent){
+      buttonshaker.style.left = Math.round(10*percent*34)/10+'px';
+    });
+  });
+
+  plusbutton.addEventListener('click', function(){
+    Transition.Bounce(600, function(percent){
+      buttonshaker.style.left = -Math.round(10*percent*34)/10+'px';
+    });
+  });
   
 }
 
