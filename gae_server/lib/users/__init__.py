@@ -207,9 +207,13 @@ def create(email, password, entity=None):
   user.locked = False
   user.entity_key = entity.key
   user.put()
+    
+  cookieData = sessions.create(user.UID)
   
   return dict(
-    UID = user.UID
+    uid = cookieData['UID'],
+    ulid = cookieData['ULID'],
+    sid = cookieData['SID']
   )
 
 

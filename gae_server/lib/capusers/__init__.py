@@ -126,7 +126,7 @@ def login(email, password):
 ' ERRORS
 '   from ../users/__init__.py (EMAIL_IS_USED)
 ' RETURNS
-'   Nothing upon success
+'   uid, sid, and ulid upon successful creation (auto logs in basically)
 ' PUTS
 '   2 - to create the CapUser
 '     - to delete the CapUser if the email is used
@@ -140,3 +140,5 @@ def create(email, password):
   if status == users.EMAIL_IS_USED:
     user.key.delete()
     return status
+  
+  return status

@@ -180,26 +180,13 @@ div.pane.self{
 
 
 
-div.headerbackground{
-  opacity:0.96;
-  background:rgb(255,255,255);
-  height:52px;
-  position:absolute;
-  top:0px;
-  left:0px;
-  width:100%;
-  z-index:0;
-}
 div.header{
   height:52px;
-  position:absolute;
-  top:0px;
-  left:0px;
-  width:100%;
   line-height:52px;
   box-shadow:0px 1px 3px rgb(240,240,240);
   border-bottom:1px solid rgb(240,240,240);
   z-index:1;
+  background:rgba(255,255,255,0.95);
 }
 div.header div.text{
   position:absolute;
@@ -373,7 +360,32 @@ div.settings div.item img{
   margin-right:20px;
 }
 div.settings div.filler{
-  height:40px;
+  height:23px;
+}
+
+
+
+
+
+
+
+
+
+
+div.capture div.buttons{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  width:100%;
+  height:200px;
+  background:rgb(255,255,255);
+}
+div.capture div.camera{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  bottom:200px;
 }
 
 </style>
@@ -511,7 +523,12 @@ div.settings div.filler{
       </div>
     
        
-      <div class='pane send'></div>
+      <div class='pane capture'>
+        <div class='camera'>
+          <img src='' id='photoImg'/>
+        </div>
+        <div class='buttons'></div>
+      </div>
     
     
     </div>
@@ -520,13 +537,15 @@ div.settings div.filler{
 
 
 
+
+
 <script type='text/javascript'>
 
 
 var app = {
-  gateway: 'http://capaching.appspot.com/api/',
+  gateway: 'http://192.168.1.15:8092/api/',
   alert: function(message, title){
-    if (navigator.notification)
+    if (!!navigator.notification)
       navigator.notification.alert(message, null, title, 'OK');
     else
       alert(title ? (title + ": " + message) : message);
@@ -582,26 +601,24 @@ var SignupForm = new (function(){
   }
   
   function OnSuccess(event){
-    if(event.stat == 'fail'){
-      app.alert(event.message, 'Oh No!');
-      Stop();
-      return;
-    }
     FadeSignup();
     InitSwipePanes();
   }
   
-  function OnError(message){
-    app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
+  function OnError(event){
+    if(event.code == 200)
+      app.alert('Your email address is already in use')
+    else
+      app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
     Stop();
   }
   
   function Send(event){
-    setTimeout(function(){
-      OnSuccess({stat:'ok'})
-    }, 1000);
-    
-    return;
+    if(signupemail.value.length == 0 || signuppassword.value.length == 0){
+       app.alert('Please fill out all fields', 'Oh No!');
+       Stop();
+       return;
+     }
     var request = new Request('user/signup');
     request.post({
       'email': signupemail.value,
@@ -637,7 +654,7 @@ var SignupForm = new (function(){
 function InitSwipePanes(){
   var appbody = app.loadElement('appbody');
   appbody.parentElement.setAttribute('class', 'app signedin');
-  window.mySwipe = Swipe(appbody, {
+  window.swipeObject = Swipe(appbody, {
     continuous: false,
     startSlide: 1,
     callback: function(index, element) {}
@@ -682,6 +699,12 @@ function OnDeviceReady(){
   app.loadElements();
   
   
+  if(Request.hasSession()){
+    signup_form.style.display = 'none';
+    InitSwipePanes();
+  }
+  
+  
   // -------------- bind html buttons -------------- //
   signupbutton.addEventListener('click', SignupForm.submit);
 
@@ -710,9 +733,17 @@ function OnDeviceReady(){
 
 
 
-
+// phone
 document.addEventListener('deviceready', OnDeviceReady, false);
+// computer (development assisting functions)
 window.onload = OnDeviceReady;
+document.addEventListener('keyup', function(event){
+  if(!window.swipeObject) return;
+  if(event.keyCode == 39)
+    swipeObject.next();
+  else if(event.keyCode == 37)
+    swipeObject.prev();
+}, false);
 </script>
 </body>
 </html>

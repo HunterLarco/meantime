@@ -32,10 +32,15 @@ class AuthRequestHandler(webapp2.RequestHandler):
       sid = None
       ulid = None
     else:
-      payload = ParseJSON(self.request.body)
-      uid = payload['uid'] if 'uid' in payload else None
-      sid = payload['sid'] if 'sid' in payload else None
-      ulid = payload['ulid'] if 'ulid' in payload else None
+      try:
+        payload = ParseJSON(self.request.body)
+        uid = payload['uid'] if 'uid' in payload else None
+        sid = payload['sid'] if 'sid' in payload else None
+        ulid = payload['ulid'] if 'ulid' in payload else None
+      except:
+        uid = None
+        ulid = None
+        sid = None
     
     status = users.checkSession(uid, ulid, sid)
     
@@ -95,14 +100,19 @@ class APIHandler(AuthRequestHandler):
     api.delegate(self, dictionary, method, api.Permissions.LockedUser, additionalPayload={'userlocked':True})
   
   def RunGuest(self, dictionary, method):
+    
     api.delegate(self, dictionary, method, api.Permissions.Guest)
 
   def RunAuthUser(self, dictionary, method, additionalPayload={}):
     api.delegate(self, dictionary, method, api.Permissions.AuthUser, additionalPayload=additionalPayload)
       
   def post(self, *args):
+    self.response.headers['Access-Control-Allow-Origin'] = '*'
+    self.response.headers['Access-Control-Allow-Methods'] = 'PUT'
     self.route(*args)
   def get(self, dictionary, method):
+    self.response.headers['Access-Control-Allow-Origin'] = '*'
+    self.response.headers['Access-Control-Allow-Methods'] = 'PUT'
     self.RunGuest(dictionary, method)
 
 
@@ -155,11 +165,6 @@ class MainHandler(webapp2.RequestHandler):
     self.run()
   def post(self):
     self.run()
-
-
-
-
-
 
 
 

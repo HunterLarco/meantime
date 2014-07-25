@@ -90,6 +90,10 @@ class Guest:
       )
       if status == users.EMAIL_IS_USED:
         return response.throw(200)
+      return response.reply({
+        'setsession': True,
+        'session': status
+      })
   
   
     @require('email', 'password')
