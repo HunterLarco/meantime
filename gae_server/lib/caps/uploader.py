@@ -28,13 +28,12 @@ class DownloadHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
   def post(self):
-    clue_file = self.get_uploads('clue')[0]
-    content_file = self.get_uploads('content')[0]
+    content_file = self.get_uploads()[0]
     
     from .. import users
     user = users.get(self.request.get('uid'))
     
-    user.createCapsule(clue_file.key(), content_file.key(), self.request.get('clueanswer'))
+    user.createCapsule(content_file.key())
     
     from ..api import response
     self.response.headers['Content-Type'] = "application/javascript"

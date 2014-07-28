@@ -92,12 +92,10 @@ class CapUser(ndb.Model):
   ' RETURNS
   '   Nothing
   """
-  def createCapsule(self, clue, content, clue_answer):
+  def createCapsule(self, content):
     from ..caps import Capsule
     cap = Capsule(parent=self.key)
-    cap.clue = clue
     cap.content = content
-    cap.clue_answer = clue_answer
     cap.put()
 
 

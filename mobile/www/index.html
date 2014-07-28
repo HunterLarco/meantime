@@ -138,6 +138,7 @@ div.signup div.logo div.text{
   top:50%;
   margin-top:53px;
   position:absolute;
+  font-family:'secretcode';
 }
 
 
@@ -159,6 +160,7 @@ div.header{
   border-bottom:1px solid rgb(240,240,240);
   z-index:1;
   background:rgba(255,255,255,0.95);
+  font-family:'secretcode';
 }
 div.header div.text{
   position:absolute;
@@ -451,9 +453,10 @@ div.capture div.options div.frame{
 <meta name="msapplication-tap-highlight" content="no" />
 <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
 <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-<title>Esconda</title>
+<title>Sealed</title>
 <link rel="stylesheet" type="text/css" href="resources/CSS/resets.css"></link>
 <link rel='stylesheet' href='resources/CSS/lato.css'/></link>
+<link rel='stylesheet' href='resources/CSS/secretcode.css'/></link>
 <script src='resources/Scripts/swipe.js'></script>
 <script src='resources/Scripts/Request.js'></script>
 <script src='resources/Scripts/fastclick.js'></script>
@@ -492,7 +495,7 @@ div.capture div.options div.frame{
           <div class='header'>
             <div class='lbutton' id='settingsbutton'></div>
             <div class='rbutton' id='plusbutton'></div>
-            <div class='text'>esconda</div>
+            <div class='text'>sealed</div>
           </div>
           <div class='headerbackground'></div>
           <div class='gifts scrollable'>
@@ -564,7 +567,7 @@ div.capture div.options div.frame{
           <div class='signup' id='signup_form'>
             <div class='logo'>
               <div class='image'></div>
-              <div class='text'>esconda</div>
+              <div class='text'>sealed</div>
             </div>
             <div class='form'>
               <input type='text' placeholder='first name'/>
@@ -608,7 +611,7 @@ div.capture div.options div.frame{
 
 
 var app = {
-  gateway: 'http://192.168.1.16:8092/api/',
+  gateway: 'http://192.168.1.19:8092/api/',
   alert: function(message, title){
     if (!!navigator.notification)
       navigator.notification.alert(message, null, title, 'OK');
@@ -683,10 +686,10 @@ var SignupForm = new (function(){
   }
   
   function Send(event){
-    
+    /*
     setTimeout(OnSuccess, 500);
     return;
-    
+    */
     if(signupemail.value.length == 0 || signuppassword.value.length == 0){
        app.alert('Please fill out all fields', 'Oh No!');
        Stop();
@@ -793,12 +796,74 @@ function OnDeviceReady(){
     });
   });
   
+  
+  
+  
+  
+  
+  
+  
+  
+  function CameraSuccess(mediaFiles){
+    var i, len;
+    for (i = 0, len = mediaFiles.length; i < len; i += 1)
+      uploadFile(mediaFiles[i]);
+  }
+  function CameraError(){
+    app.alert('An error occured during capture');
+  }
+  function uploadFile(mediaFile){
+    
+    function RecievedUploadURL(event){
+      var ft = new FileTransfer(),
+          path = mediaFile.fullPath,
+          name = mediaFile.name;
+      ft.upload(path,
+        event.url,
+        function(event) {
+          app.alert('success')
+          console.log('Upload success: ' + result.responseCode);
+          console.log(result.bytesSent + ' bytes sent');
+        },
+        function(event) {
+          app.alert('error')
+          console.log('Error uploading file ' + path + ': ' + error.code);
+        },
+        {
+          fileName: name,
+          params: {
+            'uid': Request.getUID()
+          }
+        }
+      );  
+    }
+    function URLError(event){
+      app.alert(event.message, 'Oh Uh!');
+    }
+    
+    var request = new Request('upload/geturl')
+    request.post({}, RecievedUploadURL, URLError); 
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   var running = false, firstTime = true;
   recordbutton.parentElement.addEventListener('click', function(){
     if(firstTime){
       Transition.EaseInOut(300, function(percent){
         recordbutton.style.margin = percent*30+'px';
         recordbutton.style.width = recordbutton.style.height = (100-percent*60)+'px';
+      }, function(){
+        navigator.device.capture.captureVideo(CameraSuccess, CameraError, {limit:1});
       });
       firstTime = false;
     }else if(running){

@@ -11,7 +11,7 @@
   
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="webviewbounce" value="false"/>
-  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="AutoHideSplashScreen" value="true" />
   
   
   <preference name="permissions" value="none" />

@@ -17,8 +17,6 @@ from .. import shards
 
 class Capsule(ndb.Model):
   content = ndb.BlobKeyProperty(indexed=False)
-  clue = ndb.BlobKeyProperty(indexed=False)
-  clue_answer = ndb.StringProperty(indexed=False)
   
   def getAttemptsCounter(self):
     return shards.getOrCreate(str(self.key),

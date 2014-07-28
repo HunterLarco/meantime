@@ -138,6 +138,10 @@
     return !!uid && !!sid && !!ulid;
   }
   
+  Request.getUID = function(){
+    return uid;
+  }
+  
   
   
   
