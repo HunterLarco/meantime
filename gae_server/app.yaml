@@ -13,6 +13,9 @@ handlers:
 - url: /resources
   static_dir: resources
 
+- url: /tests
+  static_dir: tests
+
 - url: /admin/([^/]+)
   static_files: admin_tools/\1.html
   upload: admin_tools/([^/]+).html

@@ -119,15 +119,24 @@ div.signup div.logo{
   right:0px;
   bottom:243px;
 }
-div.signup div.logo div.image{
+div.signup div.logo canvas.image{
   position:absolute;
   width:90px;
   height:90px;
-  background:url('images/logo.png') no-repeat;
-  background-size:90px 90px;
   top:50%;
   left:50%;
   margin:-57px 0px 0px -45px;
+}
+div.signup div.logo div.image{
+  position:absolute;
+  background:url(images/empty.png) no-repeat;
+  background-size:90px 90px;
+  width:90px;
+  height:90px;
+  top:50%;
+  left:50%;
+  margin:-57px 0px 0px -45px;
+  display:none;
 }
 div.signup div.logo div.text{
   text-align:center;
@@ -138,6 +147,7 @@ div.signup div.logo div.text{
   top:50%;
   margin-top:53px;
   position:absolute;
+  font-family:'secretcode';
 }
 
 
@@ -159,6 +169,7 @@ div.header{
   border-bottom:1px solid rgb(240,240,240);
   z-index:1;
   background:rgba(255,255,255,0.95);
+  font-family:'secretcode';
 }
 div.header div.text{
   position:absolute;
@@ -186,6 +197,7 @@ div.header div.rbutton{
   background-size:40px 40px;
   margin-right: 22px;
 }
+
 
 
 
@@ -443,6 +455,190 @@ div.capture div.options div.frame{
 }
 
 
+
+div.captureoptions{
+  background:rgb(255,255,255);
+}
+div.captureoptions div.header{
+  background:rgb(242,99,90);
+}
+div.captureoptions div.titlebaroverride{
+  background:rgb(242,99,90);
+  height:20px;
+  left:0px;
+  right:0px;
+  top:0px;
+  position:fixed;
+}
+div.captureoptions div.bottom{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  width:100%;
+  border-top:1px solid rgb(220,220,220);
+}
+div.captureoptions div.bottom div.continue{
+  height:58px;
+  border-top:1px solid rgb(240,240,240);
+}
+div.captureoptions div.bottom div.continue div{
+  float:right;
+  height:40px;
+  width:40px;
+  margin:9px;
+  background:url(images/forward.png) no-repeat;
+  background-size:40px 40px;
+  margin-right: 4px;
+}
+div.header div.backbutton{
+  float:left;
+  height:40px;
+  width:40px;
+  margin:6px;
+  background:url(images/back.png) no-repeat;
+  background-size:40px 40px;
+  margin-left: 10px;
+}
+div.captureoptions div.bottom div.option:after,
+div.captureoptions div.bottom div.option:before{
+  display:none;
+}
+div.captureoptions div.bottom div.option div.text{
+  color:rgb(180,180,180);
+}
+div.captureoptions div.bottom div.option{
+  margin-right:10px;
+}
+div.captureoptions div.option{
+  margin:0px 0px 0px 10px;
+  position:relative;
+  z-index:0;
+}
+div.captureoptions div.option:last-child:after{
+  content:'';
+  position:absolute;
+  height:1px;
+  background:rgb(240,240,240);
+  left:0px;
+  bottom:0px;
+  right:40px;
+}
+div.captureoptions div.option:before{
+  content:'';
+  position:absolute;
+  height:1px;
+  background:rgb(240,240,240);
+  left:0px;
+  top:0px;
+  right:40px;
+}
+div.captureoptions div.option div.text{
+  position:absolute;
+  top:0px;
+  left:10px;
+  right:40px;
+  bottom:0px;
+  line-height:30px;
+  font-size:14px;
+  color:rgb(51,51,51);
+  white-space:nowrap;
+}
+div.captureoptions div.option div.checkbox{
+  height:30px;
+  width:30px;
+  float:right;
+  display:inline-block;
+  vertical-align:top;
+}
+div.captureoptions div.option div.checkbox input{
+  float:left;
+  opacity:0;
+  width:100%;
+  height:100%;
+  margin:0px;
+  padding:0px;
+}
+div.captureoptions div.option div.checkbox div.highlight{
+  margin:5px;
+  height:20px;
+  width:20px;
+  border:1px solid rgb(220,220,220);
+  -webkit-border-radius: 2px;
+  -moz-border-radius:    2px;
+  border-radius:         2px;
+}
+div.captureoptions div.option div.checkbox div.background{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:40px;
+  bottom:0px;
+  z-index:-1;
+}
+div.captureoptions div.option div.checkbox input:checked~div.background{
+  background:rgb(240,240,240);
+}
+div.captureoptions div.option div.checkbox input:checked~div.highlight{
+  background:rgb(105,202,214);
+  border-color:rgb(105,202,214);
+}
+div.captureoptions div.content{
+  position:absolute;
+  top:52px;
+  bottom:137px;
+  left:0px;
+  right:0px;
+  padding:12px 10px 12px 18px;
+  overflow-x:hidden;
+  overflow-y:scroll;
+}
+div.captureoptions div.title{
+  color:rgb(180,180,180);
+  font-size:17px;
+  margin:0px 0px 9px 0px;
+}
+div.captureoptions div.specialoptions{
+  padding:8px 0px;
+}
+div.captureoptions div.input input{
+  position:absolute;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  background:transparent;
+  border:none;
+  outline:none;
+  margin:0px;
+  padding:0px;
+  color:transparent !important;
+  opacity:0;
+  font-size:inherit;
+  font-family:inherit;
+  line-height:inherit;
+}
+div.captureoptions div.input{
+  display:inline-block;
+  position:relative;
+  width:100%;
+  line-height:20px;
+  padding:0px 12px 0px 0px;
+  color:rgb(180,180,180);
+  box-sizing:border-box;
+  height:30px;
+  line-height:30px;
+}
+div.captureoptions div.input div{
+  overflow:hidden;
+}
+div.captureoptions div.input div label{
+  color:rgb(0,0,0);
+}
+div.captureoptions div.recipients{
+  margin-bottom:24px;
+}
+
+
 </style>
 <html>
 <head>
@@ -451,14 +647,22 @@ div.capture div.options div.frame{
 <meta name="msapplication-tap-highlight" content="no" />
 <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
 <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-<title>Esconda</title>
+<title>Sealed</title>
+
 <link rel="stylesheet" type="text/css" href="resources/CSS/resets.css"></link>
 <link rel='stylesheet' href='resources/CSS/lato.css'/></link>
+<link rel='stylesheet' href='resources/CSS/secretcode.css'/></link>
+
 <script src='resources/Scripts/swipe.js'></script>
 <script src='resources/Scripts/Request.js'></script>
 <script src='resources/Scripts/fastclick.js'></script>
 <script src='resources/Scripts/Transition.js'></script>
+<script src='resources/Scripts/ContactBook/ContactBook.js'></script>
+<script src='resources/Scripts/ContactBook/levenshteindistance.js'></script>
+<script src='resources/Scripts/ContactBook/ModifiedTrieTree.js'></script>
+
 <script type="text/javascript" src="cordova.js"></script>
+
 </head>
 <body>
 
@@ -492,7 +696,7 @@ div.capture div.options div.frame{
           <div class='header'>
             <div class='lbutton' id='settingsbutton'></div>
             <div class='rbutton' id='plusbutton'></div>
-            <div class='text'>esconda</div>
+            <div class='text'>sealed</div>
           </div>
           <div class='headerbackground'></div>
           <div class='gifts scrollable'>
@@ -563,8 +767,9 @@ div.capture div.options div.frame{
           </div>
           <div class='signup' id='signup_form'>
             <div class='logo'>
+              <canvas id='signuplogo' class='image' width='512' height='512'></canvas>
               <div class='image'></div>
-              <div class='text'>esconda</div>
+              <div class='text'>sealed</div>
             </div>
             <div class='form'>
               <input type='text' placeholder='first name'/>
@@ -589,9 +794,169 @@ div.capture div.options div.frame{
             <div class='button' id='recordbutton'></div>
           </div>
         </div>
-        
-        <div class='options' id='optionspane'>
-          <div class='frame'></div>
+      </div>
+      
+      
+      <div class='pane captureoptions'>
+        <!-- <div class='titlebaroverride'></div> -->
+        <div class='header'>
+          <div class='backbutton'></div>
+        </div>
+        <div class='scrollable content'>
+          <div class='title'>send to</div>
+          <div class='recipients' id='recipients'></div>
+          <div class='title'>recent</div>
+          <div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>Alex Cantrell</div>
+              <div class='clearFix'></div>
+            </div>
+          </div>
+        </div>
+        <div class='bottom'>
+          <div class='specialoptions'>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>send to self</div>
+              <div class='clearFix'></div>
+            </div>
+            <div class='option'>
+              <div class='checkbox'>
+                <input type='checkbox'/>
+                <div class='background'></div>
+                <div class='highlight'></div>
+              </div>
+              <div class='text'>content disappears after viewing</div>
+              <div class='clearFix'></div>
+            </div>
+          </div>
+          <div class='continue'><div></div></div>
         </div>
       </div>
     
@@ -635,7 +1000,9 @@ var app = {
       'recordbutton',
       'imagecheck',
       'imagecancel',
-      'optionspane'
+      'signuplogo',
+      'contactsearch',
+      'recipients'
     ];
     for(var i,variable; variable=elements[i++];)
       window[variable] = app.loadElement(variable);
@@ -683,10 +1050,10 @@ var SignupForm = new (function(){
   }
   
   function Send(event){
-    /*
+    
     setTimeout(OnSuccess, 500);
     return;
-    */
+    
     if(signupemail.value.length == 0 || signuppassword.value.length == 0){
        app.alert('Please fill out all fields', 'Oh No!');
        Stop();
@@ -735,6 +1102,7 @@ function InitSwipePanes(){
     // stopPropagation: true,
     // transitionEnd: function(index, element) {}
   });
+  swipeObject.lockSlide(3);
 }
 
 
@@ -758,6 +1126,91 @@ function FadeSignup(){
 
 
 
+function InitSignupLogo(){
+  var img = new Image();
+  img.onload = Render;
+  img.src = 'images/empty.png';
+  
+  var canvas = signuplogo,
+      ctx = canvas.getContext('2d'),
+      width = canvas.width,
+      height = canvas.height;
+  
+  var alpha = 0,
+      time = 0,
+      rotation = 0;
+  
+  function Sigmoid(x,width){
+    function resizeSigmoid(x,width){
+      var normalization = 1/(rawSigmoid(width,width)-rawSigmoid(0,width));
+      return (rawSigmoid(x,width)-rawSigmoid(0,width))*normalization;
+    }
+    function rawSigmoid(x,width){
+      width /= 2;
+      return 1/(1+Math.exp(-4/width*(x-width)));
+    }
+    function limitSigmoid(val){
+      function max(v,l){
+        return l-(l-v+Math.abs(l-v))/2;
+      }
+      function min(v,l){
+        return (v-l+Math.abs(v-l))/2+l;
+      }
+      return max(min(val,0),1);
+    }
+    return limitSigmoid(resizeSigmoid(x,width));
+  }
+  
+  function Render(){
+    ctx.clearRect(0,0,width,height);
+    ctx.fillStyle = 'rgb(255,246,209)';
+    ctx.strokeStyle = 'rgb(255,246,209)';
+    
+    ctx.save();
+    ctx.translate(width/2, height*0.9/3);
+    ctx.rotate(alpha);
+    ctx.fillRect(-width/4, 0, width/2, height/4);
+    ctx.restore();
+    ctx.clearRect(0,height/2,width,height);
+    
+    
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(width/2, height/2);
+    ctx.lineTo(width/2-height/3*Math.cos(alpha-Math.PI/2), height/2-height/3*Math.sin(alpha-Math.PI/2));
+    ctx.stroke();
+    
+    ctx.save();
+    ctx.translate(width/2, height*2/3);
+    ctx.rotate(alpha);
+    ctx.fillRect(-width/4, 0, width/2, height/4);
+    ctx.restore();
+    
+    ctx.drawImage(img,0,0,width,height);
+    
+    if(time < 1){
+      time += 0.005;
+    }else if(rotation < 1){
+      time = 1;
+      rotation += 0.025;
+    }else{
+      time = 0;
+      rotation = 0;
+    }
+    
+    if(signup_form.style.display != 'none') requestAnimationFrame(Render);
+  }
+  
+  window.ondevicemotion = function(event) {  
+    var accelerationX = event.accelerationIncludingGravity.x;  
+    // var accelerationY = event.accelerationIncludingGravity.y;
+    // var accelerationZ = event.accelerationIncludingGravity.z;
+    alpha = (alpha + -accelerationX/16) / 2;
+  }
+}
+
+
+
 
 
 
@@ -770,6 +1223,8 @@ function OnDeviceReady(){
   // -------------- load libraries and important HTML elements -------------- //
   app.setupLibraries();
   app.loadElements();
+  
+  InitSignupLogo();
   
   
   if(Request.hasSession()){
@@ -878,10 +1333,49 @@ function OnDeviceReady(){
   });
   
   imagecheck.addEventListener('click', function(){
-    Transition.EaseInOut(300, function(percent){
-      optionspane.style.top = (1-percent)*100+'%';
-    });
+    swipeObject.next();
+    swipeObject.lock();
   });
+  
+  
+  
+  /*
+  <div class='option'>
+    <div class='checkbox'>
+      <input type='checkbox'/>
+      <div class='background'></div>
+      <div class='highlight'></div>
+    </div>
+    <div class='text'>
+      <div class='input' placeholder="enter your friend's name here"></div>
+    </div>
+    <div class='clearFix'></div>
+  </div>
+  */
+
+  
+  var book = new ContactBook();
+  CreateNewRecipient(book);
+  book.add({
+    lastname: 'Larco',
+    firstname: 'Hunter',
+    number: '9788772495',
+    email: 'hjlarco@gmail.com'
+  });
+  book.add({
+    lastname: 'Cantrell',
+    firstname: 'Alex',
+    number: '9783944143',
+    email: 'alcantrell22@gmail.com'
+  });
+  book.add({
+    lastname: 'Lodi',
+    firstname: 'Alex',
+    number: '9785001923',
+    email: 'alodi@yahoo.com'
+  });
+  
+  
   
 }
 
@@ -896,10 +1390,64 @@ function OnDeviceReady(){
 
 
 
+
+function CreateNewRecipient(book){
+  var option = document.createElement('div');
+  option.setAttribute('class', 'option');
+      var checkbox = document.createElement('div');
+      checkbox.setAttribute('class', 'checkbox');
+          var inputch = document.createElement('input');
+          inputch.setAttribute('type', 'checkbox');
+          checkbox.appendChild(inputch);
+          var background = document.createElement('div');
+          background.setAttribute('class', 'background');
+          checkbox.appendChild(background);
+          var highlight = document.createElement('div');
+          highlight.setAttribute('class', 'highlight');
+          checkbox.appendChild(highlight);
+      option.appendChild(checkbox);
+      var text = document.createElement('div');
+      text.setAttribute('class', 'text');
+          var input = document.createElement('div');
+          input.setAttribute('class', 'input');
+          input.setAttribute('placeholder', 'enter your friend\'s name here');
+          text.appendChild(input);
+      option.appendChild(text);
+      var clearFix = document.createElement('div');
+      clearFix.setAttribute('class', 'clearFix');
+      option.appendChild(clearFix);
+  recipients.insertBefore(option, recipients.firstChild);
+  
+  book.bind(input);
+  
+  input.onchange = function(){
+    inputch.checked = false;
+  };
+  
+  var first = true;
+  inputch.addEventListener('click',function(){
+    if(input.value.length == 0){
+      inputch.checked = false;
+      return;
+    }
+    input.complete();
+    if(!first) return;
+    first = false;
+    CreateNewRecipient(book);
+  });
+}
+
+
+
+
+
+
+
+
 // phone
 document.addEventListener('deviceready', OnDeviceReady, false);
 // computer (development assisting functions)
-window.onload = OnDeviceReady;
+// window.onload = OnDeviceReady;
 document.addEventListener('keyup', function(event){
   if(!window.swipeObject) return;
   if(event.keyCode == 39)

@@ -4,11 +4,14 @@
  * Brad Birdsall
  * Copyright 2013, MIT License
  *
+ * Adapted by Hunter Larco
 */
 
 function Swipe(container, options) {
 
   "use strict";
+  
+  var locked = false, lockedSlides = [];
 
   // utilities
   var noop = function() {}; // simple no operation function
@@ -320,14 +323,21 @@ function Swipe(container, options) {
 
         } else {
 
+          // ADAPTED BY HUNTER LARCO
+          
           delta.x =
             delta.x /
-              ( (!index && delta.x > 0               // if first slide and sliding left
+              ( (locked
+                || (lockedSlides.indexOf(index+1) > -1 && delta.x < 0)
+                || (lockedSlides.indexOf(index-1) > -1 && delta.x > 0)
+                || !index && delta.x > 0               // if first slide and sliding left
                 || index == slides.length - 1        // or if last slide and sliding right
                 && delta.x < 0                       // and if sliding at all
               ) ?
               ( Math.abs(delta.x) / width + 1 )      // determine resistance level
               : 1 );                                 // no resistance if false
+          
+          // END OF ADAPTION
 
           // translate 1:1
           translate(index-1, delta.x + slidePos[index-1], 0);
@@ -349,10 +359,17 @@ function Swipe(container, options) {
             && Math.abs(delta.x) > 20            // and if slide amt is greater than 20px
             || Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
 
+      // ADAPTED BY HUNTER LARCO
+      
       // determine if slide attempt is past start and end
       var isPastBounds =
-            !index && delta.x > 0                            // if first slide and slide amt is greater than 0
+            locked
+            || (lockedSlides.indexOf(index+1) > -1 && delta.x < 0)
+            || (lockedSlides.indexOf(index-1) > -1 && delta.x > 0)
+            || !index && delta.x > 0                            // if first slide and slide amt is greater than 0
             || index == slides.length - 1 && delta.x < 0;    // or if last slide and slide amt is less than 0
+
+      // END OF ADAPTIONS
 
       if (options.continuous) isPastBounds = false;
 
@@ -467,6 +484,23 @@ function Swipe(container, options) {
 
   // expose the Swipe API
   return {
+    // ADAPTED BY HUNTER LARCO
+    lock: function(){
+      locked = true
+    },
+    unlock: function(){
+      locked = false
+    },
+    lockSlide: function(num){
+      if(lockedSlides.indexOf(num)>-1) return;
+      lockedSlides.push(num);
+    },
+    unlockSlide: function(num){;
+      var index = lockedSlides.indexOf(num);
+      if(index==-1) return;
+      lockedSlides.splice(index, 1);
+    },
+    // END OF ADAPTIONS
     setup: function() {
 
       setup();

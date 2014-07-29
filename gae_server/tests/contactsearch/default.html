@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<style>
+
+body {
+    padding:50px;
+}
+
+div.input{
+  display:inline-block;
+  position:relative;
+  line-height:24px;
+  width:400px;
+  background:rgb(240,240,240);
+  line-height:24px;
+  padding:4px 12px;
+  color:rgb(180,180,180);
+}
+div.input input{
+  position:absolute;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  background:transparent;
+  border:none;
+  outline:none;
+  margin:0px;
+  padding:0px;
+  color:transparent;
+}
+div.input div label{
+  color:rgb(0,0,0);
+}
+
+
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<script src='./ContactBook/ModifiedTrieTree.js'></script>
+<script src='./ContactBook/levenshteindistance.js'></script>
+<script src='./ContactBook/ContactBook.js'></script>
+<title>Sealed</title>
+
+
+
+<div class='input' id='input' placeholder='Enter a name or email or phone number'></div>
+
+
+
+<script type='text/javascript'>
+
+window.onload = function(){
+  book = new ContactBook();
+  book.bind(document.getElementById('input'));
+  book.add({
+    lastname: 'Larco',
+    firstname: 'Hunter',
+    number: '9788772495',
+    email: 'hjlarco@gmail.com'
+  });
+  book.add({
+    lastname: 'Cantrell',
+    firstname: 'Alex',
+    number: '9783944143',
+    email: 'alcantrell22@gmail.com'
+  });
+  book.add({
+    lastname: 'Lodi',
+    firstname: 'Alex',
+    number: '9785001923',
+    email: 'alodi@yahoo.com'
+  });
+}
+
+</script>
+</body>
+</html>
