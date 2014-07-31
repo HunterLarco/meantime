@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<style>
+div.settings{
+  background:rgb(255,255,255);
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+div.settings div.picture img{
+  -webkit-border-radius: 50%;
+  -moz-border-radius:    50%;
+  border-radius:         50%;
+  width:110px;
+  height:110px;
+  display:block;
+  margin:40px auto 30px auto;
+}
+div.settings div.picture div{
+  text-align:center;
+  margin-top:20px;
+  font-size:15px;
+  margin-bottom:40px;
+}
+div.settings div.bar{
+  height:1px;
+  background:rgb(230,230,230);
+}
+div.settings div.item{
+  color:rgb(135,135,135);
+  padding:14px 20px;
+  font-size:16px;
+  background:rgb(255,255,255);
+  border-bottom:1px solid rgb(230,230,230);
+  line-height:20px;
+}
+div.settings div.item *{
+  vertical-align:middle;
+}
+div.settings div.item img{
+  height:29px;
+  margin-right:20px;
+}
+div.settings div.filler{
+  height:23px;
+}
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sealed | Message List</title>
+<script src='/resources/Scripts/fastclick.js'></script>
+<link rel="stylesheet" href="/resources/CSS/resets.css"></link>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
+<link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
+<script src='/resources/Scripts/fastclick.js'></script>
+</head>
+<body>
+
+
+<div class='settings scrollable'>
+  <div class='picture'>
+    <img src='https://avatars3.githubusercontent.com/u/2695807?s=460'/>
+    <div>Hunter Larco</div>
+  </div>
+  <div class='bar'></div>
+  <div class='item'><img src='/images/gear.png'/><label>app settings</label></div>
+  <div class='item'><img src='/images/question.png'/><label>support</label></div>
+  <div class='item'><img src='/images/mail.png'/><label>contact meantime</label></div>
+  <div class='item'><img src='/images/share.png'/><label>share meantime</label></div>
+  <div class='item'><img src='/images/arrow.png'/><label>logout</label></div>
+  <div class='filler'></div>
+</div>
+
+
+<script type='text/javascript'>
+var delegate = new (function(){
+  var self = this;
+  
+  self.onload = OnLoad;
+  
+  function OnLoad(){
+    FastClick.attach(document.body);
+  }
+
+})();
+
+
+window.onload = function(){
+  window.app = window.parent.app;
+  app.notify(delegate);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+body{
+  font-family:'lato';
+  font-weight:300;
+  font-size:12px;
+  overflow:hidden;
+  background:rgb(255,255,255);
+  position:fixed;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+}
+
+
+.scrollable{
+  overflow-x:hidden !important;
+  overflow-y:scroll !important;
+  -webkit-overflow-scrolling: touch !important;
+}

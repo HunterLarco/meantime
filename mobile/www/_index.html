@@ -1425,9 +1425,9 @@ function CreateNewRecipient(book){
   };
   
   var first = true;
-  inputch.addEventListener('click',function(){
+  inputch.addEventListener('click',function(event){
     if(input.value.length == 0){
-      inputch.checked = false;
+      event.preventDefault();
       return;
     }
     input.complete();

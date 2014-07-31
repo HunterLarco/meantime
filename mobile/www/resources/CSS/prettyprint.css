@@ -1,0 +1,23 @@
+.prettyprint{
+  font-family: droid sans mono,monospace,courier new,courier,sans-serif;
+  font-size:14px;
+  color:#1A1A1A;
+  line-height:22px;
+  white-space:nowrap;
+  overflow:scroll;
+}
+.prettyprint label.s{
+  color:green;
+}
+.prettyprint label.n{
+  color:red;
+}
+.prettyprint label.b{
+  color:rgb(255, 140, 0);
+}
+.prettyprint label.nl{
+  color:rgb(0, 78, 208);
+}
+.prettyprint label.o{
+  color:rgb(180,180,180);
+}
