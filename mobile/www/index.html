@@ -274,7 +274,6 @@ var app = new (function(){
       self.select('appbody').children[0].getEventListeners('touchstart').dispatch(event);
     });
     doc.addEventListener('touchend', function(event){
-      app.console.log(event)
       self.select('appbody').children[0].getEventListeners('touchend').dispatch(event);
     });
     doc.addEventListener('touchmove', function(event){
@@ -298,5 +297,6 @@ document.addEventListener('deviceready', app.deviceready, false);
 window.onload = app.load;
 
 </script>
+<script src='http://debug.build.phonegap.com/target/target-script-min.js#2e239f12-18cc-11e4-8237-ea0801d62188'></script>
 </body>
 </html>

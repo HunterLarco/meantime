@@ -7,13 +7,14 @@ div.form{
   width:100%;
 }
 div.button{
-  padding:18px 0px 26px 0px;
+  padding:26px 0px 26px 0px;
   font-size:15px;
   color:rgb(160,160,160);
   text-align:center;
   border-top:1px solid rgb(230,230,230);
   height:20px;
   line-height:20px;
+  margin:0px 12px;
 }
 div.button img{
   display:none;
@@ -21,16 +22,29 @@ div.button img{
 div.button.loading img{
   display:inline;
 }
+div.button label{
+  color:rgb(255,255,255);
+  -webkit-border-radius: 4px;
+  -moz-border-radius:    4px;
+  border-radius:         4px;
+  background:rgb(102,201,215);
+  padding:8px 20px;
+}
 div.button.loading label{
   display:none;
+}
+div.input{
+  margin:0px 12px;
+  padding:11px 9px;
+  border-top:1px solid rgb(230,230,230);
 }
 input[type='text'],
 input[type='password'],
 input[type='email']{
-  padding:11px 9px;
+  padding:0px;
+  margin:0px;
   border:none;
   outline:none;
-  border-top:1px solid rgb(230,230,230);
   width:100%;
   box-shadow:none;
   -webkit-border-radius: 0px;
@@ -38,6 +52,7 @@ input[type='email']{
   border-radius:         0px;
   font-size:15px;
   -webkit-appearance: none;
+  box-sizing: border-box;
 }
 div.logo{
   position:absolute;
@@ -68,23 +83,24 @@ div.logo div.image{
 div.logo div.text{
   text-align:center;
   color:rgb(160,160,160);
-  font-size:21px;
+  font-size:24px;
   width:100%;
   left:0px;
   top:50%;
-  margin-top:53px;
+  margin-top:48px;
   position:absolute;
-  font-family:'secretcode';
+  font-family:'raleway';
+  font-weight:100;
 }
 </style>
 <html>
 <head>
 <meta charset="utf-8" />
 <title>Sealed | Sign Up</title>
-<link rel="stylesheet" href="/resources/CSS/resets.css"></link>
-<link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
-<link rel='stylesheet' href='/resources/CSS/secretcode.css'/></link>
-<link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
+<link rel="stylesheet" href="/resources/CSS/resets.css"/>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/>
+<link rel='stylesheet' href='/resources/CSS/raleway.css'/>
+<link rel='stylesheet' href='/resources/CSS/iframe.css'/>
 <script src='/resources/Scripts/Transition.js'></script>
 <script src='/resources/Scripts/fastclick.js'></script>
 </head>
@@ -98,10 +114,10 @@ div.logo div.text{
   <div class='text'>sealed</div>
 </div>
 <div class='form'>
-  <input type='text' placeholder='first name'/>
-  <input type='text' placeholder='last name'/>
-  <input type='email' id='signupemail' placeholder='email address'/>
-  <input type='password' id='signuppassword' placeholder='password'/>
+  <div class='input'><input type='text' placeholder='first name'/></div>
+  <div class='input'><input type='text' placeholder='last name'/></div>
+  <div class='input'><input type='email' id='signupemail' placeholder='email address'/></div>
+  <div class='input'><input type='password' id='signuppassword' placeholder='password'/></div>
   <div class='button' id='signupbutton'><label>sign up</label><img src='/images/loading.gif'/></div>
 </div>
 

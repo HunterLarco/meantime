@@ -4,6 +4,8 @@ from lib.caps import uploader
 
 import webapp2
 
+import os
+from google.appengine.ext.webapp import template
 
 
 
@@ -158,13 +160,28 @@ class AdminAPIHandler(webapp2.RequestHandler):
 ' Throws error 003
 """
 class MainHandler(webapp2.RequestHandler):
-  def run(self):
-    self.response.headers['Content-Type'] = "application/javascript"
-    self.response.out.write(api.response.throw(003, compiled=True))
   def get(self):
-    self.run()
+    template_values = {}
+    path = os.path.join(os.path.dirname(__file__), 'main.html')
+    self.response.out.write(template.render(path, template_values))
+  
   def post(self):
-    self.run()
+    email = self.request.get('email')
+    
+    if email == '' or email == None:
+      self.redirect('/?error')
+      return
+    
+    from google.appengine.api import mail
+    message = mail.EmailMessage(sender="Sealed Team <admin@trysealed.com>",
+                                subject="Thanks for trying Sealed!")
+    
+    template_values = {}
+    path = os.path.join(os.path.dirname(__file__), 'email.html')
+    
+    message.to = email
+    message.body = template.render(path, template_values)
+    message.send()
 
 
 

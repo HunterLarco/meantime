@@ -28,19 +28,19 @@ function Console(){
   function Log(){
     var unshift = [].unshift;
     unshift.call(arguments, 'log');
-    _log.apply(con, arguments);
+    _log.apply(self, arguments);
   }
   
   function Err(){
     var unshift = [].unshift;
     unshift.call(arguments, 'error');
-    _log.apply(con, arguments);
+    _log.apply(self, arguments);
   }
   
   function Warn(){
     var unshift = [].unshift;
     unshift.call(arguments, 'warning');
-    _log.apply(con, arguments);
+    _log.apply(self, arguments);
   }
   
   function MakeConsole(){

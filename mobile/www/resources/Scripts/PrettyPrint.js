@@ -1,6 +1,6 @@
 function PrettyPrint(data, elem){
   var innerHTML = '';
-  var singletab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+  var singletab = '&nbsp;&nbsp;';
   function recurse(object, tabs){
     for(key in object){
       if(object[key] == null){

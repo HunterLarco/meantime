@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<style>
+div.body{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center;
+}
+div.body form.frame{
+  margin:60px 0px;
+  text-align:center;
+  font-family:'raleway';
+  font-weight:100;
+  text-align:center;
+}
+div.body form.frame div.text{
+  font-size:46px;
+  padding:60px 0px;
+  color:rgb(180,180,180);
+}
+div.body form.frame div.beta{
+  border-top:    1px solid rgb(220,220,220);
+  border-bottom: 1px solid rgb(220,220,220);
+  padding:6px 0px;
+  color:rgb(200,200,200);
+  font-size:18px;
+  width:500px;;
+}
+div.body form.frame input{
+  border:none;
+  outline:none;
+  color:rgb(51,51,51);
+  font-size:18px;
+  font-weight:100;
+  border-bottom:1px solid rgb(220,220,220);
+  padding:6px 0px;
+  text-align:center;
+  width:400px;
+  display:block;
+  margin:0px auto;
+}
+div.body form.frame button{
+  border:none;
+  outline:none;
+  display:block;
+  position:relative;
+  padding:5px 0px;
+  border-bottom:3px solid rgb(82,181,195);
+  -webkit-border-radius: 3px;
+  -moz-border-radius:    3px;
+  border-radius:         3px;
+  background:rgb(102,201,215);
+  color:rgb(255,255,255);
+  outline:none;
+  cursor:pointer;
+  text-align:center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  margin-top:20px;
+  width:100px;
+  margin-left:auto;
+  margin-right:auto;
+}
+div.body form.frame button:hover{
+  border-bottom:2px solid rgb(82,181,195);
+  margin-top:21px;
+}
+div.body form.frame button:active{
+  border-bottom:1px solid rgb(82,181,195);
+  margin-top:22px;
+}
+
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Try Sealed</title>
+<link rel="stylesheet" href="/resources/CSS/resets.css"/>
+<link rel='stylesheet' href='/resources/CSS/raleway.css'/>
+</head>
+<body>
+
+
+<div class='body'>
+  <form class='frame' method='post' enctype='multipart/form-data' action='/'>
+    <canvas id='icon' height='250' width='250'></canvas>
+    <div class='text'>sealed</div>
+    <div class='beta'><i>sign up to be a beta tester!</i></div>
+    <input type='text' name='email' placeholder='email'/>
+    <button class='button'>sign up</button>
+  </form>
+</div>
+
+
+<script type='text/javascript'>
+
+window.onload = function(){
+  var img = new Image();
+  img.onload = Render;
+  img.src = '/images/empty.png';
+  
+  var canvas = document.getElementById('icon'),
+      ctx = canvas.getContext('2d'),
+      width = canvas.width,
+      height = canvas.height;
+  
+  var alpha = 0,
+      time = 0,
+      rotation = 0;
+  
+  function Sigmoid(x,width){
+    function resizeSigmoid(x,width){
+      var normalization = 1/(rawSigmoid(width,width)-rawSigmoid(0,width));
+      return (rawSigmoid(x,width)-rawSigmoid(0,width))*normalization;
+    }
+    function rawSigmoid(x,width){
+      width /= 2;
+      return 1/(1+Math.exp(-6/width*(x-width)));
+    }
+    function limitSigmoid(val){
+      function max(v,l){
+        return l-(l-v+Math.abs(l-v))/2;
+      }
+      function min(v,l){
+        return (v-l+Math.abs(v-l))/2+l;
+      }
+      return max(min(val,0),1);
+    }
+    return limitSigmoid(resizeSigmoid(x,width));
+  }
+  
+  function Render(){
+    ctx.clearRect(0,0,width,height);
+    ctx.fillStyle = 'rgb(255,246,209)';
+    ctx.strokeStyle = 'rgb(255,246,209)';
+    var globalrotation = Sigmoid(rotation, 1)*-Math.PI;
+    
+    ctx.save();
+    ctx.translate(width/2, height/2);
+    ctx.rotate(globalrotation);
+    ctx.translate(-width/2, -height/2);
+    
+    
+    ctx.save();
+    ctx.translate(width/2, height*(1/2-144/512+time*144/512));
+    ctx.rotate(alpha);
+    ctx.fillRect(-width/2, 0, width, height);
+    ctx.restore();
+    ctx.clearRect(0,height/2,width,height);
+    
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(width/2, height/2);
+    ctx.lineTo(width/2-height/3*Math.cos(alpha-Math.PI/2-globalrotation), height/2-height/3*Math.sin(alpha-Math.PI/2-globalrotation));
+    ctx.stroke();
+    
+    ctx.save();
+    ctx.translate(width/2, height*(1/2+144/512-time*144/512));
+    ctx.rotate(alpha);
+    ctx.fillRect(-width/2, 0, width, height);
+    ctx.restore();
+    ctx.clearRect(0,height/2+144/512*height,width,height);
+    
+    ctx.clearRect(0,0,width/2-width*144/512,height);
+    ctx.clearRect(width/2+width*144/512,0,width,height);
+    
+    ctx.drawImage(img,0,0,width,height);
+    
+    ctx.restore();
+    
+    if(time < 1){
+      time += 0.002;
+    }else if(rotation < 1){
+      time = 1;
+      rotation += 0.02;
+    }else{
+      time = 0;
+      rotation = 0;
+    }
+    requestAnimationFrame(Render);
+  }
+}
+
+</script>
+</body>
+</html>
