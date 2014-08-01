@@ -21,7 +21,8 @@ div.header{
   border-bottom:1px solid rgb(240,240,240);
   z-index:1;
   background:rgba(255,255,255,0.95);
-  font-family:'secretcode';
+  font-family:'raleway';
+  font-weight:100;
 }
 div.header div.text{
   position:absolute;
@@ -120,7 +121,7 @@ div.gifts div.gift div.text div.title{
 <script src='/resources/Scripts/fastclick.js'></script>
 <link rel="stylesheet" href="/resources/CSS/resets.css"></link>
 <link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
-<link rel='stylesheet' href='/resources/CSS/secretcode.css'/></link>
+<link rel='stylesheet' href='/resources/CSS/raleway.css'/></link>
 <link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
 <script src='/resources/Scripts/Transition.js'></script>
 <script src='/resources/Scripts/fastclick.js'></script>
@@ -231,15 +232,11 @@ var delegate = new (function(){
         buttonshaker   = document.getElementById('buttonshaker');
     
     settingsbutton.addEventListener('click', function(){
-      Transition.Bounce(500, function(percent){
-        buttonshaker.style.left = Math.round(10*percent*34)/10+'px';
-      });
+      app.swipe.prev();
     });
 
     plusbutton.addEventListener('click', function(){
-      Transition.Bounce(500, function(percent){
-        buttonshaker.style.left = -Math.round(10*percent*34)/10+'px';
-      });
+      app.swipe.next();
     });
   }
 

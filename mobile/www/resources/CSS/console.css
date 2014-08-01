@@ -13,7 +13,7 @@
   display:none;
 }
 .console div.line{
-  margin-bottom:15px;
+  margin-bottom:4px;
 }
 .console div.warning:before{
   content:'WARNING';

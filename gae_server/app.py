@@ -164,24 +164,9 @@ class MainHandler(webapp2.RequestHandler):
     template_values = {}
     path = os.path.join(os.path.dirname(__file__), 'main.html')
     self.response.out.write(template.render(path, template_values))
-  
   def post(self):
-    email = self.request.get('email')
-    
-    if email == '' or email == None:
-      self.redirect('/?error')
-      return
-    
-    from google.appengine.api import mail
-    message = mail.EmailMessage(sender="Sealed Team <admin@trysealed.com>",
-                                subject="Thanks for trying Sealed!")
-    
-    template_values = {}
-    path = os.path.join(os.path.dirname(__file__), 'email.html')
-    
-    message.to = email
-    message.body = template.render(path, template_values)
-    message.send()
+    self.response.headers['Content-Type'] = "application/javascript"
+    self.response.out.write(api.response.throw(003, compiled=True))
 
 
 

@@ -1,4 +1,4 @@
-function PrettyPrint(data, elem){
+function PrettyPrint(data){
   var innerHTML = '';
   var singletab = '&nbsp;&nbsp;';
   function recurse(object, tabs){
@@ -44,5 +44,6 @@ function PrettyPrint(data, elem){
         return '\<label class="b">'+data+'\</label>\<br/>';
       break;
     }
+    return PrettyPrint(data+'');
   }
 }

@@ -99,6 +99,9 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
         <iframe data-src='./frames/list.html'></iframe>
         <iframe data-src='./frames/signup.html'></iframe>
       </div>
+      <div class='pane'>
+        <iframe data-src='./frames/capture.html'></iframe>
+      </div>
     </div>
   </div>
 </div>
@@ -141,6 +144,16 @@ var app = new (function(){
   self.debugging = Debugging;
   
   self.console = null;
+  
+  self.captureVideo = CaptureVideo;
+  
+  function CaptureVideo(OnSuccess, OnError){
+    navigator.device.capture.captureVideo(
+      OnSuccess || new Function(),
+      OnError || new Function(),
+      {limit:1}
+    );
+  }
   
   var isDebugging = false;
   function Debugging(opts){
@@ -254,14 +267,21 @@ var app = new (function(){
   var delegates = [],
       totalIframes;
   function Notify(appdelegate){
+    if(delegates.indexOf(appdelegate) > -1){
+      app.warn('Duplicate App Delegate Loaded: Ignoring');
+      return;
+    }
     delegates.push(appdelegate);
+    app.console.log('App Delegate Loaded: '+delegates.length+' Total');
     BindTouchEvents(appdelegate);
     NotifyIframes();
   }
   function NotifyIframes(){
-    if(delegates.length == totalIframes && deviceReady)
+    if(delegates.length == totalIframes && deviceReady){
+      app.console.log('All App Delegates Loaded');
       for(var i=0,delegate; delegate=delegates[i++];)
         (delegate.onload || new Function())();
+    }
   }
   function BindTouchEvents(appdelegate){
     var iframe = getIframeByDelegate(appdelegate),
@@ -297,6 +317,5 @@ document.addEventListener('deviceready', app.deviceready, false);
 window.onload = app.load;
 
 </script>
-<script src='http://debug.build.phonegap.com/target/target-script-min.js#2e239f12-18cc-11e4-8237-ea0801d62188'></script>
 </body>
 </html>
