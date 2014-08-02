@@ -1,0 +1,35 @@
+# VERSION
+#   v0.0.0
+# AUTHOR
+#   Hunter John Larco
+
+application: capaching
+version: admin
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /resources
+  static_dir: resources
+
+- url: /([^/]+)
+  static_files: tools/\1.html
+  upload: tools/([^/]+).html
+  login: admin
+
+# api handlers
+- url: /([^/]+)/([^/]+)
+  script: app.app
+
+- url: .*
+  static_files: urls.html
+  upload: urls.html
+
+libraries:
+- name: webapp2
+  version: "2.5.1"

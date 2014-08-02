@@ -36,11 +36,22 @@ function ModifiedTrieTree(){
   
   
   function Add(contact){
-    var full = contact.firstname+' '+contact.lastname;
-    _Add(root, contact.number, full+' ('+contact.number.slice(0,3)+' '+contact.number.slice(3,6)+'-'+contact.number.slice(6,10)+')');
-    _Add(root, contact.lastname, full);
-    _Add(root, contact.firstname, full);
-    _Add(root, contact.email, full+' <'+contact.email+'>');
+    var full = (!!contact.firstname?contact.firstname:'')+' '+(!!contact.lastname?contact.lastname:'');
+    
+    if(!!contact.lastname)
+      _Add(root, contact.lastname, full);
+    
+    if(!!contact.firstname)
+      _Add(root, contact.firstname, full);
+    
+    if(!!contact.emails)
+      for(var i=0,email; email=contact.emails[i++];)
+        _Add(root, email.value, full+' <'+email.value+'>');
+    
+    if(!!contact.numbers)
+      for(var i=0,number; number=contact.numbers[i++];)
+        _Add(root, number.value, full+' ('+number.value.slice(0,3)+' '+number.value.slice(3,6)+'-'+number.value.slice(6,10)+')');
+    
     _Add(root, full, full);
   }
   function _Add(node, item, value){

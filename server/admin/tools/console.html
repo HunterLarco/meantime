@@ -1,0 +1,504 @@
+<!DOCTYPE>
+<html>
+<head>
+<style type='text/css'>
+
+body{
+  padding:0px;
+  margin:0px;
+  font-family:arial;
+  font-size:15px;
+}
+
+
+div.response{
+  background:rgb(240,240,240);
+  display:inline-block;
+  float:left;
+  width:40%;
+  height:100%;
+  overflow:scroll;
+}
+
+div.request{
+  display:inline-block;
+  float:left;
+  width:60%;
+  height:100%;
+  box-shadow:0px 0px 15px rgba(0,0,0,0.6);
+  overflow:scroll;
+}
+
+div.title{
+  padding:16px 0px;
+  text-align:center;
+  font-size:18px;
+  background:rgb(203,78,78);
+  color:rgb(255,255,255);
+  border-bottom:1px solid rgb(153,28,28);
+}
+div.tag{
+  font-size:13px;
+  background:rgb(240,240,240);
+  padding:4px 0px;
+  text-align:center;
+  margin-bottom:8px;
+}
+div.response div.tag{
+  background:rgb(220,220,220);
+}
+
+div.request div.authtoken{
+  padding:6px 18px;
+}
+div.request div.url{
+  padding:6px 18px;
+}
+div.request div.authtoken input{
+  width:100%;
+}
+div.request div.spacer{
+  width:20px;
+  height:1px;
+  display:inline-block;
+}
+
+div.request div.response{
+  border-top:4px solid rgb(203,78,78);
+  box-shadow:inset 0px 1px 0px rgb(153,28,28);
+  margin-top:16px;
+  padding-top:1px;
+}
+
+
+div.request div.paneholder{
+  position:relative;
+}
+div.request div.pane{
+  width:50%;
+  display:inline-block;
+  vertical-align:top;
+}
+div.request div.pane.dv{
+  position:absolute;
+  top:0px;
+  bottom:0px;
+}
+div.request div.data{
+  margin:20px 10px 20px 20px;
+  padding:10px;
+  border:1px solid rgb(102,102,102);
+}
+div.request div.data textarea{
+  border:none;
+  outline:none;
+  width:100%;
+  max-width:100%;
+  min-height:250px;
+}
+div.request div.datavisualizer{
+  border-bottom:4px solid rgb(210,210,210);
+  background:rgb(240,240,240);
+  padding:10px;
+  position:absolute;
+  left:10px;
+  right:20px;
+  top:20px;
+  bottom:20px;
+  overflow:scroll;
+}
+
+
+div.button.send{
+  margin:0px 20px;
+  display:block;
+}
+
+div.response div.frame{
+  padding:20px;
+}
+
+div.request div.label{
+  position:relative;
+}
+div.request div.label:after{
+  content:'LABEL';
+  position:absolute;
+  right:0px;
+  top:0px;
+  font-size:14px;
+  padding:7px;
+  color:rgb(200,200,200);
+}
+div.request div.label.UID:after{
+  content:'UID';
+}
+div.request div.label.ULID:after{
+  content:'ULID';
+}
+div.request div.label.SID:after{
+  content:'SID';
+}
+
+
+.console{
+  font-family: droid sans mono,monospace,courier new,courier,sans-serif;
+  font-size:14px;
+  color:#1A1A1A;
+  line-height:22px;
+  white-space:nowrap;
+  overflow:scroll;
+}
+.console label.s{
+  color:green;
+}
+.console label.n{
+  color:red;
+}
+.console label.b{
+  color:rgb(255, 140, 0);
+}
+.console label.nl{
+  color:rgb(0, 78, 208);
+}
+.console label.o{
+  color:rgb(180,180,180);
+}
+
+</style>
+<meta charset='UTF-8' NAME='Author' CONTENT='Hunter Larco' />
+<title>Development Console</title>
+<link rel="stylesheet" type="text/css" href="/resources/CSS/Forms.css"></link>
+<script src='//api.capaching.appspot.com?gateway=/'></script>
+</head>
+<body>
+
+
+<div class='response panel'>
+  <div class='title'>API Response</div>
+  <div class='tag'>Response</div>
+  <div id='responsetext' class='frame console'>No Responses Yet</div>
+</div>
+<div class='request panel'>
+  <div class='title'>Request Panel</div>
+  <div>
+    <div class='tag'>Request</div>
+    <div class='authtoken'>
+      <div class='label UID'><input type='text' id='uid'/></div>
+      <div class='label ULID'><input type='text' id='ulid'/></div>
+      <div class='label SID'><input type='text' id='sid'/></div>
+    </div>
+    <div class='url'>
+      <input type='text' id='gateway' placeholder='Gateway'/> <input type='text' id='url' placeholder='URL'/>
+      <div class='spacer'></div>
+      GET <input type='radio' name='method' value='get'/>
+      POST <input type='radio' name='method' value='post' checked/>
+    </div>
+    <div class='paneholder'>
+      <div class='pane'>
+        <div class='data'>
+          <textarea id='data' class='console' placeholder='JSON Data'></textarea>
+        </div>
+      </div><!--
+   --><div class='pane dv'>
+        <div class='datavisualizer console' id='dv'></div>
+      </div>
+    </div>
+    <div class='button send' id='send'>Send</div>
+  </div>
+</div>
+
+
+<script type='text/javascript'>
+
+
+window.onload = function(){
+  
+  var sendData = {};
+  
+  var responseframe = document.getElementById('responsetext');
+  responseframe.removeAttribute('id');
+  
+  var sidtoken = document.getElementById('sid');
+  sidtoken.removeAttribute('id');
+  
+  var uidtoken = document.getElementById('uid');
+  uidtoken.removeAttribute('id');
+  
+  var ulidtoken = document.getElementById('ulid');
+  ulidtoken.removeAttribute('id');
+  
+  var url = document.getElementById('url');
+  url.removeAttribute('id');
+  
+  var data = document.getElementById('data');
+  data.removeAttribute('id');
+  data.addEventListener('keyup', BuildData);
+  data.addEventListener('keydown', removeTab);
+  
+  var gateway = document.getElementById('gateway');
+  gateway.removeAttribute('id');
+  
+  var send = document.getElementById('send');
+  send.removeAttribute('id');
+  
+  var dv = document.getElementById('dv');
+  dv.removeAttribute('id');
+  
+  function getMethod(){
+    var elems = document.getElementsByName('method');
+    for(var i=0, elem; elem=elems[i++];)
+      if(elem.checked)
+        return elem.value
+  }
+  
+  function CheckStrict(json, line){
+    var linedata = line.match(/^([^\s]*)\s+(bool|string|object|array|number|null)/);
+    if(!linedata) return;
+    key = linedata[1];
+    type = linedata[2];
+    switch(type){
+      case 'string':
+        var rest = line.match(/^[^\s]*\s+string\s+(.+)/);
+        if(!rest) return;
+        rest = rest[1];
+        json[key] = rest;
+      break;
+      case 'bool':
+        var bool = line.match(/^[^\s]*\s+bool\s+(true|false)/);
+        if(!bool) return;
+        bool = bool[1];
+        json[key] = bool=='true';
+      break;
+      case 'object':
+        json[key] = {};
+        return json[key];
+      break;
+      case 'array':
+        json[key] = [];
+        return json[key];
+      break;
+      case 'number':
+        var number = line.match(/^[^\s]*\s+number\s+([0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)/);
+        if(!number) return;
+        number = number[1];
+        json[key] = parseFloat(number);
+      break;
+      case 'null':
+        json[key] = null;
+      break;
+    }
+  }
+  
+  function CheckShortCuts(json, line){
+    var number = /[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+/,
+        bool = /true|false/;
+    var shortcutdata = line.match(/^([^\s]*)\s+((?:[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)|true|false|null)\s*$/),
+        isshortcut = !!shortcutdata;
+    if(isshortcut){
+      var key = shortcutdata[1],
+          unknown = shortcutdata[2];
+      if(!!unknown.match(number)){
+        json[key] = parseFloat(unknown);
+        return true;
+      }else if(!!unknown.match(bool)){
+        json[key] = unknown=='true';
+        return true;
+      }else if(unknown == 'null'){
+        json[key] = null;
+        return true;
+      }
+    }else{
+      var words = line.split(' ')
+      if(words.length > 1){
+        var match = line.match(/^[^\s]*\s+(.+)$/);
+        if(!words[1].match(/^(?:bool|string|object|array|number|null)$/) && !!match){
+          json[words[0]] = match[1];
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  function CheckArrayCommands(json, line){
+    var number = /[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+/,
+        bool = /true|false/;
+    var data = line.match(/^(bool|string|number)\s+/);
+    if(!data){
+      if(!!line.match(/^null\s*$/)){
+        json.push(null);
+        return json[json.length-1];
+      }
+      if(!!line.match(/^object\s*$/)){
+        json.push({});
+        return json[json.length-1];
+      }
+      if(!!line.match(/^array\s*$/)){
+        json.push([]);
+        return json[json.length-1];
+      }
+      var unknown = line.match(/^((?:[0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)|true|false|null)\s*$/);
+      if(!unknown){
+        if(!!line) json.push(line);
+        return;
+      }
+      unknown = unknown[1];
+      if(!!unknown.match(number)){
+        json.push(parseFloat(unknown));
+      }else if(!!unknown.match(bool)){
+        json.push(unknown=='true');
+      }
+    }else{
+      switch(data[1]){
+        case 'string':
+          var rest = line.match(/^string\s+(.+)/);
+          if(!rest) return;
+          rest = rest[1];
+          json.push(rest);
+        break;
+        case 'bool':
+          var bool = line.match(/^bool\s+(true|false)/);
+          if(!bool) return;
+          bool = bool[1];
+          json.push(bool=='true');
+        break;
+        case 'number':
+          var number = line.match(/^number\s+([0-9]+\.[0-9]*|[0-9]*\.[0-9]+|[0-9]+)/);
+          if(!number) return;
+          number = number[1];
+          json.push(parseFloat(number));
+        break;
+      }
+    }
+  }
+  
+  function removeTab(event){
+    if(event.which == 9)
+      event.preventDefault();
+    if(event.shiftKey && event.which == 83){
+      send.click();
+      event.preventDefault();
+    }
+  }
+  
+  function BuildData(event){
+    var lines = data.value.split('\n'),
+        json = {},
+        targets = [json];
+    for(var i=0; i<lines.length; i++){
+      var line = lines[i];
+      if(!!line.match(/^end\s*$/)){
+        if(targets.length > 1)
+          targets.splice(targets.length-1,1);
+        continue;
+      }
+      var target = targets[targets.length-1];
+      if(target.constructor == Array){
+        var response = CheckArrayCommands(target, line);
+        if(!!response) targets.push(response);
+        continue;
+      }
+      if(!CheckShortCuts(target, line)){
+        var response = CheckStrict(target, line);
+        if(!!response) targets.push(response);
+      }
+    }
+    PrettyPrint(json, dv);
+    sendData = json;
+  }
+  
+  
+  
+  
+  
+  
+
+  
+  function CheckSession(data){
+    if(!data['setsession']) return;
+    if(!!data.session.sid)  sidtoken.value =  data['session']['sid'];
+    if(!!data.session.ulid) ulidtoken.value = data['session']['ulid'];
+    if(!!data.session.uid)  uidtoken.value =  data['session']['uid'];
+  }
+  
+  function CheckLocked(data){
+    if(!data['userlocked']) return;
+    responseframe.innerHTML = 'The User Is Locked: Please Log In';
+  }
+  
+  function PrettyPrint(data, elem){
+    var elem = elem || responseframe;
+    var singletab = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    function recurse(object, tabs){
+      for(key in object){
+        if(object[key] == null){
+          elem.innerHTML += tabs+key+' : \<label class="nl">null\</label>\<br/>';
+          continue;
+        }
+        switch(object[key].constructor){
+          case String:
+            elem.innerHTML += tabs+key+' : \<label class="s">'+object[key]+'\</label>\<br/>';
+          break;
+          case Array:
+            elem.innerHTML += tabs+key+' : \<label class="o"> Array ['+object[key].length+']\</label>\<br/>';
+            recurse(object[key], tabs+singletab)
+          break;
+          case Number:
+            elem.innerHTML += tabs+key+' : \<label class="n">'+object[key]+'\</label>\<br/>';
+          break;
+          case Boolean:
+            elem.innerHTML += tabs+key+' : \<label class="b">'+object[key]+'\</label>\<br/>';
+          break;
+          case Object:
+            elem.innerHTML += tabs+key+' : \<label class="o"> Object {'+Object.keys(object[key]).length+'}\</label>\<br/>';
+            recurse(object[key], tabs+singletab)
+          break;
+        }
+      }
+    }
+    elem.innerHTML = '\<label class="o"> Object {'+Object.keys(data).length+'}\</label> {\<br/>';
+    recurse(data, singletab)
+    elem.innerHTML += '}'
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  send.addEventListener('click', function(){
+    responseframe.innerHTML = 'Working...';
+    
+    Request.loadGateway(gateway.value);
+    var request = new Request(url.value);
+    
+    var clone = JSON.parse(JSON.stringify(sendData));
+    
+    function callback(data){
+      CheckSession(data);
+      CheckLocked(data);
+      PrettyPrint(data);
+    }
+    
+    function OnError(event){
+      PrettyPrint(event);
+    }
+    
+    if(getMethod() == 'post')
+      request.post(clone, callback, OnError);
+    else
+      request.get(callback, OnError)
+  });
+  
+}
+
+
+</script>
+</body>
+</html>

@@ -29,6 +29,7 @@ function ContactBook(){
     
     function CompleteInput(){
       match = GetBestMatch();
+      if(!lValue) return;
       input.value = match;
       div.innerHTML = '<label>'+match+'</label>';
     }

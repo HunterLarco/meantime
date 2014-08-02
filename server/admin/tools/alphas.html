@@ -1,0 +1,35 @@
+<!DOCTYPE>
+<html>
+<head>
+<style type='text/css'>
+body{
+  padding:20px;
+  margin:0px;
+  font-family:arial;
+  font-size:15px;
+}
+</style>
+<meta charset='UTF-8' NAME='Author' CONTENT='Hunter Larco' />
+<title>Alphas List</title>
+<script src='//api.capaching.appspot.com?gateway=/'></script>
+</head>
+<body>
+Loading...
+<script>
+window.onload = function(){
+  var request = new Request('alphas/list');
+  function Callback(event){
+    if(event.list.length == 0){
+      document.body.innerHTML = 'There Are No Alpha Testers';
+      return;
+    }
+    document.body.innerHTML = event.list.join(', ');
+  }
+  function OnError(event){
+    document.body.innerHTML = 'Error Loading Alpha List';
+  }
+  request.post({},Callback,OnError)
+}
+</script>
+</body>
+</html>

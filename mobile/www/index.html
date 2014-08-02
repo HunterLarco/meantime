@@ -8,21 +8,9 @@ body {
     font-family:'lato';
     font-weight:300;
 }
-
-
-div.statusbar{
-  position:fixed;
-  top:0px;
-  left:0px;
-  height:20px;
-  width:100%;
-  background:rgb(255,255,255);
-}
-
-
 div.app{
   position:fixed;
-  top:20px;
+  top:0px;
   left:0px;
   width:100%;
   bottom:0px;
@@ -53,6 +41,13 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
   border:none;
   padding:0px;
   margin:0px;
+}
+div.baroverride{
+  position:fixed;
+  top:-20px;
+  width:100%;
+  height:20px;
+  z-index:1;
 }
 </style>
 <html>
@@ -86,9 +81,6 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
 
 
 
-<div class='statusbar'></div>
-
-
 <div class='app'>
   <div id='appbody' class='swipe swipeFrame'>
     <div class='swipe-wrap'>
@@ -101,6 +93,10 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
       </div>
       <div class='pane'>
         <iframe data-src='./frames/capture.html'></iframe>
+      </div>
+      <div class='pane'>
+        <div class='baroverride' style='background:rgb(102,201,215);'></div>
+        <iframe data-src='./frames/captureoptions.html'></iframe>
       </div>
     </div>
   </div>
@@ -134,7 +130,7 @@ var app = new (function(){
   // on device read
   self.deviceready = OnDeviceReady;
   // forms a request, useful for iframes which don't import Request.js
-  // so that the gateway can be set by the app.
+  // so that the gateway can be set by the self.
   self.request = FormRequest;
   // provides device information
   self.device = new Device();
@@ -146,6 +142,8 @@ var app = new (function(){
   self.console = null;
   
   self.captureVideo = CaptureVideo;
+  // a drop box for data between panes
+  self.panestore = {};
   
   function CaptureVideo(OnSuccess, OnError){
     navigator.device.capture.captureVideo(
@@ -202,6 +200,17 @@ var app = new (function(){
     this.isIOS = function(){return /iPhone|iPad|iPod/i.test(navigator.userAgent);}
     this.isWindows = function(){return /IEMobile/i.test(navigator.userAgent);}
     this.isMobile = function(){return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());}
+    
+    this.getContacts = function(OnSuccess, OnError){
+      navigator.contacts.find(
+        ['displayName','name','phoneNumbers'],
+        OnSuccess,
+        OnError,{
+          filter:'',
+          multiple:true
+        }
+      );
+    }
   }
   
   function FormRequest(url){
@@ -259,7 +268,7 @@ var app = new (function(){
     var lasttap = 0;
     self.console.__frame__.addEventListener('touchstart', function(event){
       if(Date.now()-lasttap < 200)
-        app.console.openclose();
+        self.console.openclose();
       lasttap = Date.now();
     });
   }
@@ -268,17 +277,17 @@ var app = new (function(){
       totalIframes;
   function Notify(appdelegate){
     if(delegates.indexOf(appdelegate) > -1){
-      app.warn('Duplicate App Delegate Loaded: Ignoring');
+      self.warn('Duplicate App Delegate Loaded: Ignoring');
       return;
     }
     delegates.push(appdelegate);
-    app.console.log('App Delegate Loaded: '+delegates.length+' Total');
+    self.console.log('App Delegate Loaded: '+delegates.length+' Total');
     BindTouchEvents(appdelegate);
     NotifyIframes();
   }
   function NotifyIframes(){
     if(delegates.length == totalIframes && deviceReady){
-      app.console.log('All App Delegates Loaded');
+      self.console.log('All App Delegates Loaded');
       for(var i=0,delegate; delegate=delegates[i++];)
         (delegate.onload || new Function())();
     }
@@ -289,7 +298,7 @@ var app = new (function(){
     var lasttap = 0;
     doc.addEventListener('touchstart', function(event){
       if(Date.now()-lasttap < 200 && self.debugging())
-        app.console.openclose();
+        self.console.openclose();
       lasttap = Date.now();
       self.select('appbody').children[0].getEventListeners('touchstart').dispatch(event);
     });
