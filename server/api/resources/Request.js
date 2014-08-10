@@ -18,12 +18,30 @@
           onerror = onerror || new Function(),
           data = data || {};
       
-      function SetupRequest(requestargs){
+      function CreateCorsRequest(method, url){
+        var xhr = !!window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        if ("withCredentials" in xhr) {
+          xhr.open(method, url, true);
+        } else if (typeof XDomainRequest != "undefined") {
+          xhr = new XDomainRequest();
+          xhr.open(method, url);
+        } else {
+          // CORS not supported.
+          xhr = null;
+        }
+        return xhr;
+      }
+      
+      function SetupRequest(requestargs, method, url){
         if(requestargs.callee.caller != RequestJSRetry)
           timeMemory = 0;
         usedfunct = requestargs.callee;
         argumentMemory = requestargs;
-        var xmlhttp = !!window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        var xmlhttp = CreateCorsRequest(method, url);
+        if(!xmlhttp){
+          OnError(new ErrorEvent(-1, 'Cors Not Enabled In This Browser'));
+          return;
+        }
         xmlhttp.onreadystatechange = OnResponse;
         xmlhttp.onerror = OnError;
         return xmlhttp;
@@ -47,15 +65,14 @@
       }
       
       this.post = function(){
-        var xmlhttp = SetupRequest(arguments);
-        xmlhttp.open('POST', gateway + url, true);
+        var xmlhttp = SetupRequest(arguments, 'POST', gateway + url);
+        if(!xmlhttp) return;
         AddSessionToPost(data);
         xmlhttp.send(JSON.stringify(data));
       }
       
       this.get = function(){
-        var xmlhttp = SetupRequest(arguments);
-        xmlhttp.open('GET', gateway + url, true);
+        var xmlhttp = SetupRequest(arguments, 'POST', gateway + url);
         xmlhttp.send();
       }
       

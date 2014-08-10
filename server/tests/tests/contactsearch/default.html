@@ -44,36 +44,72 @@ div.input div label{
 <script src='./ContactBook/ModifiedTrieTree.js'></script>
 <script src='./ContactBook/levenshteindistance.js'></script>
 <script src='./ContactBook/ContactBook.js'></script>
+<script src='./ContactBook/ContactField.js'></script>
 <title>Sealed</title>
 
 
+<p><button id='getall'>Print Contact</button></p>
 
-<div class='input' id='input' placeholder='Enter a name or email or phone number'></div>
-
+<div id='fields'></div>
 
 
 <script type='text/javascript'>
 
+var fields = [];
+
+function AddSearch(){
+  var div = document.createElement('div');
+    var input = document.createElement('div');
+    input.setAttribute('class', 'input');
+    input.setAttribute('placeholder', 'Enter a name or email or phone number');
+    div.appendChild(input);
+    var button = document.createElement('button');
+    button.innerHTML = 'Use';
+    div.appendChild(button);
+  document.getElementById('fields').appendChild(div);
+  
+  var firstTime = true;
+  
+  var field = new ContactField(input, book);
+  fields.push(field);
+  button.addEventListener('click', function(){
+    field.complete();
+    if(!firstTime) return;
+    firstTime = false;
+    AddSearch();
+  });
+  
+  
+}
+
+
+
 window.onload = function(){
-  book = new ContactBook();
-  book.bind(document.getElementById('input'));
+  window.book = new ContactBook();
   book.add({
     lastname: 'Larco',
     firstname: 'Hunter',
-    number: '9788772495',
-    email: 'hjlarco@gmail.com'
+    numbers: [{value:'9788772495'}],
+    emails: [{value:'hjlarco@gmail.com'}]
   });
   book.add({
     lastname: 'Cantrell',
     firstname: 'Alex',
-    number: '9783944143',
-    email: 'alcantrell22@gmail.com'
+    numbers: [{value:'9783944143'}],
+    emails: [{value:'alcantrell22@gmail.com'}]
   });
   book.add({
     lastname: 'Lodi',
     firstname: 'Alex',
-    number: '9785001923',
-    email: 'alodi@yahoo.com'
+    numbers: [{value:'9785001923'}],
+    emails: [{value:'alodi@yahoo.com'}]
+  });
+  AddSearch();
+  
+  document.getElementById('getall').addEventListener('click', function(){
+    for(var i=0,field; field=fields[i++];)
+      if(!!field.contact)
+        console.log(field.contact);
   });
 }
 

@@ -42,13 +42,6 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
   padding:0px;
   margin:0px;
 }
-div.baroverride{
-  position:fixed;
-  top:-20px;
-  width:100%;
-  height:20px;
-  z-index:1;
-}
 </style>
 <html>
 <head>
@@ -68,11 +61,12 @@ div.baroverride{
 <link rel='stylesheet' href='/resources/CSS/console.css'/></link>
 
 <script src='/resources/Scripts/swipe.js'></script>
-<script src='/resources/Scripts/Request.js'></script>
 <script src='/resources/Scripts/Transition.js'></script>
 <script src='/resources/Scripts/TrackEventListeners.js'></script>
 <script src='/resources/Scripts/Console.js'></script>
 <script src='/resources/Scripts/PrettyPrint.js'></script>
+
+<script src='//api.capaching.appspot.com'></script><!-- Request.js -->
 
 <script type="text/javascript" src="cordova.js"></script>
 
@@ -85,18 +79,20 @@ div.baroverride{
   <div id='appbody' class='swipe swipeFrame'>
     <div class='swipe-wrap'>
       <div class='pane'>
-        <iframe data-src='./frames/settings.html'></iframe>
+        <!-- <iframe data-src='./frames/settings.html'></iframe> -->
       </div>
       <div class='pane'>
-        <iframe data-src='./frames/list.html'></iframe>
-        <iframe data-src='./frames/signup.html'></iframe>
+        <!-- <iframe data-src='./frames/list.html'></iframe> -->
+        <!-- <iframe data-src='./frames/signup.html'></iframe> -->
       </div>
       <div class='pane'>
-        <iframe data-src='./frames/capture.html'></iframe>
+        <!-- <iframe data-src='./frames/capture.html'></iframe> -->
       </div>
       <div class='pane'>
-        <div class='baroverride' style='background:rgb(102,201,215);'></div>
-        <iframe data-src='./frames/captureoptions.html'></iframe>
+        <!-- <iframe data-src='./frames/captureoptions1.html'></iframe> -->
+      </div>
+      <div class='pane'>
+        <iframe data-src='./frames/captureoptions2.html'></iframe>
       </div>
     </div>
   </div>
@@ -256,7 +252,7 @@ var app = new (function(){
     var appbody = self.select('appbody');
     self.swipe = Swipe(appbody,{
       continuous: false,
-      startSlide: 1,
+      startSlide: 4,
       callback: function(index, element) {}
       // disableScroll: true
       // stopPropagation: true,
@@ -267,7 +263,7 @@ var app = new (function(){
     self.console = new Console();
     var lasttap = 0;
     self.console.__frame__.addEventListener('touchstart', function(event){
-      if(Date.now()-lasttap < 200)
+      if(Date.now()-lasttap < 300)
         self.console.openclose();
       lasttap = Date.now();
     });
@@ -297,11 +293,11 @@ var app = new (function(){
         doc = getIframeDocument(iframe);
     var lasttap = 0;
     doc.addEventListener('touchstart', function(event){
-      if(Date.now()-lasttap < 200 && self.debugging())
+      if(Date.now()-lasttap < 300 && self.debugging())
         self.console.openclose();
       lasttap = Date.now();
       self.select('appbody').children[0].getEventListeners('touchstart').dispatch(event);
-    });
+    }, true);
     doc.addEventListener('touchend', function(event){
       self.select('appbody').children[0].getEventListeners('touchend').dispatch(event);
     });

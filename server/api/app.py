@@ -79,8 +79,6 @@ class AuthRequestHandler(webapp2.RequestHandler):
 """
 class APIHandler(AuthRequestHandler):
   def route(self, *args):
-    import logging
-    logging.error(self.status)
     if self.status == self.SESSION_DOESNT_EXIST:
       self.RunGuest(*args)
     elif self.status == self.USER_DOESNT_EXIST:
@@ -109,14 +107,21 @@ class APIHandler(AuthRequestHandler):
 
   def RunAuthUser(self, dictionary, method, additionalPayload={}):
     api.delegate(self, dictionary, method, api.Permissions.AuthUser, additionalPayload=additionalPayload)
-      
-  def post(self, *args):
+    
+  def setHeaders(self):
     self.response.headers['Access-Control-Allow-Origin'] = '*'
-    self.response.headers['Access-Control-Allow-Methods'] = 'PUT'
+    self.response.headers['Access-Control-Allow-Methods'] = 'PUT, OPTIONS'
+    self.response.headers['Access-Control-Allow-Credentials'] = 'true'
+    self.response.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+    
+  def options(self, *args):  
+    self.response.headers['Content-Type'] = 'application/javascript'
+    self.setHeaders();
+  def post(self, *args):
+    self.setHeaders();
     self.route(*args)
   def get(self, dictionary, method):
-    self.response.headers['Access-Control-Allow-Origin'] = '*'
-    self.response.headers['Access-Control-Allow-Methods'] = 'PUT'
+    self.setHeaders();
     self.RunGuest(dictionary, method)
 
 

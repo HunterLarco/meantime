@@ -283,6 +283,10 @@ function Swipe(container, options) {
       // attach touchmove and touchend listeners
       element.addEventListener('touchmove', this, false);
       element.addEventListener('touchend', this, false);
+      
+      // ADAPTED BY HUNTER LARCO
+      if(!!options && !!options.ontouchstart) options.ontouchstart(event);
+      // END ADAPTATION
 
     },
     move: function(event) {

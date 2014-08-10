@@ -162,6 +162,9 @@ var delegate = new (function(){
     if(!currentCapture) return;
     app.panestore.capture = currentCapture;
     currentCapture = null;
+    setTimeout(function(){
+      frame.setAttribute('class', 'buttons');
+    },200);
     app.swipe.next();
     app.swipe.lock();
   }

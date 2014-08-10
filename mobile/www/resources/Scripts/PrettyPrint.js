@@ -7,6 +7,10 @@ function PrettyPrint(data){
         innerHTML += tabs+key+' : \<label class="nl">null\</label>\<br/>';
         continue;
       }
+      if(object[key] == undefined){
+        innerHTML += tabs+key+' : \<label class="nl">undefined\</label>\<br/>';
+        continue;
+      }
       switch(typeof object[key]){
         case 'string':
           innerHTML += tabs+key+' : \<label class="s">'+object[key]+'\</label>\<br/>';
@@ -45,6 +49,8 @@ function PrettyPrint(data){
     recurse(data, singletab)
     return innerHTML+'}';
   }else{
+    if(data == null) return '\<label class="nl">null\</label>\<br/>';
+    if(data == undefined) return '\<label class="nl">undefined\</label>\<br/>';
     switch(typeof data){
       case 'string':
         return '\<label class="s">'+data+'\</label>\<br/>';

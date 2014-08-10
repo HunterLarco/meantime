@@ -16,9 +16,8 @@ import response
 #     KFE2.API.Engine.delegate(self, dictionary, method, API_HANDLERS_MAP)
 # app = ('/admin/([^/]+)/([^/]+).*', AdminAPIAccess)
 def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP, additionalPayload={}):
-  # set the response as a JSON <or javascript>
-  Webapp2Instance.response.headers['Content-Type'] = "application/javascript"
   ### Load the dictionary and the method in that dictionary from the Permissions Map ###
+  Webapp2Instance.response.headers['Content-Type'] = "application/javascript"
   # if either does not exist throw an error
   dictionary = getattr(API_HANDLERS_MAP, DictionaryName, None)
   if dictionary != None:
