@@ -59,6 +59,8 @@
               callback(data);
             }
           }else if(xmlhttp.status==500){
+            if(!!window.app && !!window.app.console)
+              window.app.console.error('XMLHTTP STATUS 500');
             onerror(new ErrorEvent(-1, 'Unknown Server Error'));
           };
         };
@@ -76,8 +78,8 @@
         xmlhttp.send();
       }
       
-      function OnError(){
-        onerror(new ErrorEvent(-1, 'Request Error!'));
+      function OnError(event){
+        onerror(new ErrorEvent(-2, 'Request Error!'));
       }
       
       function RequestJSRetry(){
@@ -184,6 +186,45 @@
   
   
   
+  
+  
+  
+  Request.upload = function(file, data, OnError, OnSuccess){
+    if(!FileTransfer) return OnError({
+      code: -1,
+      message: 'FileTransfer dependancy not met'
+    });
+    if(!file) return OnError({
+      code: -1,
+      message: 'a file must be provided'
+    });
+    
+    data.uid = Request.getUID();
+    
+    var request = new Request('upload/geturl')
+    request.post({}, RecievedUploadURL, OnError);
+    
+    function RecievedUploadURL(event){
+      var ft = new FileTransfer(),
+        path = file.fullPath,
+        filename = file.name;
+      ft.upload(
+        path,
+        event.url,
+        OnSuccess,
+        function(event) {
+          OnError({
+            code: -1,
+            message: 'Unknown FileTransfer Error'
+          });
+        },{
+          fileName: filename,
+          params: data
+        }
+      );
+    }
+    
+  }
   
   
   

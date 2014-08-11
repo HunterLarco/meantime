@@ -10,19 +10,17 @@ function ModifiedTrieTree(){
   
   
   function GetSuggestions(item){
-    return _GetSuggestions(root, (item || '').toLowerCase(), {});
+    return _GetSuggestions(root, (item || '').toLowerCase());
   }
-  function _GetSuggestions(node, item, usedvalues){
+  function _GetSuggestions(node, item){
     if(item.length == 0){
       var array = [];
-      if(node.end && !usedvalues[node.value]){
+      if(node.end)
         array.push(node.value);
-        usedvalues[node.value] = true;
-      }
       for(var letter in node){
         if(letter == 'end' || letter == 'value')
           continue;
-        array = array.concat(_GetSuggestions(node[letter], item, usedvalues));
+        array = array.concat(_GetSuggestions(node[letter], item));
       }
       return array;
     }else{
@@ -30,18 +28,36 @@ function ModifiedTrieTree(){
           rest = item.substring(1);
       if(!node.hasOwnProperty(letter))
         return [];
-      return _GetSuggestions(node[letter], rest, usedvalues);
+      return _GetSuggestions(node[letter], rest);
     }
   }
   
   
   function Add(contact){
-    var full = contact.firstname+' '+contact.lastname;
-    _Add(root, contact.number, full+' ('+contact.number.slice(0,3)+' '+contact.number.slice(3,6)+'-'+contact.number.slice(6,10)+')');
-    _Add(root, contact.lastname, full);
-    _Add(root, contact.firstname, full);
-    _Add(root, contact.email, full+' <'+contact.email+'>');
-    _Add(root, full, full);
+    var full = (!!contact.firstname?contact.firstname:'')+' '+(!!contact.lastname?contact.lastname:'');
+    
+    if(!!contact.lastname)
+      _Add(root, contact.lastname, {alias:full,contact:contact,fullname:full});
+    
+    if(!!contact.firstname)
+      _Add(root, contact.firstname, {alias:full,contact:contact,fullname:full});
+    
+    _Add(root, full, {alias:full,contact:contact,fullname:full});
+    
+    if(!!contact.emails)
+      for(var i=0,email; email=contact.emails[i++];)
+        _Add(root, email.value, {alias:full+' <'+email.value+'>',contact:contact,fullname:full});
+    
+    if(!!contact.numbers)
+      for(var i=0,number; number=contact.numbers[i++];){
+        var formatted = number.value.slice(0,3)+' '+number.value.slice(3,6)+'-'+number.value.slice(6,10),
+            spaces =    number.value.slice(0,3)+' '+number.value.slice(3,6)+' '+number.value.slice(6,10);
+        _Add(root, number.value,            {alias:full+' ('+formatted+')',contact:contact,fullname:full});
+        _Add(root, full+' ('+formatted+')', {alias:full+' ('+formatted+')',contact:contact,fullname:full});
+        _Add(root, full+' ('+spaces+')',    {alias:full+' ('+formatted+')',contact:contact,fullname:full});
+        _Add(root, formatted,               {alias:full+' ('+formatted+')',contact:contact,fullname:full});
+        _Add(root, spaces,                  {alias:full+' ('+spaces+')',   contact:contact,fullname:full});
+      }
   }
   function _Add(node, item, value){
     if(node == root)

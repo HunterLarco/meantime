@@ -137,7 +137,7 @@ class MainHandler(webapp2.RequestHandler):
   def get(self):
     gateway = self.request.get('gateway');
     template_values = {
-      'gateway': '//api.capaching.appspot.com/' if gateway == None or gateway == '' else gateway
+      'gateway': 'http://api.capaching.appspot.com/' if gateway == None or gateway == '' else gateway
     }
     self.response.headers['Content-Type'] = "application/javascript"
     path = os.path.join(os.path.dirname(__file__), 'resources/Request.js')

@@ -145,7 +145,7 @@ var SignupForm = new (function(){
   
   function OnError(event){
     if(event.code == 200)
-      app.alert('Your email address is already in use')
+      app.alert('Your email address is already in use');
     else
       app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
     Stop();

@@ -142,6 +142,10 @@ img.preload{
 
 function Capture(files){
   var self = this;
+  
+  self.get = function(){
+    return files[0];
+  }
 }
 
 

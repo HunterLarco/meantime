@@ -40,6 +40,10 @@ div.check{
   top:50%;
   background:url(/images/check.png) no-repeat;
   background-size:30px 30px;
+  transition:all 400ms ease;
+}
+div.buttons.captured div.check{
+  background-image:url(/images/check_hover.png);
 }
 div.cancel{
   position:absolute;
@@ -51,6 +55,10 @@ div.cancel{
   top:50%;
   background:url(/images/cancel.png) no-repeat;
   background-size:30px 30px;
+  transition:all 400ms ease;
+}
+div.buttons.captured div.cancel{
+  background-image:url(/images/cancel_hover.png);
 }
 
 div.image{
@@ -92,12 +100,17 @@ div.options div.frame{
   overflow-x:hidden;
   overflow-y:scroll;
 }
+
+
+
+img.preload{
+  display:none;
+}
 </style>
 <html>
 <head>
 <meta charset="utf-8" />
 <title>Sealed | Image Capture</title>
-<script src='/resources/Scripts/fastclick.js'></script>
 <link rel="stylesheet" href="/resources/CSS/resets.css"></link>
 <link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
 <link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
@@ -106,11 +119,16 @@ div.options div.frame{
 </head>
 <body>
 
+<div class='statusbar'></div>
+
+<img class='preload' src='/images/close_hover.png'/>
+<img class='preload' src='/images/check_hover.png'/>
+
 
 <div class='image'>
   <img src='http://img1.cookinglight.timeinc.net/sites/default/files/image/2005/05/0505p116-white-birthday-cake-l.jpg'/>
 </div>
-<div class='buttons'>
+<div class='buttons' id='frame'>
   <div class='check' id='imagecheck'></div>
   <div class='cancel' id='imagecancel'></div>
   <div class='buttonframe'>
@@ -122,35 +140,77 @@ div.options div.frame{
 <script type='text/javascript'>
 
 
+function Capture(files){
+  var self = this;
+  
+  self.get = function(){
+    return files[0];
+  }
+}
+
+
+
 var delegate = new (function(){
   var self = this;
   
   self.onload = OnLoad;
+  
+  var currentCapture;
   
   function OnLoad(){
     FastClick.attach(document.body);
     BindCaptureButtons();
   }
   
-  function OnCameraSuccess(files){
-    app.console.log('Video Capture Success');
-    locked = false;
+  function MoveToOptionsPane(){
+    if(!currentCapture) return;
+    app.panestore.capture = currentCapture;
+    currentCapture = null;
+    setTimeout(function(){
+      frame.setAttribute('class', 'buttons');
+    },200);
+    app.swipe.next();
+    app.swipe.lock();
   }
   
-  function OnCameraError(event){
-    app.console.warn('Video Capture Failed: '+(event.code==3?'Use Canceled Operation':'Unknown Reason'));
-    locked = false;
+  function DeleteCapture(){
+    currentCapture = null;
+    frame.setAttribute('class', 'buttons');
   }
   
   function BindCaptureButtons(){
-    var check        = document.getElementById('imagecheck'),
+    var frame        = document.getElementById('frame'),
+        check        = document.getElementById('imagecheck'),
         cancel       = document.getElementById('imagecancel'),
         recordbutton = document.getElementById('recordbutton');
+    
+    cancel.addEventListener('click', DeleteCapture);
+    check.addEventListener('click', MoveToOptionsPane);
     
     var running = false,
         locked = false;
     
-    recordbutton.parentElement.addEventListener('click', function(){
+    function OnCameraSuccess(files){
+      app.console.log('Video Capture Success');
+      currentCapture = new Capture(files);
+      setTimeout(function(){
+        frame.setAttribute('class', 'buttons captured');
+        locked = false;
+        OnRecord();
+      }, 350);
+    }
+
+    function OnCameraError(event){
+      app.console.warn('Video Capture Failed: '+(event.code==3?'User Canceled Operation':'Unknown Reason'));
+      setTimeout(function(){
+        locked = false;
+        OnRecord();
+      }, 350);
+    }
+    
+    recordbutton.parentElement.addEventListener('click', OnRecord);
+    
+    function OnRecord(){
       if(locked) return;
       locked = true;
       if(running){
@@ -170,7 +230,7 @@ var delegate = new (function(){
         });
       }
       running = !running;
-    });
+    }
   }
 
 })();

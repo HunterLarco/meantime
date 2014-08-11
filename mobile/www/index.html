@@ -66,7 +66,7 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
 <script src='/resources/Scripts/Console.js'></script>
 <script src='/resources/Scripts/PrettyPrint.js'></script>
 
-<script src='//api.capaching.appspot.com'></script><!-- Request.js -->
+<script src='http://api.capaching.appspot.com'></script><!-- Request.js -->
 
 <script type="text/javascript" src="cordova.js"></script>
 
@@ -75,21 +75,24 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
 
 
 
+
+
+
 <div class='app'>
   <div id='appbody' class='swipe swipeFrame'>
     <div class='swipe-wrap'>
       <div class='pane'>
-        <!-- <iframe data-src='./frames/settings.html'></iframe> -->
+        <iframe data-src='./frames/settings.html'></iframe>
       </div>
       <div class='pane'>
-        <!-- <iframe data-src='./frames/list.html'></iframe> -->
-        <!-- <iframe data-src='./frames/signup.html'></iframe> -->
+        <iframe data-src='./frames/list.html'></iframe>
+        <iframe data-src='./frames/signup.html'></iframe>
       </div>
       <div class='pane'>
-        <!-- <iframe data-src='./frames/capture.html'></iframe> -->
+        <iframe data-src='./frames/capture.html'></iframe>
       </div>
       <div class='pane'>
-        <!-- <iframe data-src='./frames/captureoptions1.html'></iframe> -->
+        <iframe data-src='./frames/captureoptions1.html'></iframe>
       </div>
       <div class='pane'>
         <iframe data-src='./frames/captureoptions2.html'></iframe>
@@ -128,6 +131,7 @@ var app = new (function(){
   // forms a request, useful for iframes which don't import Request.js
   // so that the gateway can be set by the self.
   self.request = FormRequest;
+  self.request.upload = Request.Upload;
   // provides device information
   self.device = new Device();
   // the swip object (set when bound on load function)
@@ -237,6 +241,7 @@ var app = new (function(){
     LoadIframes();
     LoadLibraries();
     LoadConsole();
+    CheckLogin();
   }
   function LoadIframes(){
     var appbody = self.select('appbody'),
@@ -252,7 +257,7 @@ var app = new (function(){
     var appbody = self.select('appbody');
     self.swipe = Swipe(appbody,{
       continuous: false,
-      startSlide: 4,
+      startSlide: 1,
       callback: function(index, element) {}
       // disableScroll: true
       // stopPropagation: true,
@@ -267,6 +272,14 @@ var app = new (function(){
         self.console.openclose();
       lasttap = Date.now();
     });
+  }
+  function CheckLogin(){
+    var uid = Request.getUID();
+    if(!uid){
+      self.console.log('USER: None');
+      return;
+    };
+    self.console.log('USER: \''+uid+'\'');
   }
   
   var delegates = [],

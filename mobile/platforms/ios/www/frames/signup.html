@@ -107,6 +107,7 @@ div.logo div.text{
 <body>
 
 
+<div class='statusbar'></div>
 
 <div class='logo'>
   <canvas id='signuplogo' class='image' width='512' height='512'></canvas>
@@ -114,8 +115,8 @@ div.logo div.text{
   <div class='text'>sealed</div>
 </div>
 <div class='form'>
-  <div class='input'><input type='text' placeholder='first name'/></div>
-  <div class='input'><input type='text' placeholder='last name'/></div>
+  <div class='input'><input type='text' placeholder='full name'/></div>
+  <div class='input'><input type='text' placeholder='mobile number'/></div>
   <div class='input'><input type='email' id='signupemail' placeholder='email address'/></div>
   <div class='input'><input type='password' id='signuppassword' placeholder='password'/></div>
   <div class='button' id='signupbutton'><label>sign up</label><img src='/images/loading.gif'/></div>
@@ -144,7 +145,7 @@ var SignupForm = new (function(){
   
   function OnError(event){
     if(event.code == 200)
-      app.alert('Your email address is already in use')
+      app.alert('Your email address is already in use');
     else
       app.alert("We're sorry, an unexpected error occured. Please Try Again", "Oh No!");
     Stop();
@@ -294,6 +295,7 @@ var delegate = new (function(){
       fade: true
     });
     app.swipe.unlock();
+    app.swipe.lockSlide(3);
   }
   
   function OnLoad(){
