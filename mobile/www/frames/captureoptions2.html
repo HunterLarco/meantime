@@ -688,7 +688,6 @@ var delegate = new (function(){
         HighlightQuickSelectDot(index);
         dates.quick.value = index;
         dates.quick.date = ConvertQuickToDate();
-        app.console.log(FormatDate(dates.quick.date))
       },
       ontouchstart: HighlightQuickSelect,
       stopPropagation: true
@@ -742,7 +741,22 @@ var delegate = new (function(){
       return;
     }
     var timestamp = Math.round(date/1000);
-    
+    app.request.upload(app.panestore.capture.get(), {
+      timestamp: timestamp,
+      contacts: app.panestore.recipients
+    }, OnUploadError, OnUploadSuccess);
+  }
+  
+  
+  function OnUploadError(){
+    app.alert('Upload Failed', 'Uh Oh!');
+    button.setAttribute('class', 'button');
+  }
+  
+  
+  function OnUploadSuccess(){
+    app.alert('Upload Success', 'Yay!');
+    button.setAttribute('class', 'button');
   }
   
   

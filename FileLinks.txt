@@ -1,7 +1,0 @@
-SymLink
-=======
-/server/api/lib -> /server/admin/lib
-How To Create
-=============
-cd /server/admin
-sudo ln -s ../api/lib lib
