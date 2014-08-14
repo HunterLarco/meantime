@@ -108,4 +108,7 @@
     <gap:splash gap:platform="ios" height="768" src="sysimages/screen/ios/screen-ipad-landscape.png" width="1024" />
     <gap:splash gap:platform="winphone" src="sysimages/screen/windows-phone/screen-portrait.jpg" />
     <access origin="*" />
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
+    </feature>
 </widget>

@@ -48,28 +48,32 @@ def loaduser(funct):
 class Admin:
   class alphas:
     def list(self, payload):
-      from ..testing import alphas
+      from ..testing.alphas import emails
       return response.reply({
-        'list': alphas.list()
+        'list': emails.all()
       })
+    @require('email')
+    def remove(self, payload):
+      from ..testing.alphas import emails
+      emails.remove(payload['email'])
+      return response.reply()
       
   class shards:
     @require('name')
     def profile(self, payload):
-      from .. import shards
-      data = shards.getOrCreate(payload['name']).profile()
-      return response.reply(data);
+      from ..shards import Integer
+      return response.reply(Integer.getOrCreate(payload['name']).profile());
     
     @require('name')
     def increment(self, payload):
-      from .. import shards
-      shards.getOrCreate(payload['name']).add(1)
+      from ..shards import Integer
+      Integer.getOrCreate(payload['name']).run('add', 1)
     
     @require('name')
     def get(self, payload):
-      from .. import shards
+      from ..shards import Integer
       return response.reply({
-        'value': shards.getOrCreate(payload['name']).getValue()
+        'value': Integer.getOrCreate(payload['name']).getValue()
       })
 
 
@@ -89,9 +93,9 @@ class Guest:
   class alpha:
     @require('email')
     def signup(self, payload):
-      from ..testing import alphas
-      status = alphas.create(payload['email'])
-      if status == alphas.EMAIL_IS_USED:
+      from ..testing.alphas import emails
+      status = emails.add(payload['email'])
+      if status == emails.EMAIL_IS_USED:
         return response.throw(200)
   
   

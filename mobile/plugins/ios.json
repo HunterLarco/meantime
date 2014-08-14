@@ -31,6 +31,10 @@
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -86,6 +90,9 @@
         },
         "org.apache.cordova.file-transfer": {
             "PACKAGE_NAME": "com.hunterlarco.giftie"
+        },
+        "org.apache.cordova.console": {
+            "PACKAGE_NAME": "com.hunterlarco.sealed"
         }
     },
     "dependent_plugins": {

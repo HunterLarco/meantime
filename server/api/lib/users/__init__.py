@@ -17,6 +17,75 @@ SUCCESS = 'U5'
 USER_LOCKED = 'U6'
 
 
+
+
+
+
+
+
+
+
+"""
+' PURPOSE
+'   Extended by classes to use the User framework written here
+"""
+class AbstractUser(ndb.Model):
+  
+  """
+  ' PURPOSE
+  '   Private Data - The key of the corresponding User entity
+  """
+  parentkey = ndb.KeyProperty(indexed=False)
+  
+  
+  """
+  ' PURPOSE
+  '   Returns the email of this user
+  ' PARAMETERS
+  '   None
+  ' RETURNS
+  '   The email
+  """
+  def email(self):
+    return self.parent().email
+  
+  
+  """
+  ' PURPOSE
+  '   Returns the parent entity (User entity)
+  ' PARAMETERS
+  '   None
+  ' RETURNS
+  '   Nothing
+  """
+  def parent(self):
+    return self.parentkey.get()
+  
+  
+  """
+  ' PURPOSE
+  '   Changes the password of the current user
+  ' PARAMETERS
+  '   <String password>
+  ' RETURNS
+  '   Nothing
+  """
+  def setPassword(self, password):
+    password = hashPassword(password)
+    parent = self.parent()
+    parent.UID = formUID(self.email(), password)
+    parent.put()
+
+
+
+
+
+
+
+
+
+
+
 """
 ' PURPOSE
 '   The User Model (entity)
@@ -34,6 +103,10 @@ class User(ndb.Model):
   brute_force_record = ndb.PickleProperty(indexed=False)
   locked = ndb.BooleanProperty(indexed=False)
   entity_key = ndb.KeyProperty(indexed=False)
+  
+  def delete(self):
+    self.entity_key.delete()
+    self.key.delete()
 
 
 """
@@ -190,7 +263,8 @@ def sendLockedEmail(user):
 ' RETURNS
 '   A dict containing the new user UID upon success
 ' PUTS
-'   1 - to save the created entity
+'   2 - to save the created entity
+'     - to save data to the linked entity
 """
 def create(email, password, entity=None):
   user = getUserByEmail(email);
@@ -207,6 +281,9 @@ def create(email, password, entity=None):
   user.locked = False
   user.entity_key = entity.key
   user.put()
+  
+  entity.parentkey = user.key
+  entity.put()
     
   cookieData = sessions.create(user.UID)
   

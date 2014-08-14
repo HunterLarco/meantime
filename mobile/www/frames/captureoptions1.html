@@ -393,7 +393,7 @@ var recentlist = new (function(){
     var arr = [];
     for(var i=0,contact; contact=contacts[i++];)
       if(contact.checkbox.checked)
-        arr.push(contact.option);
+        arr.push(contact.contact);
     return arr;
   }
   
@@ -420,14 +420,14 @@ var recentlist = new (function(){
         clearFix.setAttribute('class', 'clearFix');
         option.appendChild(clearFix);
     frame.insertBefore(option, frame.firstChild);
-    contacts.push({option:option,checkbox:inputch});
+    contacts.push({option:option,checkbox:inputch,contact:recipient});
     inputch.addEventListener('click',delegate.validate);
   }
   
   function Bind(_frame){
     frame = _frame;
     for(var i=0; i<15; i++)
-      CreateNewRecipient({name:'Alex Cantrell'});
+      CreateNewRecipient({name:'Alex Cantrell',phones:['9788772495']});
   }
   
 })();

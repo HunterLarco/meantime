@@ -740,15 +740,18 @@ var delegate = new (function(){
       app.alert('Something went terribly wrong!', 'Uh Oh!');
       return;
     }
-    var timestamp = Math.round(date/1000);
-    app.request.upload(app.panestore.capture.get(), {
-      timestamp: timestamp,
-      contacts: app.panestore.recipients
-    }, OnUploadError, OnUploadSuccess);
+    var timestamp = Math.round(date.getTime()/1000);
+    setTimeout(function(){
+      var data = {
+        timestamp: timestamp,
+        contacts: app.panestore.recipients
+      };
+      app.request.upload(app.panestore.capture.get(), data, OnUploadError, OnUploadSuccess);
+    }, 0);
   }
   
   
-  function OnUploadError(){
+  function OnUploadError(event){
     app.alert('Upload Failed', 'Uh Oh!');
     button.setAttribute('class', 'button');
   }

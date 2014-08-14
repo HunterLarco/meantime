@@ -49,6 +49,7 @@
 		3269846FCD3144A4AF4093FA /* CDVCapture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 17E3BAF6DE4F46C387A6F485 /* CDVCapture.bundle */; };
 		377B32C565D84671A9275C85 /* CDVSound.m in Sources */ = {isa = PBXBuildFile; fileRef = BE3D3E28A80949259AE6268E /* CDVSound.m */; };
 		1DAF4B3C311E402D85B344A8 /* CDVFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D26404B7FDF462FA1C0B081 /* CDVFileTransfer.m */; };
+		44508C8E732449CE81F9BCBC /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 870AC80471064CBCBD1B2127 /* CDVLogger.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,8 @@
 		149667AF74D549D5BD8B285A /* CDVSound.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSound.h"; path = "org.apache.cordova.media/CDVSound.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		1D26404B7FDF462FA1C0B081 /* CDVFileTransfer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVFileTransfer.m"; path = "org.apache.cordova.file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		87C882E3F0664C829992B510 /* CDVFileTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVFileTransfer.h"; path = "org.apache.cordova.file-transfer/CDVFileTransfer.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		870AC80471064CBCBD1B2127 /* CDVLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVLogger.m"; path = "org.apache.cordova.console/CDVLogger.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		2890B6849D5A46F190B48991 /* CDVLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVLogger.h"; path = "org.apache.cordova.console/CDVLogger.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,6 +279,8 @@
 				149667AF74D549D5BD8B285A /* CDVSound.h */,
 				1D26404B7FDF462FA1C0B081 /* CDVFileTransfer.m */,
 				87C882E3F0664C829992B510 /* CDVFileTransfer.h */,
+				870AC80471064CBCBD1B2127 /* CDVLogger.m */,
+				2890B6849D5A46F190B48991 /* CDVLogger.h */,
 			);
 			name = Plugins;
 			path = "giftie/Plugins";
@@ -480,6 +485,7 @@
 				AB49EFE52BDC40A994E14D02 /* CDVCapture.m in Sources */,
 				377B32C565D84671A9275C85 /* CDVSound.m in Sources */,
 				1DAF4B3C311E402D85B344A8 /* CDVFileTransfer.m in Sources */,
+				44508C8E732449CE81F9BCBC /* CDVLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

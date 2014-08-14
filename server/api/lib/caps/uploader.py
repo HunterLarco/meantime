@@ -28,8 +28,14 @@ class DownloadHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
   def post(self):
-    content_file = self.get_uploads()[0]
     
+    import logging
+    logging.error('THE DAMN THING UPLOADED, HUNTER!')
+    
+    logging.error(self.get_uploads())
+    
+    content_file = self.get_uploads()[0]
+  
     from .. import users
     user = users.get(self.request.get('uid'))
     

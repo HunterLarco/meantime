@@ -54,7 +54,6 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
 
 <link rel="stylesheet" href="/resources/CSS/resets.css"></link>
 <link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
-<link rel='stylesheet' href='/resources/CSS/secretcode.css'/></link>
 <link rel='stylesheet' href='/resources/CSS/console.css'/></link>
 <link rel='stylesheet' href='/resources/CSS/prettyprint.css'/></link>
 
@@ -66,7 +65,8 @@ div.swipeFrame div.swipe-wrap div.pane iframe{
 <script src='/resources/Scripts/Console.js'></script>
 <script src='/resources/Scripts/PrettyPrint.js'></script>
 
-<script src='http://api.capaching.appspot.com'></script><!-- Request.js -->
+<!-- <script src='http://api.capaching.appspot.com'></script><!-- Request.js --> -->
+<script src='http://192.168.1.19:8092/'></script><!-- Request.js Dev Server -->
 
 <script type="text/javascript" src="cordova.js"></script>
 
@@ -113,7 +113,10 @@ var app = new (function(){
   
   var self = this;
   
-  self.__gateway__ = 'http://192.168.1.19:8092/api/';
+  var locals = {
+    gateway: 'http://192.168.1.19:8092/',
+    isLocal: true
+  }
   
   // pops up a native alert
   self.alert = Alert;
@@ -131,7 +134,7 @@ var app = new (function(){
   // forms a request, useful for iframes which don't import Request.js
   // so that the gateway can be set by the self.
   self.request = FormRequest;
-  self.request.upload = Request.Upload;
+  self.request.upload = Request.upload;
   // provides device information
   self.device = new Device();
   // the swip object (set when bound on load function)
@@ -237,11 +240,14 @@ var app = new (function(){
   }
   
   function Load(){
-    LoadSwiping();
     LoadIframes();
-    LoadLibraries();
+    LoadSwiping();
     LoadConsole();
+    CheckLocal();
     CheckLogin();
+  }
+  function CheckLocal(){
+    if(locals.isLocal) Request.loadGateway(locals.gateway);
   }
   function LoadIframes(){
     var appbody = self.select('appbody'),
@@ -249,9 +255,6 @@ var app = new (function(){
     totalIframes = iframes.length;
     for(var i=0,iframe; iframe=iframes[i++];)
       iframe.src = iframe.getAttribute('data-src');
-  }
-  function LoadLibraries(){
-    Request.loadGateway(self.__gateway__);
   }
   function LoadSwiping(){
     var appbody = self.select('appbody');
@@ -335,5 +338,6 @@ document.addEventListener('deviceready', app.deviceready, false);
 window.onload = app.load;
 
 </script>
+<script src=''></script>
 </body>
 </html>

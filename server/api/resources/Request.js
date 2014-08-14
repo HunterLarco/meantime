@@ -135,32 +135,54 @@
   
   
   
-  
-  
-  var storage = window.localStorage;
+  var cookies = {
+  	get:function(c_name){
+  		var i,x,y,ARRcookies=document.cookie.split(";");
+  		for (i=0;i<ARRcookies.length;i++)
+  		  {
+  		  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+  		  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+  		  x=x.replace(/^\s+|\s+$/g,"");
+  		  if (x==c_name)
+  		    {
+  		    return unescape(y);
+  		    };
+  		  };
+  	},
+  	set:function(c_name,value,exdays){
+  		var exdays = exdays || 365;
+  		var exdate=new Date();
+  		exdate.setDate(exdate.getDate() + exdays);
+  		var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString()+"; path=/;");
+  		document.cookie=c_name + "=" + c_value;
+  	},
+  	delete:function(c_name){
+  		this.set(c_name,"",-1);
+  	}
+  };
   
   var uid, ulid, sid;
   LoadSession();
   
   function LoadSession(){
-    uid = storage.getItem('uid');
-    ulid = storage.getItem('ulid');
-    sid = storage.getItem('sid');
+    uid = cookies.get('uid');
+    ulid = cookies.get('ulid');
+    sid = cookies.get('sid');
   }
   
   function CheckNewSession(data){
     if(!data['setsession']) return;
-    if(!!data.session.sid){
+    if(!!data.session.uid){
       uid = data['session']['uid'];
-      storage.setItem('uid', uid);
+      cookies.set('uid',uid,30);
     }
     if(!!data.session.ulid){
        ulid = data['session']['ulid'];
-       storage.setItem('ulid', ulid);
+       cookies.set('ulid',ulid,30);
      }
-    if(!!data.session.uid){
+    if(!!data.session.sid){
       sid = data['session']['sid'];
-      storage.setItem('sid', sid);
+      cookies.set('sid',sid,30);
     }
   }
   
@@ -206,13 +228,17 @@
     
     function RecievedUploadURL(event){
       var ft = new FileTransfer(),
-        path = file.fullPath,
-        filename = file.name;
+          path = file.fullPath,
+          filename = file.name;
       ft.upload(
         path,
-        event.url,
-        OnSuccess,
+        encodeURI(event.url),
+        function(event){
+          app.console.log('Upload Success');
+          OnSuccess(event);
+        },
         function(event) {
+          app.console.warn('Upload Failed');
           OnError({
             code: -1,
             message: 'Unknown FileTransfer Error'
@@ -222,6 +248,7 @@
           params: data
         }
       );
+      app.console.log('Upload Sent')
     }
     
   }

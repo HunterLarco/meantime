@@ -25,6 +25,8 @@ handlers:
 # api handlers
 - url: /([^/]+)/([^/]+)
   script: app.app
+- url: /api/([^/]+)/([^/]+)
+  script: app.app
 
 - url: .*
   static_files: urls.html
