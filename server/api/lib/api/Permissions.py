@@ -97,6 +97,26 @@ class Guest:
       status = emails.add(payload['email'])
       if status == emails.EMAIL_IS_USED:
         return response.throw(200)
+    
+    @require('email', 'password')
+    def login(self, payload):
+      from .. import users
+      from ..testing.alphas.users import AlphaUser
+      user = AlphaUser.login(
+        payload['email'],
+        payload['password']
+      )
+      if user == AlphaUser.USER_DOESNT_EXIST:
+        return response.throw(203)
+      elif user == AlphaUser.INCORRECT_LOGIN:
+        return response.throw(201)
+      elif user == AlphaUser.BRUTE_SUSPECTED:
+        return response.throw(202)
+      else:
+        return response.reply({
+          'setsession': True,
+          'session': user.session.toDict()
+        })
   
   
   class user:
@@ -172,12 +192,14 @@ class AuthUser:
 
 
 
+class PassLockedUser:
+  pass
 
 
 
 
 
-class LockedUser:
+class SessionLockedUser:
   class user:
     @require('email', 'password')
     def login(self, payload):

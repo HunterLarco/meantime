@@ -2,7 +2,6 @@
 ' Error Constants
 """
 SESSION_DOESNT_EXIST = 'S0'
-INCORRECT_SID = 'S1'
 WATCHING = 'S2'
 HACKER_FOUND = 'S3'
 
@@ -22,6 +21,7 @@ class Session(ndb.Model):
   SID = ndb.StringProperty(indexed=False)
   watching = ndb.BooleanProperty(indexed=False)
   watchingTokens = ndb.PickleProperty(indexed=False)
+  user_key = ndb.KeyProperty(indexed=False)
 
 
 """
@@ -36,7 +36,7 @@ class Session(ndb.Model):
 '   This uses ancestor keys thus it has strong consistency
 """
 def getSessionByTokens(UID, ULID):
-  ancestor_key = ndb.Key(Session, 'Entity', 'UID', UID, 'ULID', ULID)
+  ancestor_key = ndb.Key('UID', UID, 'ULID', ULID)
   return Session.query(ancestor=ancestor_key).get()
 
 
@@ -101,14 +101,14 @@ def formSID():
 ' PARAMETERS
 '   <String UID>
 ' RETURNS
-'   A dict containing a SID, ULID, UID
+'   <SessionObject session>
 ' PUTS
 '   1 - after creating the session
 """
-def create(UID):
+def create(UID, userkey):
   ULID = formULID()['ULID']
   
-  session = Session(parent=ndb.Key(Session, 'Entity', 'UID', UID, 'ULID', ULID))
+  session = Session(parent=ndb.Key('UID', UID, 'ULID', ULID))
   
   SID_Data = formSID()
   SID = SID_Data['SID']
@@ -118,39 +118,10 @@ def create(UID):
   session.expiration = expiration
   session.watchingTokens = []
   session.watching = False
+  session.user_key = userkey
   session.put()
   
-  return dict(
-    SID = session.SID,
-    ULID = ULID,
-    UID = UID
-  )
-
-
-"""
-' PURPOSE
-'   Watches a session based on its uid and ulid
-' PARAMETERS
-'   <String UID>
-'   <String ULID>
-' ERRORS
-'   SESSION_DOESNT_EXIST
-' RETURNS
-'   Nothing
-' PUTS
-'   1 - after setting the watching key to true
-"""
-def watch(UID, ULID):
-  if UID == None or ULID == None:
-    return SESSION_DOESNT_EXIST
-  
-  session = getSessionByTokens(UID, ULID)
-  
-  if session == None:
-    return SESSION_DOESNT_EXIST
-  
-  session.watching = True
-  session.put()
+  return SessionObject(UID, ULID, SID)
 
 
 """
@@ -192,9 +163,9 @@ def clearWatchingSID(UID, ULID, SID):
 '   SESSION_DOESNT_EXIST
 '   HACKER_FOUND
 '   WATCHING
-'   INCORRECT_SID
 ' RETURNS
-'   Nothing
+'   A dict containing the session and the entity corresponding
+'   to the saved entity key property.
 ' PUTS
 '   1 - upon assigning a new SID if it expires
 """
@@ -213,9 +184,13 @@ def validate(UID, ULID, SID):
     return WATCHING
   
   if session.SID != SID:
+    session.watching = True
     session.watchingTokens.append(SID)
     session.watchingTokens.append(session.SID)
-    return INCORRECT_SID
+    session.put()
+    return WATCHING
+  
+  sessionobj = SessionObject(UID, ULID, session.SID)
   
   import datetime
   now = datetime.datetime.now()
@@ -226,4 +201,120 @@ def validate(UID, ULID, SID):
     session.expiration = SID_Data['expiration']
     session.put()
     
-    return session.SID
+    sessionobj.sid = session.SID
+    
+  entity = session.user_key.get()
+  if entity == None:
+    return None
+  
+  return dict(
+    entity = entity,
+    session = sessionobj
+  )
+
+
+"""
+' PURPOSE
+'   Contains session data and indicates if any changes were made to it.
+'   This class is how user entities interact with sessions.
+' PARAMETERS
+'   __init__
+'     <String uid>
+'     <String ulid>
+'     <String sid>
+"""
+class SessionObject(object):
+  
+  changed = False
+  
+  
+  """
+  ' PURPOSE
+  '   A toString method for the SessionObject
+  ' PARAMETERS
+  '   None
+  ' RETURNS
+  '   A string representing this object
+  """
+  def __str__(self):
+    return "%s(\n\tUID=%s,\n\tULID=%s,\n\tSID=%s\n)" % (self.__class__.__name__, self.uid, self.ulid, self.sid)
+  
+  
+  """
+  ' PURPOSE
+  '   Returns the object as a dictionary
+  ' PARAMETERS
+  '   None
+  ' RETURNS
+  '   <dict uid='', ulid='', sid=''>
+  """
+  def toDict(self):
+    return dict(
+      uid = self.uid,
+      ulid = self.ulid,
+      sid = self.sid
+    )
+  
+  
+  """
+  ' PURPOSE
+  '   Getter and setter for the uid
+  ' NOTES
+  '   On change, the changed variable is set to true
+  """
+  @property
+  def uid(self):
+    return self.__uid__
+  @uid.setter
+  def uid(self, uid):
+    self.__uid__ = uid
+    self.changed = True
+  
+  
+  """
+  ' PURPOSE
+  '   Getter and setter for the ulid
+  ' NOTES
+  '   On change, the changed variable is set to true
+  """
+  @property
+  def ulid(self):
+    return self.__ulid__
+  @ulid.setter
+  def ulid(self, ulid):
+    self.__ulid__ = ulid
+    self.changed = True
+  
+  
+  """
+  ' PURPOSE
+  '   Getter and setter for the sid
+  ' NOTES
+  '   On change, the changed variable is set to true
+  """
+  @property
+  def sid(self):
+    return self.__sid__
+  @sid.setter
+  def sid(self, sid):
+    self.__sid__ = sid
+    self.changed = True
+  
+  
+  """
+  ' PURPOSE
+  '   Initializes the object with the current uid, ulid, and sid
+  '   while leaving the changed variable as false
+  ' PARAMETERS
+  '   <String uid>
+  '   <String ulid>
+  '   <String sid>
+  ' RETURNS
+  '   <SessionObject session>
+  """
+  def __init__(self, uid, ulid, sid):
+    self.__uid__ = uid
+    self.__ulid__ = ulid
+    self.__sid__ = sid
+  
+  

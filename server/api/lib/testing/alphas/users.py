@@ -6,7 +6,7 @@ from ... import users
 
 
 
-class AlphaUser(users.AbstractUser):
+class AlphaUser(users.AuthUser.Model):
   
   opened = ndb.BooleanProperty(indexed=True)
   
@@ -25,21 +25,20 @@ class AlphaUser(users.AbstractUser):
 ' PARAMETERS
 '   <String email>
 ' ERRORS
-'   from .../users/__init__.py (EMAIL_IS_USED)
+'   from AlphaUser class: EMAIL_IS_USED
 ' RETURNS
 '   Nothing
 ' PUTS
 '   1 - to create the new AlphaUser entity
 """
 def create(email):
-  user = AlphaUser()
+  user = AlphaUser.create(email, 'password')
+  
+  if user == AlphaUser.EMAIL_IS_USED:
+    return user
+  
   user.opened = False
   user.put()
-  
-  status = users.create(email, 'password', user)
-  
-  if status == users.EMAIL_IS_USED:
-    return status
   
   import constants
   if constants.alpha_testing_open:
@@ -61,13 +60,12 @@ def openAccount(user):
   import random
   password = sha256(str(random.random())).hexdigest()
   
-  user.setPassword(password)
-  
+  user.changePassword(password)
   user.opened = True
   user.put()
   
   import emailclient
-  emails.send(user.email(), 'openaccount', {
+  emails.send(user.email, 'openaccount', {
     'password': password
   })
   

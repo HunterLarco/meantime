@@ -118,7 +118,9 @@ window.onload = function(){
   }
   
   function OnBruteForce(){
-    console.warn('Brute Force Suspected')
+    console.warn('Brute Force Suspected');
+    document.getElementById('error').style.display = 'block';
+    document.getElementById('error').innerHTML = 'We\'re sorry for the inconvenience.\<br/>\<br/>Too many incorrect password attempts have been made on this account. Check your email for instructions that will unlock your account.';
   }
   
   function OnUserDoesntExist(){
@@ -146,7 +148,7 @@ window.onload = function(){
     button.setAttribute('class', button.getAttribute('class')+' disabled');
     button.innerHTML = 'working';
     
-    var request = new Request('user/login');
+    var request = new Request('alpha/login');
     request.post({
       email: email.value,
       password: password.value

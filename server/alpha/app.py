@@ -3,11 +3,13 @@ import webapp2
 import os
 
 
-from lib import handlers
 from lib import api
+from lib.testing.alphas.users import AlphaUser
+from lib.users.handlers import AuthRequestHandler
 
 
-class MainHandler(handlers.AuthRequestHandler, handlers.CookieHandler):
+@AuthRequestHandler.SetUserClass(AlphaUser)
+class MainHandler(AuthRequestHandler):
   
   def override(self):
     return True
@@ -31,7 +33,11 @@ class MainHandler(handlers.AuthRequestHandler, handlers.CookieHandler):
       self.logout()
       self.route('nosession')
   
-  class locked:
+  class passlocked:
+    def get(cls, self):
+      self.response.out.write('password locked')
+  
+  class sessionlocked:
     def get(cls, self):
       template_values = {}
       path = os.path.join(os.path.dirname(__file__), 'locked.html')
@@ -53,6 +59,6 @@ class MainHandler(handlers.AuthRequestHandler, handlers.CookieHandler):
 
 
 app = webapp2.WSGIApplication([
-                ('/api/([^/]+)/([^/]+)/?', handlers.APIHandler),
+                ('/api/([^/]+)/([^/]+)/?', api.handler),
                 ('/.*', MainHandler)
               ], debug=True)
