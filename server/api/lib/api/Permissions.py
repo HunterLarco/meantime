@@ -22,20 +22,6 @@ def require(*keys):
   return decorator
 
 
-# assumes the presense of UID
-def loaduser(funct):
-  def reciever(self, payload):
-    from .. import users
-    user_entity = users.get(
-      payload['uid']
-    )
-    if user_entity == None:
-      return response.throw(203)
-    return funct(self, payload, user=user_entity)
-  return reciever
-
-
-
 
 
 
@@ -117,46 +103,6 @@ class Guest:
           'setsession': True,
           'session': user.session.toDict()
         })
-  
-  
-  class user:
-    @require('email', 'password')
-    def signup(self, payload):
-      from .. import capusers
-      from .. import users
-      status = capusers.create(
-        payload['email'],
-        payload['password'],
-      )
-      if status == users.EMAIL_IS_USED:
-        return response.throw(200)
-      return response.reply({
-        'setsession': True,
-        'session': status
-      })
-  
-  
-    @require('email', 'password')
-    def login(self, payload):
-      from .. import users
-      from .. import capusers
-      status = capusers.login(
-        payload['email'],
-        payload['password']
-      )
-      if status == users.USER_DOESNT_EXIST:
-        return response.throw(203)
-      elif status == users.INCORRECT_LOGIN:
-        return response.throw(201)
-      elif status == users.BRUTE_SUSPECTED:
-        return response.throw(202)
-      else:
-        return response.reply({
-          'setsession': True,
-          'session': status
-        })
-
-
 
 
 
@@ -174,12 +120,6 @@ class Guest:
 
 # authenticated user map
 class AuthUser:
-  class points:
-    @loaduser
-    def get(self, payload, user=None):
-      return response.reply({
-        'value': user.getPointsCounter().getValue()
-      })
   class upload:
     def geturl(self, payload):
       from .. import caps
@@ -193,37 +133,48 @@ class AuthUser:
 
 
 class PassLockedUser:
-  pass
+  class alpha:
+    def unlock(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      if user == None:
+        return response.throw(203)
+      user.unlock()
+    
+    @require('password', 'old_password')
+    def changepassword(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      if user == None:
+        return response.throw(203)
+      worked = user.changePassword(payload['old_password'], payload['password'])
+      if not worked:
+        return response.throw(201)
+      user.unlock()
 
 
 
 
 
 class SessionLockedUser:
-  class user:
+  class alpha:
     @require('email', 'password')
     def login(self, payload):
-      from .. import users
-      from .. import capusers
-      status = capusers.login(
+      from ..testing.alphas.users import AlphaUser
+      
+      user = payload['__Webapp2Instance__'].user
+      if user == None:
+        return response.throw(203)
+      
+      status = user.unlockSession(
         payload['email'],
         payload['password']
       )
-      if status == users.USER_DOESNT_EXIST:
-        return response.throw(203)
-      elif status == users.INCORRECT_LOGIN:
+      
+      if status == AlphaUser.INCORRECT_LOGIN:
         return response.throw(201)
-      elif status == users.BRUTE_SUSPECTED:
-        return response.throw(202)
       else:
-        users.sessions.clearWatchingSID(
-          payload['uid'],
-          payload['ulid'],
-          payload['sid']
-        )
         return response.reply({
           'setsession': True,
-          'session': status,
+          'session': user.session.toDict(),
           'userlocked': False
         })
       

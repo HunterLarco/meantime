@@ -35,12 +35,14 @@ class MainHandler(AuthRequestHandler):
   
   class passlocked:
     def get(cls, self):
-      self.response.out.write('password locked')
+      template_values = {}
+      path = os.path.join(os.path.dirname(__file__), 'passlocked.html')
+      self.response.out.write(template.render(path, template_values))
   
   class sessionlocked:
     def get(cls, self):
       template_values = {}
-      path = os.path.join(os.path.dirname(__file__), 'locked.html')
+      path = os.path.join(os.path.dirname(__file__), 'sessionlocked.html')
       self.response.out.write(template.render(path, template_values))
   
   class hacker:

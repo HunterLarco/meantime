@@ -47,7 +47,7 @@ def create(email):
 
 
 def delete(email):
-  user = users.getUserByEmail(email)
+  user = AlphaUser.getByEmail(email)
   if user == None:
     return
   

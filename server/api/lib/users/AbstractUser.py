@@ -29,7 +29,7 @@ def smarthash(string):
 
 class UserMetaData(ndb.Model):
   password =           ndb.StringProperty  (indexed=True)
-  email =              ndb.StringProperty  (indexed=True)
+  email =              ndb.StringProperty  (indexed=False)
   brute_force_record = ndb.PickleProperty  (indexed=False)
   password_locked =    ndb.BooleanProperty (indexed=False)
   entity_key =         ndb.KeyProperty     (indexed=False)
@@ -109,8 +109,9 @@ class UserMetaData(ndb.Model):
   
   
   def unlock(self):
-    meta.password_locked = False
-    meta.brute_force_record = dict()
+    self.password_locked = False
+    self.brute_force_record = dict()
+    self.put()
 
 
   @classmethod
@@ -187,12 +188,19 @@ class AbstractUser(ndb.Model):
     self.uid = entity.key.pairs()[0][1]
   
   
-  def changePassword(self, password):
-    self.__parent__.setPassword(password)
+  def changePassword(self, oldpassword, newpassword):
+    if self.__parent__.matchPassword(oldpassword):
+      self.__parent__.setPassword(newpassword)
+      return True
+    return False
   
   
   def isLocked(self):
     return self.__parent__.password_locked
+  
+  
+  def unlock(self):
+    self.__parent__.unlock()
   
   
   def changeEmail(self, email):

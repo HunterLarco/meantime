@@ -2,7 +2,10 @@ from .. import AuthUser
 from CookieHandler import CookieHandler
 
 
-
+"""
+' NOTES
+'   The passlocked handler is called when brute force is suspected and the client is logged in
+"""
 class AuthRequestHandler(CookieHandler):
   
   
@@ -15,8 +18,8 @@ class AuthRequestHandler(CookieHandler):
 
   
   __userclass__ = AuthUser.Model
-  sid = None
   status = None
+  user = None
 
 
   @staticmethod
@@ -61,12 +64,6 @@ class AuthRequestHandler(CookieHandler):
       
     if user == self.__userclass__.USER_DOESNT_EXIST:
       errorstatus = self.USER_DOESNT_EXIST
-      
-    if user == self.__userclass__.BRUTE_SUSPECTED:
-      errorstatus = self.PASSWORD_LOCKED
-      
-    if user == self.__userclass__.SESSION_LOCKED:
-      errorstatus = self.SESSION_LOCKED
     
     if user == self.__userclass__.HACKER_FOUND:
       errorstatus = self.HACKER_FOUND
@@ -75,14 +72,19 @@ class AuthRequestHandler(CookieHandler):
       self.status = errorstatus
       return
     
-    self.status = self.SUCCESS
+    self.user = user
     
-    if user.session.changed:
-      self.sid = user.session.sid
-  
-  
-  def hasSID(self):
-    return self.sid != None
+    if user.isLocked():
+      errorstatus = self.PASSWORD_LOCKED
+      
+    if user.session.isLocked():
+      errorstatus = self.SESSION_LOCKED
+    
+    if errorstatus != None:
+      self.status = errorstatus
+      return
+    
+    self.status = self.SUCCESS
     
     
   def get(self, *args, **kwargs):

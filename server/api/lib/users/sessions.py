@@ -21,7 +21,7 @@ class Session(ndb.Model):
   SID = ndb.StringProperty(indexed=False)
   watching = ndb.BooleanProperty(indexed=False)
   watchingTokens = ndb.PickleProperty(indexed=False)
-  user_key = ndb.KeyProperty(indexed=False)
+  user_key = ndb.KeyProperty(indexed=True)
 
 
 """
@@ -121,34 +121,21 @@ def create(UID, userkey):
   session.user_key = userkey
   session.put()
   
-  return SessionObject(UID, ULID, SID)
+  return SessionObject(UID, ULID, SID, session)
 
 
 """
 ' PURPOSE
-'   Clears a given SID from the suspicious users list: aka 'watchingTokens' array.
+'   If a user's key changes, alter all sessions with the old key
 ' PARAMETERS
-'   <String UID>
-'   <String ULID>
-'   <String SID>
-' ERRORS
-'   SESSION_DOESNT_EXIST
-' PUTS
-'   1 - after removing a SID from the watchingTokens list
+'   <String old_key>
+'   <String new_key>
 ' RETURNS
 '   Nothing
 """
-def clearWatchingSID(UID, ULID, SID):
-  if UID == None or ULID == None:
-    return SESSION_DOESNT_EXIST
-  
-  session = getSessionByTokens(UID, ULID)
-  
-  if session == None:
-    return SESSION_DOESNT_EXIST
-  
-  if SID in session.watchingTokens:
-    session.watchingTokens.remove(SID)
+def alterKey(old_key, new_key):
+  for session in Session.query(Session.user_key == old_key):
+    session.user_key = new_key
     session.put()
 
 
@@ -162,10 +149,10 @@ def clearWatchingSID(UID, ULID, SID):
 ' ERRORS
 '   SESSION_DOESNT_EXIST
 '   HACKER_FOUND
-'   WATCHING
 ' RETURNS
 '   A dict containing the session and the entity corresponding
-'   to the saved entity key property.
+'   to the saved entity key property. If the session is being watched,
+'   that is reflected in the returned dict's session object
 ' PUTS
 '   1 - upon assigning a new SID if it expires
 """
@@ -178,19 +165,28 @@ def validate(UID, ULID, SID):
   if session == None:
     return SESSION_DOESNT_EXIST
   
+  sessionobj = SessionObject(UID, ULID, session.SID, session)
+  entity = session.user_key.get()
+  
   if session.watching:
     if SID in session.watchingTokens and len(session.watchingTokens) == 1:
       return HACKER_FOUND
-    return WATCHING
+    return dict(
+      entity = entity,
+      session = sessionobj
+    )
   
   if session.SID != SID:
     session.watching = True
     session.watchingTokens.append(SID)
     session.watchingTokens.append(session.SID)
     session.put()
-    return WATCHING
+    return dict(
+      entity = entity,
+      session = sessionobj
+    )
   
-  sessionobj = SessionObject(UID, ULID, session.SID)
+  sessionobj = SessionObject(UID, ULID, session.SID, session)
   
   import datetime
   now = datetime.datetime.now()
@@ -202,8 +198,7 @@ def validate(UID, ULID, SID):
     session.put()
     
     sessionobj.sid = session.SID
-    
-  entity = session.user_key.get()
+  
   if entity == None:
     return None
   
@@ -258,6 +253,35 @@ class SessionObject(object):
   
   """
   ' PURPOSE
+  '   Returns whether or not the sessino has been locked
+  ' PARAMETERS
+  '   None
+  ' RETURNS
+  '   Boolean
+  """
+  def isLocked(self):
+    return self.__parent__.watching
+  
+  
+  """
+  ' PURPOSE
+  '   Clears the current sid from a session. Indicates they
+  '   aren't a hacker.
+  ' PARAMETERS
+  '   None
+  ' RETURNS
+  '   Nothing
+  """
+  def exonerate(self):
+    session = self.__parent__
+    if self.sid in session.watchingTokens:
+      session.watchingTokens.remove(self.sid)
+      session.put()
+    
+  
+  
+  """
+  ' PURPOSE
   '   Getter and setter for the uid
   ' NOTES
   '   On change, the changed variable is set to true
@@ -267,6 +291,8 @@ class SessionObject(object):
     return self.__uid__
   @uid.setter
   def uid(self, uid):
+    if self.__uid__ == uid:
+      return
     self.__uid__ = uid
     self.changed = True
   
@@ -282,6 +308,8 @@ class SessionObject(object):
     return self.__ulid__
   @ulid.setter
   def ulid(self, ulid):
+    if self.__ulid__ == ulid:
+      return
     self.__ulid__ = ulid
     self.changed = True
   
@@ -297,6 +325,8 @@ class SessionObject(object):
     return self.__sid__
   @sid.setter
   def sid(self, sid):
+    if self.__sid__ == sid:
+      return
     self.__sid__ = sid
     self.changed = True
   
@@ -309,10 +339,12 @@ class SessionObject(object):
   '   <String uid>
   '   <String ulid>
   '   <String sid>
+  '   <Session sessoinentity>
   ' RETURNS
   '   <SessionObject session>
   """
-  def __init__(self, uid, ulid, sid):
+  def __init__(self, uid, ulid, sid, sessionentity):
+    self.__parent__ = sessionentity
     self.__uid__ = uid
     self.__ulid__ = ulid
     self.__sid__ = sid

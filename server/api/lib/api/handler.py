@@ -35,10 +35,8 @@ class APIHandler(AuthRequestHandler):
       self.setHeaders()
       self.RunAuthUser(dictionary, method, additionalPayload={
         'setsession': True,
-        'session': {
-          'sid': self.sid
-        }
-      } if self.hasSID() else {})
+        'session': self.user.session.toDict()
+      } if self.user.session.changed else {})
 
   def RunSessionLockedUser(self, dictionary, method):
     delegate(self, dictionary, method, Permissions.SessionLockedUser, additionalPayload={'userlocked':True})

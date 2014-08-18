@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<style>
+body{
+  font-family:'lato';
+}
+div.sealedheader{
+  line-height:60px;
+  font-size:26px;
+  color:rgb(51,51,51);
+  text-align:center;
+  padding:12px 0px;
+  font-family:'raleway';
+  background:rgb(102,201,215);
+}
+div.sealedheader span{
+  line-height:30px;
+  font-size:12px;
+  vertical-align:top;
+  text-shadow:         0px 1px 0px rgba(255,255,255,0.5);
+  -webkit-text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+  -moz-text-shadow:    0px 1px 0px rgba(255,255,255,0.5);
+}
+
+div.notification{
+  text-align:center;
+  margin:50px 0px;
+}
+div.notification img.key{
+  margin:10px 0px;
+  height:40px;
+  vertical-align:top;
+  -webkit-border-radius: 2px;
+  -moz-border-radius:    2px;
+  border-radius:         2px;
+  border-bottom:6px solid rgb(190,190,190);
+  background:rgb(230,230,230);
+  padding:25px;
+}
+div.notification div.content{
+  vertical-align:top;
+  display:inline-block;
+  width:400px;
+  padding:0px 20px;
+  text-align:left;
+}
+div.notification div.content h1{
+  font-size:18px;
+}
+div.changepass{
+  margin:50px auto;
+  width:340px;
+  background:rgb(240,240,240);
+  -webkit-border-radius: 2px;
+  -moz-border-radius:    2px;
+  border-radius:         2px;
+  text-align:center;
+  padding:30px;
+}
+div.changepass input.first{
+  margin:0px 0px 4px 0px;
+}
+div.changepass input.last{
+  margin:4px 0px 8px 0px;
+}
+div.changepass div.button{
+  display:inline-block;
+}
+div.changepass div.button.change{
+  width:154px;
+  margin-right:8px;
+  vertical-align:top;
+}
+div.changepass div.button.skip{
+  width:96px;
+  vertical-align:top;
+  background:rgb(190,190,190);
+  border-bottom:3px solid rgb(150,150,150);
+}
+div.changepass div.error{
+  margin:30px 0px 0px 0px;
+  color:rgb(200,0,0);
+  text-align:center;
+  display:none;
+}
+div.changepass div.error.shown{
+  display:block;
+}
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sealed App Demo (Alpha)</title>
+<link rel="stylesheet" href="/resources/CSS/resets.css"/>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/>
+<link rel='stylesheet' href='/resources/CSS/raleway.css'/>
+<link rel='stylesheet' href='/resources/CSS/forms.css'/>
+<script src='//api.capaching.appspot.com/?gateway=/api/'></script>
+</head>
+<body>
+  
+  
+<div class='sealedheader'>Sealed<span>alpha</span></div>
+<div class='notification'>
+  <img class='key' src='/images/locked/key.png'/>
+  <div class='content'>
+    <h1>Oh Dear...</h1>
+    <p>We think someone tried to hack into your account. We stopped them, but have locked your account.</p>
+    <p>You can change your password here, but don't worry. Whoever it was didn't get it.</p>
+  </div>
+</div>
+<div class='changepass'>
+  <input id='oldpass' class='first' name='old_pass' type='password' placeholder='old password'/>
+  <input id='newpass' name='pass' type='password' placeholder='new password'/>
+  <input id='newpass2' class='last' name='pass2' type='password' placeholder='new password (again)'/>
+  <div class='button change' id='changepass'>Change Password</div><div class='button skip' id='unlock'>Skip &amp; Unlock</div>
+  <div class='error' id='error'></div>
+</div>
+
+
+<script type='text/javascript'>
+
+var formlocked = false;
+
+window.onload = function(){
+  BindChangePassword();
+  BindUnlock();
+}
+
+function BindChangePassword(){
+  document.getElementById('changepass').addEventListener('click', OnChangePassword);
+}
+
+function OnEmptyFields(){
+  document.getElementById('error').style.display = 'block';
+  document.getElementById('error').innerHTML = 'Please fill out all fields';
+}
+
+function OnNoPassMatch(){
+  document.getElementById('error').style.display = 'block';
+  document.getElementById('error').innerHTML = 'You\'re passwords do not match';
+}
+
+function OnOldPassFailure(){
+  document.getElementById('error').style.display = 'block';
+  document.getElementById('error').innerHTML = 'You\'re old password did not match your current one';
+}
+
+function OnChangePassword(){
+  if(formlocked) return;
+  LockForm();
+  var button = document.getElementById('changepass'),
+      oldpassword = document.getElementById('oldpass'),
+      newpassword = document.getElementById('newpass'),
+      newpassword2 = document.getElementById('newpass2');
+  
+  if(!newpassword.value || !newpassword2.value || !oldpassword.value) return OnError({code:-100});
+  if(newpassword.value != newpassword2.value) return OnError({code:-101});
+  
+  button.innerHTML = 'working';
+  var request = new Request('alpha/changepassword');
+  function Callback(event){
+    location.reload(true);
+  }
+  function OnError(event){
+    UnlockForm();
+    button.innerHTML = 'Change Password';
+    if(event.code == -100) return OnEmptyFields();
+    if(event.code == -101) return OnNoPassMatch();
+    if(event.code == 201) return OnOldPassFailure();
+  }
+  request.post({
+    'password': newpassword.value,
+    'old_password': oldpassword.value
+  }, Callback, OnError);
+}
+
+function BindUnlock(){
+  document.getElementById('unlock').addEventListener('click', OnUnlock);
+}
+
+function LockForm(){
+  var unlock = document.getElementById('unlock'),
+      changepass = document.getElementById('changepass');
+  formlocked = true;
+  unlock.setAttribute('class', unlock.getAttribute('class')+' disabled');
+  changepass.setAttribute('class', changepass.getAttribute('class')+' disabled');
+}
+
+function UnlockForm(){
+  var unlock = document.getElementById('unlock'),
+      changepass = document.getElementById('changepass');
+  formlocked = false;
+  unlock.setAttribute('class', unlock.getAttribute('class').replace(/\sdisabled/g, ''));
+  changepass.setAttribute('class', changepass.getAttribute('class').replace(/\sdisabled/g, ''));
+}
+
+function OnUnlock(){
+  if(formlocked) return;
+  LockForm();
+  var unlock = document.getElementById('unlock');
+  unlock.innerHTML = 'working';
+  var request = new Request('alpha/unlock');
+  function Callback(event){
+    location.reload(true);
+  }
+  function OnError(event){
+    UnlockForm();
+    unlock.innerHTML = 'Skip &amp; Unlock';
+  }
+  request.post({}, Callback, OnError);
+}
+
+</script>
+</body>
+</html>

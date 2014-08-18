@@ -17,16 +17,30 @@ class Model(AbstractUser):
   
   
   def changeEmail(self, email):
+    oldkey = self.__parent__.key
+    
     error = super(Model, self).changeEmail(email)
     if error != None:
       return error
     
-    session = sessions.create(self.uid, self.__parent__.key)
-    self.session.uid = session.uid
-    self.session.ulid = session.ulid
-    self.session.sid = session.sid
+    newkey = self.__parent__.key
+    sessions.alterKey(oldkey, newkey)
   
   
+  def unlockSession(self, email, password):
+    if not self.__parent__.matchPassword(password):
+      return self.INCORRECT_LOGIN
+    if not self.__parent__.email == email:
+      return self.INCORRECT_LOGIN
+    self.session.exonerate()
+    self.session = sessions.create(self.uid, self.__parent__.key)
+    
+    
+
+  
+  """
+  ' ALWAYS CHECK IS LOCKED and SESSION IS LOCKED
+  """
   @classmethod
   def getBySession(cls, uid, ulid, sid):
     session_data = sessions.validate(uid, ulid, sid)
@@ -37,8 +51,6 @@ class Model(AbstractUser):
       return cls.SESSION_DOESNT_EXIST
     elif session_data == sessions.HACKER_FOUND:
       return cls.HACKER_FOUND
-    elif session_data == sessions.WATCHING:
-      return cls.SESSION_LOCKED
     
     meta = session_data['entity']
     session = session_data['session']
@@ -52,8 +64,6 @@ class Model(AbstractUser):
       return cls.USER_DOESNT_EXIST
     
     user.session = session
-    if user.isLocked():
-      return cls.BRUTE_SUSPECTED
     
     return user
   

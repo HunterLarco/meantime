@@ -1,12 +1,12 @@
 div.button{
   display:inline-block;
   position:relative;
-  padding:6px 14px;
-  border-bottom:3px solid rgb(82,181,195);
+  padding:4px 7px;
+  border-bottom:3px solid rgb(66,133,244);
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  background:rgb(102,201,215);
+  background:rgb(96,163,255);
   color:rgb(255,255,255);
   outline:none;
   cursor:pointer;
@@ -18,16 +18,13 @@ div.button{
   -ms-user-select: none;
   user-select: none;
 }
-div.button:hover:not(.disabled){
-  border-bottom-width:2px !important;
-  margin-top:1px !important;
+div.button:hover{
+  border-bottom:2px solid rgb(66,133,244);
+  margin-top:1px;
 }
-div.button:active:not(.disabled){
-  border-bottom-width:1px !important;
-  margin-top:2px !important;
-}
-div.button.disabled{
-  cursor:not-allowed;
+div.button:active{
+  border-bottom:1px solid rgb(66,133,244);
+  margin-top:2px;
 }
 
 

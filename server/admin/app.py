@@ -4,7 +4,6 @@ import os
 from google.appengine.ext.webapp import template
 
 from lib import api
-from lib import handlers
 
 
 class AdminAPIHandler(webapp2.RequestHandler):
@@ -28,5 +27,5 @@ class AdminAPIHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
       ('/([^/]+)/([^/]+)/?',   AdminAPIHandler),
-      ('/api/([^/]+)/([^/]+)/?',   handlers.APIHandler)
+      ('/api/([^/]+)/([^/]+)/?',   api.handler)
   ], debug=True)

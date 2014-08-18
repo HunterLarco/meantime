@@ -63,6 +63,15 @@ div.signin input.last{
 div.signin div.button{
   width:288px;
 }
+div.signin div.error{
+  margin:30px 0px 0px 0px;
+  color:rgb(200,0,0);
+  text-align:center;
+  display:none;
+}
+div.signin div.error.shown{
+  display:block;
+}
 </style>
 <html>
 <head>
@@ -72,6 +81,7 @@ div.signin div.button{
 <link rel='stylesheet' href='/resources/CSS/lato.css'/>
 <link rel='stylesheet' href='/resources/CSS/raleway.css'/>
 <link rel='stylesheet' href='/resources/CSS/forms.css'/>
+<script src='//api.capaching.appspot.com/?gateway=/api/'></script>
 </head>
 <body>
   
@@ -89,6 +99,7 @@ div.signin div.button{
   <input class='first' type='text' placeholder='email' id='email'/>
   <input class='last' type='password' placeholder='password' id='password'/>
   <div class='button' id='signin'>sign in</div>
+  <div class='error' id='error'></div>
 </div>
 
 
@@ -134,7 +145,7 @@ window.onload = function(){
     button.setAttribute('class', button.getAttribute('class')+' disabled');
     button.innerHTML = 'working';
     
-    var request = new Request('user/login');
+    var request = new Request('alpha/login');
     request.post({
       email: email.value,
       password: password.value
