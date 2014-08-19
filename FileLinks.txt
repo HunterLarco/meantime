@@ -14,3 +14,12 @@ How To Create
 =============
 cd /server/alpha
 sudo ln -s ../api/lib lib
+
+
+SymLink
+=======
+/server/api/lib -> /server/dev/lib
+How To Create
+=============
+cd /server/dev
+sudo ln -s ../api/lib lib

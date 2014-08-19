@@ -76,27 +76,31 @@ class Admin:
 
 # guest access map
 class Guest:
-  class alpha:
-    @require('email')
+  
+  class user:
+    @require('email', 'password')
     def signup(self, payload):
-      from ..testing.alphas import emails
-      status = emails.add(payload['email'])
-      if status == emails.EMAIL_IS_USED:
+      from ..sealeduser.model import SealedUser
+      user = SealedUser.create(payload['email'], payload['password']);
+      if user == SealedUser.EMAIL_IS_USED:
         return response.throw(200)
+      return response.reply({
+        'setsession': True,
+        'session': user.session.toDict()
+      })
     
     @require('email', 'password')
     def login(self, payload):
-      from .. import users
-      from ..testing.alphas.users import AlphaUser
-      user = AlphaUser.login(
+      from ..sealeduser.model import SealedUser
+      user = SealedUser.login(
         payload['email'],
         payload['password']
       )
-      if user == AlphaUser.USER_DOESNT_EXIST:
+      if user == SealedUser.USER_DOESNT_EXIST:
         return response.throw(203)
-      elif user == AlphaUser.INCORRECT_LOGIN:
+      elif user == SealedUser.INCORRECT_LOGIN:
         return response.throw(201)
-      elif user == AlphaUser.BRUTE_SUSPECTED:
+      elif user == SealedUser.BRUTE_SUSPECTED:
         return response.throw(202)
       else:
         return response.reply({
@@ -133,7 +137,7 @@ class AuthUser:
 
 
 class PassLockedUser:
-  class alpha:
+  class user:
     def unlock(self, payload):
       user = payload['__Webapp2Instance__'].user
       if user == None:
@@ -155,27 +159,20 @@ class PassLockedUser:
 
 
 class SessionLockedUser:
-  class alpha:
+  class user:
     @require('email', 'password')
-    def login(self, payload):
-      from ..testing.alphas.users import AlphaUser
-      
+    def unlock(self, payload):
       user = payload['__Webapp2Instance__'].user
-      if user == None:
-        return response.throw(203)
-      
       status = user.unlockSession(
         payload['email'],
         payload['password']
       )
-      
-      if status == AlphaUser.INCORRECT_LOGIN:
+      if status == user.INCORRECT_LOGIN:
         return response.throw(201)
       else:
         return response.reply({
           'setsession': True,
-          'session': user.session.toDict(),
-          'userlocked': False
+          'session': user.session.toDict()
         })
       
       

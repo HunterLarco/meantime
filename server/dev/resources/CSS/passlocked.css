@@ -1,0 +1,87 @@
+div.passlocked div.notification{
+  text-align:center;
+  margin:50px 0px;
+}
+div.passlocked div.notification img.key{
+  margin:10px 0px;
+  height:40px;
+  vertical-align:top;
+  -webkit-border-radius: 6px;
+  -moz-border-radius:    6px;
+  border-radius:         6px;
+  border-bottom:4px solid rgb(180,180,180);
+  background:rgb(220,220,220);
+  padding:25px;
+}
+div.passlocked div.notification div.content{
+  vertical-align:top;
+  display:inline-block;
+  width:400px;
+  padding:0px 20px;
+  text-align:left;
+  font-weight:300;
+  color:rgb(90,90,90);
+}
+div.passlocked div.notification div.content h1{
+  font-size:18px;
+  color:rgb(20,20,20);
+}
+
+
+
+div.passlocked div.changepass{
+  margin:50px auto;
+  width:340px;
+  text-align:center;
+  padding:30px;
+}
+div.passlocked div.changepass input.first{
+  margin:0px 0px 4px 0px;
+}
+div.passlocked div.changepass input.last{
+  margin:4px 0px 8px 0px;
+}
+div.passlocked div.changepass div.button{
+  display:inline-block;
+}
+div.passlocked div.changepass div.button.change{
+  width:154px;
+  margin-right:8px;
+  vertical-align:top;
+}
+div.passlocked div.changepass div.button.skip{
+  width:96px;
+  vertical-align:top;
+  background:rgb(190,190,190);
+  border-bottom:3px solid rgb(150,150,150);
+}
+div.passlocked div.changepass div.error{
+  margin:30px 0px 0px 0px;
+  text-align:center;
+  color:rgb(250,50,50);
+  font-weight:300;
+}
+
+div.passlocked input[type='text'],
+div.passlocked input[type='password']{
+  width:300px;
+  padding:5px 7px;
+  border:1px solid rgb(200,200,200);
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  outline:none;
+}
+div.passlocked input[type='text']:hover:not(:disabled):not(:focus),
+div.passlocked input[type='password']:hover:not(:disabled):not(:focus){
+  border:1px solid rgb(180,180,180);
+}
+div.passlocked input[type='text']:focus,
+div.passlocked input[type='password']:focus{
+  border:1px solid #4285f4;
+  box-shadow:0px 0px 1px #4285f4;
+}
+div.passlocked input[type='text']:disabled,
+div.passlocked input[type='password']:disabled{
+  cursor:not-allowed;
+}

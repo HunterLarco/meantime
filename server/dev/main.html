@@ -1,317 +1,655 @@
 <!DOCTYPE html>
 <style>
-div.body{
-  padding:40px 0px 20px 0px;
-}
-div.body div.frame{
-  margin:60px 0px;
-  font-family:'raleway';
+
+body{
+  background:rgb(239,239,239);
+  font-family:'lato';
   font-weight:100;
-  text-align:center;
 }
-div.body div.frame div.text{
-  font-size:46px;
-  padding:60px 0px;
-  color:rgb(180,180,180);
-  cursor:default;
+.full{
+  position:fixed;
+  top:86px;
+  left:0px;
+  width:100%;
+  bottom:0px;
+  overflow:scroll;
 }
-div.body div.frame div.beta{
-  border-top:    1px solid rgb(220,220,220);
-  border-bottom: 1px solid rgb(220,220,220);
-  padding:6px 0px;
-  color:rgb(200,200,200);
-  font-size:18px;
-  width:500px;;
-  display:block;
-  margin:0px auto;
-  cursor:default;
-}
-div.body div.frame input{
-  border:none;
-  outline:none;
-  color:rgb(51,51,51);
-  font-size:18px;
-  font-weight:100;
-  border-bottom:1px solid rgb(220,220,220);
-  padding:6px 0px;
-  text-align:center;
-  width:400px;
-  display:block;
-  margin:0px auto;
-  cursor:text;
-  -webkit-transition: color 500ms ease 250ms;
-  -moz-transition:    color 500ms ease 250ms;
-  -ms-transition:     color 500ms ease 250ms;
-  -o-transition:      color 500ms ease 250ms;
-  transition:         color 500ms ease 250ms;
-}
-div.body div.frame input:disabled{
-  cursor:not-allowed;
-  color:rgb(200,200,200);
-}
-div.body div.frame button{
-  border:none;
-  outline:none;
-  display:block;
-  position:relative;
-  padding:5px 0px;
-  border-bottom:3px solid rgb(82,181,195);
-  -webkit-border-radius: 3px;
-  -moz-border-radius:    3px;
-  border-radius:         3px;
-  background:rgb(102,201,215);
-  color:rgb(255,255,255);
-  outline:none;
-  cursor:pointer;
-  text-align:center;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin-top:20px;
-  width:100px;
-  margin-left:auto;
-  margin-right:auto;
+.hideshow{
   -webkit-transition: opacity 500ms ease;
   -moz-transition:    opacity 500ms ease;
   -ms-transition:     opacity 500ms ease;
   -o-transition:      opacity 500ms ease;
   transition:         opacity 500ms ease;
 }
-div.body div.frame button:not(:disabled):hover{
-  border-bottom:2px solid rgb(82,181,195);
-  margin-top:21px;
+.opaque{
+  opacity:0 !important;
 }
-div.body div.frame button:not(:disabled):active{
-  border-bottom:1px solid rgb(82,181,195);
-  margin-top:22px;
+.gone{
+  display:none !important;
 }
-div.body div.frame button:disabled{
-  opacity:0.6;
-  cursor:not-allowed;
-  -webkit-transition: opacity 500ms ease 250ms;
-  -moz-transition:    opacity 500ms ease 250ms;
-  -ms-transition:     opacity 500ms ease 250ms;
-  -o-transition:      opacity 500ms ease 250ms;
-  transition:         opacity 500ms ease 250ms;
+
+
+
+
+div.capture div.display{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  margin:auto;
+  width:600px;
+  height:400px;
+  background:rgb(71,71,71);
+  overflow:visible;
 }
-div.body div.frame div.content{
-  border-bottom:1px solid rgb(220,220,220);
-  color:rgb(51,51,51);
-  width:360px;
-  padding:14px;
-  text-align:center;
-  display:none;
-  margin:0px auto;
-  opacity:0;
-  line-height:24px;
+div.capture div.display canvas{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
 }
+div.capture div.display div.buttons{
+  position:absolute;
+  top:50%;
+  left:100%;
+  -ms-transform:     translate(0px, -50%);
+ 	-webkit-transform: translate(0px, -50%);
+  -moz-transform:    translate(0px, -50%);
+  -o-transform:      translate(0px, -50%);
+  transform:         translate(0px, -50%);
+  margin-left:50px;
+  padding:12px;
+}
+div.capture div.display div.row{
+  white-space:nowrap;
+}
+div.capture div.display div.b{
+  display:inline-block;
+  vertical-align:top;
+  background-repeat:no-repeat;
+  background-size:50px 50px;
+  height:50px;
+  width:50px;
+  margin:3px;
+  cursor:pointer;
+}
+div.capture div.display div.b.record{
+  background-image:url(/images/capture/record.png);
+}
+div.capture div.display div.b.stop{
+  background-image:url(/images/capture/stop.png);
+}
+div.capture div.display div.b.pause{
+  background-image:url(/images/capture/pause.png);
+}
+div.capture div.display div.b.check{
+  background-image:url(/images/capture/check.png);
+}
+div.capture div.display div.b.cancel{
+  background-image:url(/images/capture/cancel.png);
+}
+div.capture div.display div.b.restart{
+  background-image:url(/images/capture/restart.png);
+}
+
+
+
 </style>
 <html>
 <head>
 <meta charset="utf-8" />
 <title>Try Sealed</title>
+
 <link rel="stylesheet" href="/resources/CSS/resets.css"/>
 <link rel='stylesheet' href='/resources/CSS/raleway.css'/>
-<script src='//api.capaching.appspot.com'></script>
-<script src='/resources/Scripts/Transition.js'></script>
+<link rel='stylesheet' href='/resources/CSS/button.css'/>
+<link rel='stylesheet' href='/resources/CSS/header.css'/>
+
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:100,300,700'/>
+<link href='http://fonts.googleapis.com/css?family=Raleway:100,300' rel='stylesheet' type='text/css'>
+
+<link rel='stylesheet' href='/resources/CSS/signup.css'/>
+<link rel='stylesheet' href='/resources/CSS/inbox.css'/>
+<link rel='stylesheet' href='/resources/CSS/passlocked.css'/>
+<link rel='stylesheet' href='/resources/CSS/sessionlocked.css'/>
+<link rel='stylesheet' href='/resources/CSS/firstvisit.css'/>
+
+<script src='//api.capaching.appspot.com/?gateway=/api/'></script>
+<script src='/resources/Scripts/codrops_menu/classie.js'></script>
+
+<link rel='stylesheet' href='/resources/CSS/codrop_menu/component.css'/>
+<script src='/resources/Scripts/codrops_menu/mlpushmenu.js'></script>
+<script src='/resources/Scripts/codrops_menu/modernizr.custom.js'></script>
+
+<script src='/resources/Scripts/pages/signup.js'></script>
+<script src='/resources/Scripts/pages/passlocked.js'></script>
+<script src='/resources/Scripts/pages/sessionlocked.js'></script>
+<script src='/resources/Scripts/pages/firstvisit.js'></script>
+
 </head>
 <body>
 
 
-<div class='body'>
-  <div class='frame'>
-    <canvas id='icon' height='250' width='250'></canvas>
-    <div class='text'>sealed</div>
-    <div class='beta'><i>sign up to be a beta tester!</i></div>
-    <div class='form' id='form'>
-      <input type='text' autocomplete='off' id='email' placeholder='email'/>
-      <button disabled class='button' id='button'>sign up</button>
-    </div>
-    <div class='content' id='content'>Thank you for trying sealed. We will be contacting you shortly and hope to hear from you in the future!</div>
-    <div class='content' id='error'>This is embarrassing, something went wrong. Take a deep breath and please try again.</div>
-    <div class='content' id='exists'>It seems you've already signed up! We're sorry if you haven't heard from us recently, but we haven't forgotten about you. Sit tight and we'll let you know the next steps soon.</div>
-  </div>
-</div>
+<div class='mp-container'>
+	<!-- Push Wrapper -->
+	<div class="mp-pusher" id="mp-pusher">
+
+		<!-- mp-menu -->
+		<nav id="mp-menu" class="mp-menu">
+			<div class="mp-level">
+				<h2 class="icon icon-world">All Categories</h2>
+				<ul>
+					<li class="icon icon-arrow-left">
+						<a class="icon icon-display" href="#">Devices</a>
+						<div class="mp-level">
+							<h2 class="icon icon-display">Devices</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left">
+									<a class="icon icon-phone" href="#">Mobile Phones</a>
+									<div class="mp-level">
+										<h2>Mobile Phones</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="#">Super Smart Phone</a></li>
+											<li><a href="#">Thin Magic Mobile</a></li>
+											<li><a href="#">Performance Crusher</a></li>
+											<li><a href="#">Futuristic Experience</a></li>
+										</ul>
+									</div>
+								</li>
+								<li class="icon icon-arrow-left">
+									<a class="icon icon-tv" href="#">Televisions</a>
+									<div class="mp-level">
+										<h2>Televisions</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="#">Flat Superscreen</a></li>
+											<li><a href="#">Gigantic LED</a></li>
+											<li><a href="#">Power Eater</a></li>
+											<li><a href="#">3D Experience</a></li>
+											<li><a href="#">Classic Comfort</a></li>
+										</ul>
+									</div>
+								</li>
+								<li class="icon icon-arrow-left">
+									<a class="icon icon-camera" href="#">Cameras</a>
+									<div class="mp-level">
+										<h2>Cameras</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li><a href="#">Smart Shot</a></li>
+											<li><a href="#">Power Shooter</a></li>
+											<li><a href="#">Easy Photo Maker</a></li>
+											<li><a href="#">Super Pixel</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="icon icon-arrow-left">
+						<a class="icon icon-news" href="#">Magazines</a>
+						<div class="mp-level">
+							<h2 class="icon icon-news">Magazines</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li><a href="#">National Geographic</a></li>
+								<li><a href="#">Scientific American</a></li>
+								<li><a href="#">The Spectator</a></li>
+								<li><a href="#">The Rambler</a></li>
+								<li><a href="#">Physics World</a></li>
+								<li><a href="#">The New Scientist</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="icon icon-arrow-left">
+						<a class="icon icon-shop" href="#">Store</a>
+						<div class="mp-level">
+							<h2 class="icon icon-shop">Store</h2>
+							<a class="mp-back" href="#">back</a>
+							<ul>
+								<li class="icon icon-arrow-left">
+									<a class="icon icon-t-shirt" href="#">Clothes</a>
+									<div class="mp-level">
+										<h2 class="icon icon-t-shirt">Clothes</h2>
+										<a class="mp-back" href="#">back</a>
+										<ul>
+											<li class="icon icon-arrow-left">
+												<a class="icon icon-female" href="#">Women's Clothing</a>
+												<div class="mp-level">
+													<h2 class="icon icon-female">Women's Clothing</h2>
+													<a class="mp-back" href="#">back</a>
+													<ul>
+														<li><a href="#">Tops</a></li>
+														<li><a href="#">Dresses</a></li>
+														<li><a href="#">Trousers</a></li>
+														<li><a href="#">Shoes</a></li>
+														<li><a href="#">Sale</a></li>
+													</ul>
+												</div>
+											</li>
+											<li class="icon icon-arrow-left">
+												<a class="icon icon-male" href="#">Men's Clothing</a>
+												<div class="mp-level">
+													<h2 class="icon icon-male">Men's Clothing</h2>
+													<a class="mp-back" href="#">back</a>
+													<ul>
+														<li><a href="#">Shirts</a></li>
+														<li><a href="#">Trousers</a></li>
+														<li><a href="#">Shoes</a></li>
+														<li><a href="#">Sale</a></li>
+													</ul>
+												</div>
+											</li>
+										</ul>
+									</div>
+								</li>
+								<li>
+									<a class="icon icon-diamond" href="#">Jewelry</a>
+								</li>
+								<li>
+									<a class="icon icon-music" href="#">Music</a>
+								</li>
+								<li>
+									<a class="icon icon-food" href="#">Grocery</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li><a class="icon icon-photo" href="#">Collections</a></li>
+					<li><a class="icon icon-wallet" href="#">Credits</a></li>
+				</ul>
+					
+			</div>
+		</nav>
+		<!-- /mp-menu -->
+
+		<div class="mp-scroller"><!-- this is for emulating position fixed of the nav -->
+			<div class="mp-scroller-inner">
+				
+        
+        
+        
+        
+        
+        
+        <div class='header'>
+          <div class='logo'>
+            <img src='/images/header/logo.png'/>
+            <span class='text'>sealed</span>
+          </div>
+          <div class='buttons hideshow {{visibility.header}}' id='header_buttons'>
+            <img class='plus' src='/images/header/plus.png'/>
+            <div class='img' id='header_settingsbutton'>
+               <img src='https://lh4.googleusercontent.com/-ba60YI6W9K8/AAAAAAAAAAI/AAAAAAAAAAA/ikLBu2Kmzh8/s128-c-k/photo.jpg'/>
+               <div class='shadow'></div>
+            </div>
+          </div>
+          <div class='clearFix'></div>
+        </div>
+
+
+        <div class='full firstvisit hideshow {{visibility.firstvisit}}' id='firstvisit_frame'>
+          <div class='email'>
+            <h1>Welcome to Sealed!</h1>
+            <p>You're viewing this page because you've been invited to try Sealed.</p>
+            <p>Welcome to Sealed, an app for time-delayed photo and video messaging. As we are currently in our alpha release, you will be one of the first people to use Sealed. We will therefore be immensely curious to hear about your experience and hope you’ll be willing to share your thoughts and ideas so that we can make Sealed the best it can be.</p>
+            <p>Have fun, and thanks for trying Sealed.</p>
+            <p class='signature'>- Alex &amp; Hunter</p>
+          </div>
+          <div class='buttonframe'><div class='button' id='firstvisit_button'>Get Started</div></div>
+        </div>
+
+
+        <div class='full sessionlocked hideshow {{visibility.sessionlocked}}' id='sessionlocked_frame'>
+          <div class='notification'>
+            <img class='key' src='/images/sessionlocked/key.png'/>
+            <div class='content'>
+              <h1>Oh Dear...</h1>
+              <p>You've been locked out of your account because we think someone is trying to hack into it.</p>
+              <p>Please log in to verify you aren't our hacker.</p>
+            </div>
+          </div>
+          <div class='signin'>
+            <input class='first' type='text' placeholder='email' id='sessionlocked_email'/>
+            <input class='last' type='password' placeholder='password' id='sessionlocked_password'/>
+            <div class='button' id='sessionlocked_button'>log in</div>
+            <div class='error' id='sessionlocked_error'></div>
+          </div>
+        </div>
+
+
+        <div class='full passlocked hideshow {{visibility.passlocked}}' id='passlocked_loggedin_frame'>
+          <div class='notification'>
+            <img class='key' src='/images/passlocked/key.png'/>
+            <div class='content'>
+              <h1>Oh Dear...</h1>
+              <p>There were a suspicious amount of login attempts on your account. We think someone was trying to hack it.</p>
+              <p>You can change your password here if you'd like, but don't worry. Nobody got your password.</p>
+            </div>
+            <div class='changepass'>
+              <input id='passlocked_oldpass' class='first' type='password' placeholder='old password'/>
+              <input id='passlocked_newpass' type='password' placeholder='new password'/>
+              <input id='passlocked_newpass2' class='last' type='password' placeholder='retype new password'/>
+              <div class='button change' id='passlocked_changepass'>Change Password</div><div class='button skip' id='passlocked_unlock'>Skip &amp; Unlock</div>
+              <div class='error' id='passlocked_error'></div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class='full passlocked hideshow opaque gone' id='passlocked_frame'>
+          <div class='notification'>
+            <img class='key' src='/images/passlocked/key.png'/>
+            <div class='content'>
+              <h1>Oh Dear...</h1>
+              <p>There have been a suspicious amount of login attempts on your account. So we locked it.</p>
+              <p>Please check your email for instructions towards unlocking the account</p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class='full signup hideshow {{visibility.signup}}' id='signup_frame'>
+          <div class='form'>
+            <div class='error' id='signup_error'></div>
+            <div class='shade'>
+              <div class='slider'>
+                <div class='pane'><h1>Sign Up!</h1></div>
+                <div class='pane'><h1>Welcome Back!</h1></div>
+              </div>
+              <div class='slider slow'>
+                <div class='pane'>
+                  <div class='content'>
+                    <input type='text' id='signup_s_email' name='email' placeholder='email'/>
+                    <input type='password' id='signup_s_password' name='password' placeholder='password'/>
+                    <input type='password' id='signup_s_password2' name='password_verification' placeholder='retype password'/>
+                    <div class='spacer'></div>
+                    <div class='buttonframe'>
+                      <div class='button' id='signup_s_button'>sign up</div>
+                    </div>
+                    <div id='signup_gotologin' class='note'>already have an account? <a>log in here</a>.</div>
+                  </div>
+                </div>
+                <div class='pane'>
+                  <div class='content'>
+                    <input type='text' id='signup_l_email' name='email' placeholder='email'/>
+                    <input type='password' id='signup_l_password' name='password' placeholder='password'/>
+                    <div class='spacer'></div>
+                    <div class='buttonframe'>
+                      <div class='button' id='signup_l_button'>log in</div>
+                    </div>
+                    <div class='loginspacer'></div>
+                    <div id='signup_gotosignup' class='note'>don't have an account? <a>sign up here</a>.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class='full inbox hideshow {{visibility.inbox}}' id='inbox_frame'>
+          <div class='center'>
+    
+    
+            <div class='gift notviewable sent'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Laney Larco</div>
+                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+              </div>
+            </div>
+            <div class='gift notviewable'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Prince Leah</div>
+                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+              </div>
+            </div>
+            <div class='gift viewable'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Richard Branson</div>
+                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+              </div>
+            </div>
+            <div class='gift viewable'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Laney Larco</div>
+                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+              </div>
+            </div>
+            <div class='gift viewable sent'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Prince Leah</div>
+                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Richard Branson</div>
+                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Laney Larco</div>
+                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Prince Leah</div>
+                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+              </div>
+            </div>
+            <div class='gift'>
+              <div class='image'></div>
+              <div class='text'>
+                <div class='title'>Richard Branson</div>
+                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+              </div>
+            </div>
+    
+    
+          </div>
+        </div>
+
+
+        <div class='full capture hideshow opaque gone'>
+          <div class='display'>
+            <canvas id='capture_canvas'></canvas>
+            <div class='buttons'>
+              <div class='row'>
+                <div class='b record' id='capture_record'></div>
+                <div class='b pause'></div>
+                <div class='b stop'></div>
+              </div>
+              <div class='row'>
+                <div class='b restart'></div>
+                <div class='b cancel'></div>
+                <div class='b check'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+			</div><!-- /scroller-inner -->
+		</div><!-- /scroller -->
+
+	</div><!-- /pusher -->
+</div><!-- /container -->
+
+
 
 
 <script type='text/javascript'>
 
-window.onload = function(){
-  LoadForm();
-  InitIcon();
-}
-
-
-
-
-function LoadForm(){
-  var form = document.getElementById('form'),
-      input = document.getElementById('email'),
-      button = document.getElementById('button'),
-      content = document.getElementById('content'),
-      error = document.getElementById('error'),
-      exists = document.getElementById('exists');
-  form.removeAttribute('id');
-  input.removeAttribute('id');
-  button.removeAttribute('id');
-  content.removeAttribute('id');
-  error.removeAttribute('id');
-  exists.removeAttribute('id');
+var app = new (function(){
+  var self = this;
   
-  button.addEventListener('click', OnSubmit);
-  input.addEventListener('keyup', CheckEmail);
-  input.addEventListener('focus', RemovePlaceholder);
-  input.addEventListener('blur', AddPlaceholder);
+  self.hide = HideElement;
+  self.show = ShowElement;
+  self.hideshow = HideShow;
+  self.cookies = new CookieWorker();
   
-  function RemovePlaceholder(){
-    if(input.value.length == 0)
-      input.removeAttribute('placeholder');
-  }
-  function AddPlaceholder(){
-    if(input.value.length == 0)
-      input.setAttribute('placeholder', 'email');
+  function CookieWorker(){
+    this.get = function(c_name){
+      var i,x,y,ARRcookies=document.cookie.split(";");
+      for (i=0;i<ARRcookies.length;i++){
+        x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+        y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+        x=x.replace(/^\s+|\s+$/g,"");
+        if (x==c_name)
+        return unescape(y);
+      };
+    }
+    this.set = function(c_name,value,exdays){
+  		var exdays = exdays || 365;
+  		var exdate=new Date();
+  		exdate.setDate(exdate.getDate() + exdays);
+  		var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString()+"; path=/;");
+  		document.cookie=c_name + "=" + c_value;
+  	}
+    this.delete = function(c_name){
+      this.set(c_name,'',-1);
+    }
   }
   
-  function CheckEmail(event){
-    button.disabled = !isValidEmail(input.value);
-    if(event.which == 13) OnSubmit();
-  }
-  
-  function OnSubmit(){
-    if(button.disabled) return;
-    button.disabled = input.disabled = true;
-    
+  function HideShow(elem1, elem2){
+    self.hide(elem1);
     setTimeout(function(){
-      var request = new Request('alpha/signup');
-      function OnSuccess(event){
-        ShowResponse(content);
-      }
-      function OnError(event){
-        if(event.code == 200)
-          ShowResponse(exists);
-        else
-          ShowResponse(error);
-      }
-      request.post({
-        email: input.value
-      }, OnSuccess, OnError);
-    }, 900);
-    
-    function ShowResponse(elem){
-      Transition.EaseInOut(400, function(percent){
-        form.style.marginTop = Math.round(50*percent*10)/10 + 'px';
-        form.style.opacity = 1-percent;
-      }, function(){
-        elem.style.display = 'block';
-        form.style.display = 'none';
-        setTimeout(function(){
-          Transition.EaseInOut(400, function(percent){
-            elem.style.opacity = percent;
-          });
-        },300);
-      });
-    }
+      self.show(elem2);
+    }, 500);
   }
   
-  
-  function isValidEmail(email) { 
-      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
+  function HideElement(element){
+    element.classList.add('opaque');
+    setTimeout(function(){
+      element.classList.add('gone');
+    }, 550);
   }
-}
+  
+  function ShowElement(element){
+    element.classList.remove('gone');
+    setTimeout(function(){
+      element.classList.remove('opaque');
+    }, 50);
+  }
+  
+})();
 
 
-
-function InitIcon(){
-  var img = new Image();
-  img.onload = Render;
-  img.src = '/images/empty.png';
-  
-  var canvas = document.getElementById('icon'),
-      ctx = canvas.getContext('2d'),
-      width = canvas.width,
-      height = canvas.height;
-  
-  var alpha = 0,
-      time = 0,
-      rotation = 0;
-  
-  function Sigmoid(x,width){
-    function resizeSigmoid(x,width){
-      var normalization = 1/(rawSigmoid(width,width)-rawSigmoid(0,width));
-      return (rawSigmoid(x,width)-rawSigmoid(0,width))*normalization;
-    }
-    function rawSigmoid(x,width){
-      width /= 2;
-      return 1/(1+Math.exp(-6/width*(x-width)));
-    }
-    function limitSigmoid(val){
-      function max(v,l){
-        return l-(l-v+Math.abs(l-v))/2;
-      }
-      function min(v,l){
-        return (v-l+Math.abs(v-l))/2+l;
-      }
-      return max(min(val,0),1);
-    }
-    return limitSigmoid(resizeSigmoid(x,width));
-  }
-  
-  function Render(){
-    ctx.clearRect(0,0,width,height);
-    ctx.fillStyle = 'rgb(255,246,209)';
-    ctx.strokeStyle = 'rgb(255,246,209)';
-    var globalrotation = Sigmoid(rotation, 1)*-Math.PI;
-    
-    ctx.save();
-    ctx.translate(width/2, height/2);
-    ctx.rotate(globalrotation);
-    ctx.translate(-width/2, -height/2);
-    
-    
-    ctx.save();
-    ctx.translate(width/2, height*(1/2-144/512+time*144/512));
-    ctx.rotate(alpha);
-    ctx.fillRect(-width/2, 0, width, height);
-    ctx.restore();
-    ctx.clearRect(0,height/2,width,height);
-    
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(width/2, height/2);
-    ctx.lineTo(width/2-height/3*Math.cos(alpha-Math.PI/2-globalrotation), height/2-height/3*Math.sin(alpha-Math.PI/2-globalrotation));
-    ctx.stroke();
-    
-    ctx.save();
-    ctx.translate(width/2, height*(1/2+144/512-time*144/512));
-    ctx.rotate(alpha);
-    ctx.fillRect(-width/2, 0, width, height);
-    ctx.restore();
-    ctx.clearRect(0,height/2+144/512*height,width,height);
-    
-    ctx.clearRect(0,0,width/2-width*144/512,height);
-    ctx.clearRect(width/2+width*144/512,0,width,height);
-    
-    ctx.drawImage(img,0,0,width,height);
-    
-    ctx.restore();
-    
-    if(time < 1){
-      time += 0.002;
-    }else if(rotation < 1){
-      time = 1;
-      rotation += 0.02;
-    }else{
-      time = 0;
-      rotation = 0;
-    }
-    requestAnimationFrame(Render);
-  }
-}
+window.addEventListener('load', function(){
+	new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('header_settingsbutton'), {
+		type: 'cover'
+	});
+});
 
 </script>
 </body>
+<!--
+
+  
+  function hasGetUserMedia() {
+    return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+              navigator.mozGetUserMedia || navigator.msGetUserMedia);
+  }
+
+  if(!hasGetUserMedia()){
+    console.error('getUserMedia() is not supported in your browser');
+    return;
+  }
+  
+  
+  
+  
+  var record = document.getElementById('capture_record');
+  
+  record.addEventListener('click', StartWebCam);
+  
+  function ErrorCallback(){
+    console.log('Video Capture Failed');
+  }
+  
+  
+  
+  function StartWebCam(){
+    navigator.getUserMedia  = navigator.getUserMedia ||
+                              navigator.webkitGetUserMedia ||
+                              navigator.mozGetUserMedia ||
+                              navigator.msGetUserMedia;
+    
+    var canvas = document.getElementById('capture_canvas'),
+        ctx = canvas.getContext('2d'),
+        height = width = 0;
+    
+    
+    
+    
+    function Resize(){
+      height = canvas.height = canvas.parentElement.offsetHeight*2;
+      width = canvas.width = canvas.parentElement.offsetWidth*2;
+    }
+    Resize();
+    
+    
+    
+    function startRecording() {
+      recorder = stream.record();
+      setTimeout(stopRecording, 2000);
+    }
+    function stopRecording() {
+      recorder.getRecordedData(function(event){console.log(event)});
+    }
+      
+      
+    
+    
+    var video = document.createElement('video'), isStreaming=false, stream, recorder;
+    video.setAttribute('autoplay','');
+    video.addEventListener('canplay', function(e) {
+       if (!isStreaming) {
+          
+          ctx.translate(width, 0);
+          ctx.scale(-1, 1);
+          
+          isStreaming = true;
+          startRecording();
+       }
+    }, false);
+    video.addEventListener('play', function() {
+       // Every 33 milliseconds copy the video image to the canvas
+       setInterval(function() {
+          if (video.paused || video.ended) return;
+          ctx.fillRect(0, 0, width, height);
+          ctx.drawImage(video, 0, 0, width, height);
+       }, 33);
+    }, false);
+    
+    
+    
+    navigator.getUserMedia({video: true, audio: false}, function(localMediaStream){
+      stream = localMediaStream;
+      video.src = (window.URL || window.webkitURL).createObjectURL(localMediaStream);
+      video.onloadedmetadata = function(e) {};
+    }, ErrorCallback);
+  }
+
+-->
 </html>

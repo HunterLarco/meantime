@@ -91,12 +91,6 @@ class AuthRequestHandler(CookieHandler):
     self.__route__(*args, **kwargs)
   def post(self, *args, **kwargs):
     self.__route__(*args, **kwargs)
-    
-    
-  def logout(self):
-    self.cookies.remove('UID')
-    self.cookies.remove('ULID')
-    self.cookies.remove('SID')
   
 
   def route(self, handle, *args, **kwargs):
