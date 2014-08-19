@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<style>
+div.buttons{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  height:227px;
+  width:100%;
+  background:rgb(255,255,255);
+}
+div.buttonframe{
+  width:100px;
+  height:100px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius:    50%;
+  border-radius:         50%;
+  border:1px solid rgb(240,240,240);
+  margin:-50px 0px 0px -50px;
+  position:absolute;
+  top:50%;
+  left:50%;
+}
+div.buttonframe div.button{
+  background:rgb(240,240,240);
+  -webkit-border-radius: 50%;
+  -moz-border-radius:    50%;
+  border-radius:         50%;
+  margin:0px;
+  width:100px;
+  height:100px;
+}
+div.check{
+  position:absolute;
+  left:50%;
+  margin-left:90px;
+  height:30px;
+  width:30px;
+  background:green;
+  margin-top:-15px;
+  top:50%;
+  background:url(/images/check.png) no-repeat;
+  background-size:30px 30px;
+  transition:all 400ms ease;
+}
+div.buttons.captured div.check{
+  background-image:url(/images/check_hover.png);
+}
+div.cancel{
+  position:absolute;
+  right:50%;
+  margin-right:90px;
+  height:30px;
+  width:30px;
+  margin-top:-15px;
+  top:50%;
+  background:url(/images/cancel.png) no-repeat;
+  background-size:30px 30px;
+  transition:all 400ms ease;
+}
+div.buttons.captured div.cancel{
+  background-image:url(/images/cancel_hover.png);
+}
+
+div.image{
+  position:absolute;
+  top:0px;
+  bottom:227px;
+  left:0px;
+  width:100%;
+}
+div.image img{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+
+
+
+div.options{
+  position:absolute;
+  top:100%;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+div.options div.frame{
+  position:absolute;
+  top:10px;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  height:auto;
+  box-shadow:0px 0px 10px rgba(0,0,0,0.5);
+  -webkit-border-radius: 3px;
+  -moz-border-radius:    3px;
+  border-radius:         3px;
+  background:rgb(255,255,255);
+  overflow-x:hidden;
+  overflow-y:scroll;
+}
+
+
+
+img.preload{
+  display:none;
+}
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sealed | Image Capture</title>
+<link rel="stylesheet" href="/resources/CSS/resets.css"></link>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
+<link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
+<script src='/resources/Scripts/fastclick.js'></script>
+<script src='/resources/Scripts/Transition.js'></script>
+</head>
+<body>
+
+<div class='statusbar'></div>
+
+<img class='preload' src='/images/close_hover.png'/>
+<img class='preload' src='/images/check_hover.png'/>
+
+
+<div class='image'>
+  <img src='http://img1.cookinglight.timeinc.net/sites/default/files/image/2005/05/0505p116-white-birthday-cake-l.jpg'/>
+</div>
+<div class='buttons' id='frame'>
+  <div class='check' id='imagecheck'></div>
+  <div class='cancel' id='imagecancel'></div>
+  <div class='buttonframe'>
+    <div class='button' id='recordbutton'></div>
+  </div>
+</div>
+
+
+<script type='text/javascript'>
+
+
+function Capture(files){
+  var self = this;
+  
+  self.get = function(){
+    return files[0];
+  }
+}
+
+
+
+var delegate = new (function(){
+  var self = this;
+  
+  self.onload = OnLoad;
+  
+  var currentCapture;
+  
+  function OnLoad(){
+    FastClick.attach(document.body);
+    BindCaptureButtons();
+  }
+  
+  function MoveToOptionsPane(){
+    if(!currentCapture) return;
+    app.panestore.capture = currentCapture;
+    currentCapture = null;
+    setTimeout(function(){
+      frame.setAttribute('class', 'buttons');
+    },200);
+    app.swipe.next();
+    app.swipe.lock();
+  }
+  
+  function DeleteCapture(){
+    currentCapture = null;
+    frame.setAttribute('class', 'buttons');
+  }
+  
+  function BindCaptureButtons(){
+    var frame        = document.getElementById('frame'),
+        check        = document.getElementById('imagecheck'),
+        cancel       = document.getElementById('imagecancel'),
+        recordbutton = document.getElementById('recordbutton');
+    
+    cancel.addEventListener('click', DeleteCapture);
+    check.addEventListener('click', MoveToOptionsPane);
+    
+    var running = false,
+        locked = false;
+    
+    function OnCameraSuccess(files){
+      app.console.log('Video Capture Success');
+      currentCapture = new Capture(files);
+      setTimeout(function(){
+        frame.setAttribute('class', 'buttons captured');
+        locked = false;
+        OnRecord();
+      }, 350);
+    }
+
+    function OnCameraError(event){
+      app.console.warn('Video Capture Failed: '+(event.code==3?'User Canceled Operation':'Unknown Reason'));
+      setTimeout(function(){
+        locked = false;
+        OnRecord();
+      }, 350);
+    }
+    
+    recordbutton.parentElement.addEventListener('click', OnRecord);
+    
+    function OnRecord(){
+      if(locked) return;
+      locked = true;
+      if(running){
+        Transition.EaseInOut(300, function(percent){
+          recordbutton.style.margin = (30-percent*30)+'px';
+          recordbutton.style.width = recordbutton.style.height = (40+percent*60)+'px';
+        }, function(){
+          locked = false;
+        });
+      }else if(!running){
+        Transition.EaseInOut(300, function(percent){
+          recordbutton.style.margin = percent*30+'px';
+          recordbutton.style.width = recordbutton.style.height = (100-percent*60)+'px';
+        }, function(){
+          app.console.log('Requesting Video Capture');
+          app.captureVideo(OnCameraSuccess, OnCameraError);
+        });
+      }
+      running = !running;
+    }
+  }
+
+})();
+
+
+window.onload = function(){
+  window.app = window.parent.app;
+  app.notify(delegate);
+};
+
+
+</script>
+</body>
+</html>

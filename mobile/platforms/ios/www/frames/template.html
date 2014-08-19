@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<style></style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sealed | Message List</title>
+<link rel="stylesheet" href="/resources/CSS/resets.css"></link>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
+<link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
+<script src='/resources/Scripts/fastclick.js'></script>
+</head>
+<body>
+<div class='statusbar'></div>
+<script type='text/javascript'>
+
+
+var delegate = new (function(){
+  var self = this;
+  
+  self.onload = OnLoad;
+  
+  function OnLoad(){
+    FastClick.attach(document.body);
+  }
+
+})();
+
+
+window.onload = function(){
+  window.app = window.parent.app;
+  app.notify(delegate);
+};
+
+
+</script>
+</body>
+</html>

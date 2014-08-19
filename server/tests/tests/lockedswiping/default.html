@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<style>
+
+body {
+    margin:0px;
+    padding:0px;
+    overflow:hidden;
+}
+div.app{
+  position:fixed;
+  top:00px;
+  left:0px;
+  width:100%;
+  bottom:0px;
+  background:rgb(240,240,240);
+}
+div.swipeFrame{
+  height:100%;
+  width:auto;
+  overflow:hidden;
+}
+div.swipeFrame div.swipe-wrap{
+  height:100%;
+}
+div.pane{
+  width:100%;
+  height:100%;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  background:rgb(240,240,240);
+  position:relative;
+  float:left;
+}
+
+
+
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<script src='./swipe.js'></script>
+<title>Sealed</title>
+
+
+<div class='app'>
+  <div id='appbody' class='swipe swipeFrame'>
+    <div class='swipe-wrap'>
+      <div class='pane' style='background:red;'></div>
+      <div class='pane' style='background:yellow;'><button onclick='Unlock()'>Unlock</button></div>
+      <div class='pane' style='background:green;'></div>
+      <div class='pane' style='background:blue;'></div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type='text/javascript'>
+
+window.onload = function(){
+  var appbody = document.getElementById('appbody');
+  window.swipeObject = Swipe(appbody, {
+    continuous: false,
+    startSlide: 2,
+    callback: function(index, element) {},
+    // disableScroll: true
+    // stopPropagation: true,
+    // transitionEnd: function(index, element) {
+//       if(index == 1) swipeObject.lockSlide(4);
+//     }
+  });
+  
+  swipeObject.lockSlide(3);
+  swipeObject.lockSlide(0);
+}
+
+function Unlock(){
+  swipeObject.unlockSlide(3);
+  swipeObject.unlockSlide(0);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<style>
+body{
+  font-family:'lato';
+}
+
+
+
+div.emulator{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:60px;
+  overflow:scroll;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center;
+  background:url(/images/stripe.png);
+  cursor:url(/images/emulator/main.png) 37 37, auto !important;
+}
+div.emulator .phone{
+  height:568px;
+  width:320px;
+  border:8px solid rgba(0,0,0,0.5);
+  -webkit-border-radius: 5px;
+  -moz-border-radius:    5px;
+  border-radius:         5px;
+  background:rgb(255,255,255);
+  -moz-box-shadow:    0px 15px 20px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 0px 15px 20px rgba(0,0,0,0.2);
+	box-shadow:         0px 15px 20px rgba(0,0,0,0.2);
+  outline:none;
+  margin:0px;
+  padding:0px;
+  cursor:inherit;
+}
+.cursor.l{
+  cursor:url(/images/emulator/left.png) 37 37, auto !important;
+}
+.cursor.dl{
+  cursor:url(/images/emulator/down-left.png) 37 37, auto !important;
+}
+.cursor.d{
+  cursor:url(/images/emulator/down.png) 37 37, auto !important;
+}
+.cursor.dr{
+  cursor:url(/images/emulator/down-right.png) 37 37, auto !important;
+}
+.cursor.r{
+  cursor:url(/images/emulator/right.png) 37 37, auto !important;
+}
+.cursor.ul{
+  cursor:url(/images/emulator/up-left.png) 37 37, auto !important;
+}
+.cursor.ur{
+  cursor:url(/images/emulator/up-right.png) 37 37, auto !important;
+}
+.cursor.u{
+  cursor:url(/images/emulator/up.png) 37 37, auto !important;
+}
+
+
+
+
+
+div.console{
+  position:fixed;
+  top:100%;
+  left:0px;
+  width:100%;
+  margin-top:-60px;
+  z-index:1;
+  height:60%;
+  background:rgb(45,48,51);
+  -webkit-transition: all 400ms ease;
+  -moz-transition:    all 400ms ease;
+  -ms-transition:     all 400ms ease;
+  -o-transition:      all 400ms ease;
+  transition:         all 400ms ease;
+}
+div.console.opened{
+  top:40%;
+  margin-top:0px;
+  -moz-box-shadow:    0px -4px 8px rgba(0,0,0,0.2);
+	-webkit-box-shadow: 0px -4px 8px rgba(0,0,0,0.2);
+	box-shadow:         0px -4px 8px rgba(0,0,0,0.2);
+}
+div.console div.header{
+  height:60px;
+  line-height:60px;
+  overflow:hidden;
+  text-align:center;
+  color:rgb(245,245,245);
+  font-size:16px;
+  text-shadow:         0px 3px 6px rgba(0,0,0,0.7);
+  -webkit-text-shadow: 0px 3px 6px rgba(0,0,0,0.7);
+  -moz-text-shadow:    0px 3px 6px rgba(0,0,0,0.7);
+  cursor:pointer;
+}
+
+
+
+form.initial{
+  position:fixed;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background:rgb(255,255,255);
+  z-index:2;
+  overflow:scroll;
+}
+div.sealedheader{
+  line-height:60px;
+  font-size:26px;
+  color:rgb(51,51,51);
+  text-align:center;
+  padding:12px 0px;
+  font-family:'raleway';
+  background:rgb(102,201,215);
+}
+div.sealedheader span{
+  line-height:30px;
+  font-size:12px;
+  vertical-align:top;
+  text-shadow:         0px 1px 0px rgba(255,255,255,0.5);
+  -webkit-text-shadow: 0px 1px 0px rgba(255,255,255,0.5);
+  -moz-text-shadow:    0px 1px 0px rgba(255,255,255,0.5);
+}
+form.initial div.content{
+  margin:0px auto;
+  max-width:600px;
+  padding:20px 50px;
+}
+form.initial div.question{
+  margin-top:20px;
+  padding:6px 12px;
+  font-size:16px;
+  background:rgb(220,220,220);
+  border-bottom:1px solid rgb(210,210,210);
+}
+form.initial div.input{
+  background:rgb(240,240,240);
+  padding:0px 12px;
+  cursor:text;
+}
+form.initial div.input.disabled,
+form.initial div.input input:disabled{
+  cursor:not-allowed;
+}
+form.initial div.input input{
+  font-size:14px;
+  border:none !important;
+  margin:0px !important;
+  padding:8px 0px !important;
+  background:none !important;
+  -moz-box-shadow:    none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow:         none !important;
+  width:100%;
+}
+form.initial p{
+  text-align:center;
+  padding:20px 0px;
+}
+
+form.initial div.buttonframe{
+  margin:40px 0px;
+  text-align:center;
+}
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sealed App Demo (Alpha)</title>
+<link rel="stylesheet" href="/resources/CSS/resets.css"/>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/>
+<link rel='stylesheet' href='/resources/CSS/raleway.css'/>
+<link rel="stylesheet" href="/resources/CSS/forms.css"/>
+<script src='//api.capaching.appspot.com/?gateway=/'></script>
+</head>
+<body>
+
+
+<form class='initial' id='signupform'>
+  <div class='sealedheader'>Sealed<span>alpha</span></div>
+  <div class='content'>
+    <p>Don't worry. You're only four questions away from trying Sealed.</p>
+    <div class='question'>What is your name?</div><!--
+ --><div class='input'><input name='name' type='text' placeholder='Joe Shmoe'/></div>
+    <div class='question'>What is your phone number?</div><!--
+ --><div class='input'><input name='phone' type='text' data-restriction='number' data-length='10' placeholder='012 345 6789'/></div>
+    <div class='question'>What is your email address?</div><!--
+ --><div class='input disabled'><input name='email' type='text' value='testing@test.com' disabled/></div>
+    <div class='question'>How old are you?</div><!--
+ --><div class='input'><input name='age' type='text' data-restriction='number' data-length='3' placeholder='1000'/></div>
+    <div class='buttonframe'>
+      <div class='button'>Try Sealed</div>
+    </div>
+  </div>
+</form>
+
+
+
+<div class='emulator' id='emulator'>
+  <div src='/frames/app.html' class='phone' id='phone'></div>
+</div>
+
+
+
+<div class='console' id='frame'>
+  <div class='header' id='revealconsole'>click me!</div>
+</div>
+
+
+
+<script type='text/javascript'>
+
+window.onload = function(){
+  BindTouchEmulator();
+  BindConsole();
+  BindForm();
+}
+
+
+
+
+
+function BindForm(){
+  var form = document.getElementById('signupform'),
+      inputs = document.getElementsByTagName('input');
+  for(var i=0,input; input=inputs[i++];){
+    if(input.getAttribute('data-restriction') == 'number'){
+      input.addEventListener('keydown', RequireNumber);
+    }
+    if(!!input.getAttribute('data-length')){
+      input.addEventListener('keydown', RequireLength);
+    }
+  }
+}
+
+function RequireNumber(event){
+  if(!!String.fromCharCode(event.which).match(/[a-zA-Z-!$%^&*()_+|~=`{}\[\]:";'\<>?,.\/]/g)){
+    event.preventDefault();
+    return false;
+  }
+}
+
+function RequireLength(event){
+  var len = parseInt(event.target.getAttribute('data-length'));
+  if(event.target.value.replace(/\s/g,'').length >= len && !!String.fromCharCode(event.which).match(/[0-9a-zA-Z-!$%^&*()_+|~=`{}\[\]:";'\<>?,.\/]/g)){
+    event.preventDefault();
+    return false;
+  }
+}
+
+
+
+
+
+
+function BindConsole(){
+  var frame = document.getElementById('frame'),
+      button = document.getElementById('revealconsole');
+  button.addEventListener('click', function(){
+    var cls = frame.getAttribute('class');
+    if(cls.indexOf('opened') > -1)
+      frame.setAttribute('class', cls.replace(/\sopened/g,''));
+    else
+      frame.setAttribute('class', cls+' opened');
+  });
+}
+
+
+
+
+
+
+
+
+
+function BindTouchEmulator(){
+  var phone = document.getElementById('phone');
+  phone.addEventListener('mousedown', TouchStart);
+  
+  var mouse = {
+    lastx: null,
+    lasty: null,
+    angle: null
+  }
+  
+  function TouchStart(event){
+    document.addEventListener('mousemove', TouchMove);
+    document.addEventListener('mouseup', TouchEnd);
+    
+    mouse.lastx = event.pageX;
+    mouse.lasty = event.pageY;
+    mouse.angle = [];
+  }
+  
+  function TouchMove(event){
+    var delta = {
+          x: mouse.lastx - event.pageX,
+          y: mouse.lasty - event.pageY
+        },
+        angle = (Math.atan2(delta.y, delta.x) - Math.PI/8 + 2*Math.PI) % (2*Math.PI);
+    
+    mouse.angle.push(angle);
+    if(mouse.angle.length > 20) mouse.angle.shift();
+
+    var angleAv = 0;
+    for(var i=0; i<mouse.angle.length; i++)
+      angleAv += mouse.angle[i];
+    angleAv /= mouse.angle.length;
+    
+    var emulator = document.getElementById('emulator');
+    
+    if(angleAv < Math.PI/4){
+      emulator.setAttribute('class', 'emulator cursor ul');
+    }else if(angleAv < Math.PI/2){
+      emulator.setAttribute('class', 'emulator cursor u');
+    }else if(angleAv < 3*Math.PI/4){
+      emulator.setAttribute('class', 'emulator cursor ur');
+    }else if(angleAv < Math.PI){
+      emulator.setAttribute('class', 'emulator cursor r');
+    }else if(angleAv < 5*Math.PI/4){
+      emulator.setAttribute('class', 'emulator cursor dr');
+    }else if(angleAv < 3*Math.PI/2){
+      emulator.setAttribute('class', 'emulator cursor d');
+    }else if(angleAv < 7*Math.PI/4){
+      emulator.setAttribute('class', 'emulator cursor dl');
+    }else{
+      emulator.setAttribute('class', 'emulator cursor l');
+    };
+    
+    mouse.lastx = event.pageX;
+    mouse.lasty = event.pageY;
+  }
+  
+  function TouchEnd(event){
+    document.removeEventListener('mousemove', TouchMove);
+    document.removeEventListener('mouseup', TouchEnd);
+    emulator.setAttribute('class', 'emulator');
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+div.button{
+  display:inline-block;
+  position:relative;
+  padding:6px 14px;
+  border-bottom:3px solid rgb(82,181,195);
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  background:rgb(102,201,215);
+  color:rgb(255,255,255);
+  outline:none;
+  cursor:pointer;
+  text-align:center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: opacity 400ms ease;
+  -moz-transition:    opacity 400ms ease;
+  -ms-transition:     opacity 400ms ease;
+  -o-transition:      opacity 400ms ease;
+  transition:         opacity 400ms ease;
+}
+div.button:hover:not(.disabled){
+  border-bottom-width:2px !important;
+  margin-top:1px !important;
+}
+div.button:active:not(.disabled){
+  border-bottom-width:1px !important;
+  margin-top:2px !important;
+}
+div.button.disabled{
+  cursor:not-allowed;
+  opacity:0.8;
+}

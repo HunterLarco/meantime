@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<style>
+body{
+  background:rgb(240,240,240) !important;
+}
+
+
+div.buttonshaker{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+
+
+div.header{
+  height:52px;
+  line-height:52px;
+  box-shadow:0px 1px 3px rgb(240,240,240);
+  border-bottom:1px solid rgb(240,240,240);
+  z-index:1;
+  background:rgba(255,255,255,0.95);
+  font-family:'raleway';
+  font-weight:100;
+}
+div.header div.text{
+  position:absolute;
+  left:74px;
+  right:74px;
+  text-align:center;
+  color:rgb(100,100,100);
+  font-size:21px;
+}
+div.header div.lbutton{
+  float:left;
+  height:40px;
+  width:40px;
+  margin:6px;
+  background:url(/images/settings.png) no-repeat;
+  background-size:40px 40px;
+  margin-left: 22px;
+}
+div.header div.rbutton{
+  float:right;
+  height:40px;
+  width:40px;
+  margin:6px;
+  background:url(/images/plus.png) no-repeat;
+  background-size:40px 40px;
+  margin-right: 22px;
+}
+
+
+div.gifts{
+  z-index:-1;
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  padding:2px 8px;
+}
+div.gifts div.filler{
+  height:52px;
+}
+div.gifts div.gift{
+  margin:12px 0px;
+  background:rgb(255,255,255);
+  height:68px;
+  position:relative;
+}
+div.gifts div.gift div.image{
+  height:40px;
+  width:40px;
+  margin:14px;
+  background-size:40px 40px;
+  float:left;
+  position:relative;
+  background-image:url(/images/read.png);
+  background-repeat:no-repeat;
+}
+div.gifts div.gift.notviewable div.image{
+  background-image:url(/images/notviewable.png);
+}
+div.gifts div.gift.viewable div.image{
+  background-image:url(/images/viewable.png);
+}
+div.gifts div.gift.sent div.image:after{
+  content:'';
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:40px;
+  height:40px;
+  background:url(/images/sent_skin.png) no-repeat;
+  background-size:40px 40px;
+}
+
+div.gifts div.gift div.text{
+  position:absolute;
+  left:68px;
+  right:0px;
+  top:0px;
+  padding:13px 0px;
+  font-size:11px;
+  color:rgb(142,142,142);
+  overflow:hidden;
+  white-space:nowrap;
+}
+div.gifts div.gift div.text div.title{
+  font-size:15px;
+  color:rgb(0,0,0);
+  margin:3px 0px;
+}
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Sealed | Message List</title>
+<link rel="stylesheet" href="/resources/CSS/resets.css"></link>
+<link rel='stylesheet' href='/resources/CSS/lato.css'/></link>
+<link rel='stylesheet' href='/resources/CSS/raleway.css'/></link>
+<link rel='stylesheet' href='/resources/CSS/iframe.css'/></link>
+<script src='/resources/Scripts/Transition.js'></script>
+<script src='/resources/Scripts/fastclick.js'></script>
+</head>
+<body>
+
+
+<div class='statusbar'></div>
+
+
+<div class='buttonshaker' id='buttonshaker'>
+  <div class='header'>
+    <div class='lbutton' id='settingsbutton'></div>
+    <div class='rbutton' id='plusbutton'></div>
+    <div class='text'>sealed</div>
+  </div>
+  <div class='headerbackground'></div>
+  <div class='gifts scrollable'>
+    <div class='filler'></div>
+    <div class='gift notviewable sent'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Laney Larco</div>
+        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+      </div>
+    </div>
+    <div class='gift notviewable'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Prince Leah</div>
+        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+      </div>
+    </div>
+    <div class='gift viewable'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Richard Branson</div>
+        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+      </div>
+    </div>
+    <div class='gift viewable'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Laney Larco</div>
+        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+      </div>
+    </div>
+    <div class='gift viewable sent'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Prince Leah</div>
+        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Richard Branson</div>
+        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Laney Larco</div>
+        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Prince Leah</div>
+        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Richard Branson</div>
+        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script type='text/javascript'>
+
+
+var delegate = new (function(){
+  var self = this;
+  
+  self.onload = OnLoad;
+  
+  function OnLoad(){
+    FastClick.attach(document.body);
+    BindBouncingButtons();
+  }
+  
+  function BindBouncingButtons(){
+    var settingsbutton = document.getElementById('settingsbutton'),
+        plusbutton     = document.getElementById('plusbutton'),
+        buttonshaker   = document.getElementById('buttonshaker');
+    
+    settingsbutton.addEventListener('click', function(){
+      app.swipe.prev();
+    });
+
+    plusbutton.addEventListener('click', function(){
+      app.swipe.next();
+    });
+  }
+
+})();
+
+
+window.onload = function(){
+  window.app = window.parent.app;
+  app.notify(delegate);
+};
+
+
+</script>
+</body>
+</html>

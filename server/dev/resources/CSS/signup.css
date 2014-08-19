@@ -1,0 +1,115 @@
+div.signup{
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center;
+}
+div.signup div.form{
+  background:rgb(255,255,255);
+  -webkit-border-radius: 4px;
+  -moz-border-radius:    4px;
+  border-radius:         4px;
+  width:400px;
+  position:relative;
+}
+div.signup div.form div.shade{
+  overflow:hidden;
+}
+div.signup div.form h1{
+  margin:0px;
+  padding:16px 20px;
+  color:rgb(102,102,102);
+  font-size:22px;
+  border-bottom:1px solid rgb(239,239,239);
+}
+div.signup div.form div.content{
+  padding:30px 30px 12px 30px;
+}
+div.signup div.form div.content input{
+  padding:8px 0px;
+  margin:0px;
+  border:none;
+  outline:none;
+  border-bottom:1px solid rgb(220,220,220);
+  width:100%;
+  font-style:italic;
+  color:rgb(80,80,80);
+  font-size:16px;
+}
+
+div.signup div.form div.content div.spacer{
+  height:28px;
+}
+div.signup div.form div.content div.buttonframe{
+  text-align:center;
+}
+div.signup div.form div.note{
+  font-size:12px;
+  font-weight:300;
+  color:rgb(102,102,102);
+  text-align:center;
+  margin-top:30px;
+}
+div.signup a{
+  color:rgb(0,180,200);
+  text-decoration:none;
+  cursor:pointer;
+}
+div.signup div.loginspacer{
+  height:36px;
+}
+div.signup div.error{
+  color:rgb(250,50,50);
+  position:absolute;
+  top:100%;
+  left:0px;
+  width:100%;
+  text-align:center;
+  margin-top:20px;
+  font-weight:300;
+}
+
+
+
+
+
+
+
+div.signup div.slider .pane{
+  display:inline-block;
+  width:100%;
+  white-space:normal;
+  vertical-align:top;
+  position:relative;
+}
+div.signup.login div.slider{
+  -ms-transform:     translate(-100%, 0px);
+ 	-webkit-transform: translate(-100%, 0px);
+  -moz-transform:    translate(-100%, 0px);
+  -o-transform:      translate(-100%, 0px);
+  transform:         translate(-100%, 0px);
+}
+div.signup div.slider{
+  white-space:nowrap;
+  -webkit-transition: all 400ms ease;
+  -moz-transition:    all 400ms ease;
+  -ms-transition:     all 400ms ease;
+  -o-transition:      all 400ms ease;
+  transition:         all 400ms ease;
+}
+div.signup div.slider.slow{
+  white-space:nowrap;
+  -webkit-transition: all 400ms ease 50ms;
+  -moz-transition:    all 400ms ease 50ms;
+  -ms-transition:     all 400ms ease 50ms;
+  -o-transition:      all 400ms ease 50ms;
+  transition:         all 400ms ease 50ms;
+}

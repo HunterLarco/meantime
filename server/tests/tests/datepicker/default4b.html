@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<style>
+
+
+
+body{
+  padding:0px;
+  margin:0px;
+  font-family:'arial';
+}
+
+
+
+#scroller{
+  position:fixed;
+  top:0px;
+  left:0px;
+  height:100%;
+  width:100%;
+  overflow:hidden;
+}
+#scroller p:nth-child(odd){
+  background:rgb(240,240,240);
+}
+#scroller p{
+  margin:0px;
+  padding:0px 20px;
+  line-height:30px;
+}
+#scroller p:nth-child(odd){
+  line-height:43px;
+}
+
+
+
+</style>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<title>Sealed</title>
+<script src='./SnapScroller.js'></script>
+</head>
+
+
+<div id='scroller'></div>
+
+
+
+<script type='text/javascript'>
+
+
+
+window.onload = function(){
+  var scroller = new SnapScroller(document.getElementById('scroller'));
+  scroller.addEventListener('change', function(event){
+    console.log(event);
+  });
+  // new SnapScroller2(document.getElementById('scroller'));
+  for(var i=0; i<200; i++){
+    var p = document.createElement('p');
+    p.innerHTML = 'testing';
+    document.getElementById('scroller').appendChild(p);
+  }
+}
+
+
+
+
+</script>
+</body>
+</html>

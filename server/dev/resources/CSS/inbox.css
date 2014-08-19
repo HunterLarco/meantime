@@ -1,0 +1,59 @@
+div.inbox{
+  overflow:scroll;
+}
+div.inbox div.center{
+  width:400px;
+  margin:60px auto;
+}
+div.inbox div.gift{
+  margin:12px 0px;
+  background:rgb(255,255,255);
+  height:68px;
+  position:relative;
+  -moz-box-shadow:    0px 2px 3px rgba(0,0,0,0.05);
+	-webkit-box-shadow: 0px 2px 3px rgba(0,0,0,0.05);
+	box-shadow:         0px 2px 3px rgba(0,0,0,0.05);
+}
+div.inbox div.gift div.image{
+  height:40px;
+  width:40px;
+  margin:14px;
+  background-size:40px 40px;
+  float:left;
+  position:relative;
+  background-image:url(/images/read.png);
+  background-repeat:no-repeat;
+}
+div.inbox div.gift.notviewable div.image{
+  background-image:url(/images/notviewable.png);
+}
+div.inbox div.gift.viewable div.image{
+  background-image:url(/images/viewable.png);
+}
+div.inbox div.gift.sent div.image:after{
+  content:'';
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:40px;
+  height:40px;
+  background:url(/images/sent_skin.png) no-repeat;
+  background-size:40px 40px;
+}
+
+div.inbox div.gift div.text{
+  position:absolute;
+  left:68px;
+  right:0px;
+  top:0px;
+  padding:13px 0px;
+  font-size:11px;
+  color:rgb(142,142,142);
+  overflow:hidden;
+  white-space:nowrap;
+}
+div.inbox div.gift div.text div.title{
+  font-size:15px;
+  color:rgb(0,0,0);
+  margin:3px 0px;
+}
