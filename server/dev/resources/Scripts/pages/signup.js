@@ -9,6 +9,18 @@
         password2 = document.getElementById('signup_s_password2'),
         button = document.getElementById('signup_s_button'),
         error = document.getElementById('signup_error');
+    
+    email.addEventListener('keyup', MoveToNext);
+    password.addEventListener('keyup', MoveToNext);
+    password2.addEventListener('keyup', MoveToNext);
+    function MoveToNext(event){
+      if(event.which == 13)
+             if(email.value.length == 0)     email.focus();
+        else if(password.value.length == 0)  password.focus();
+        else if(password2.value.length == 0) password2.focus();
+        else button.click();
+    }
+    
     button.addEventListener('click', SendSignup);
     var sending = false;
     function RunError(callback){
@@ -39,8 +51,14 @@
       }
     }
     function Callback(){
-      app.hideshow(document.getElementById('signup_frame'), document.getElementById('inbox_frame'));
-      setTimeout(function(){app.show(document.getElementById('header_buttons'));}, 550);
+      app.showframe(document.getElementById('inbox_frame'));
+      setTimeout(function(){
+        app.show(document.getElementById('header_buttons'));
+        email.value = '';
+        password.value = '';
+        password2.value = '';
+        RunError();
+      }, 550);
     }
     function SendSignup(){
       if(sending) return;
@@ -71,6 +89,16 @@
         password = document.getElementById('signup_l_password'),
         button = document.getElementById('signup_l_button'),
         error = document.getElementById('signup_error');
+    
+    email.addEventListener('keyup', MoveToNext);
+    password.addEventListener('keyup', MoveToNext);
+    function MoveToNext(event){
+      if(event.which == 13)
+             if(email.value.length == 0)     email.focus();
+        else if(password.value.length == 0)  password.focus();
+        else button.click();
+    }
+    
     button.addEventListener('click', SendLogin);
     var sending = false;
     function RunError(callback){
@@ -89,7 +117,7 @@
       error.innerHTML = 'Email Password Combination Not Recognized';
     }
     function BruteSuspected(){
-      app.hideshow(document.getElementById('signup_frame'), document.getElementById('passlocked_frame'));
+      app.showframe(document.getElementById('passlocked_frame'));
     }
     function OnError(event){
       switch(event.code){
@@ -100,8 +128,13 @@
       }
     }
     function Callback(){
-      app.hideshow(document.getElementById('signup_frame'), document.getElementById('inbox_frame'));
-      setTimeout(function(){app.show(document.getElementById('header_buttons'));}, 550);
+      app.showframe(document.getElementById('inbox_frame'));
+      setTimeout(function(){
+        app.show(document.getElementById('header_buttons'));
+        email.value = '';
+        password.value = '';
+        RunError();
+      }, 550);
     }
     function SendLogin(){
       if(sending) return;

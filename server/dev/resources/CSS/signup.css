@@ -29,6 +29,7 @@ div.signup div.form h1{
   color:rgb(102,102,102);
   font-size:22px;
   border-bottom:1px solid rgb(239,239,239);
+  font-weight:300;
 }
 div.signup div.form div.content{
   padding:30px 30px 12px 30px;

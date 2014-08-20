@@ -161,100 +161,32 @@
   	}
   };
   
-  var uid, ulid, sid;
-  LoadSession();
-  
-  function LoadSession(){
-    uid = cookies.get('uid');
-    ulid = cookies.get('ulid');
-    sid = cookies.get('sid');
+  this.logout = function(){
+    cookies.delete('uid');
+    cookies.delete('ulid');
+    cookies.delete('sid');
   }
   
   function CheckNewSession(data){
     if(!data['setsession']) return;
-    if(!!data.session.uid){
-      uid = data['session']['uid'];
+    if(!!data.session.uid)
       cookies.set('uid',uid,30);
-    }
-    if(!!data.session.ulid){
-       ulid = data['session']['ulid'];
-       cookies.set('ulid',ulid,30);
-     }
-    if(!!data.session.sid){
-      sid = data['session']['sid'];
+    if(!!data.session.ulid)
+     cookies.set('ulid',ulid,30);
+    if(!!data.session.sid)
       cookies.set('sid',sid,30);
-    }
   }
   
   function AddSessionToPost(data){
+    var uid, ulid, sid;
+    uid = cookies.get('uid');
+    ulid = cookies.get('ulid');
+    sid = cookies.get('sid');
     if(!!uid) data['uid'] = uid;
     if(!!ulid) data['ulid'] = ulid;
     if(!!sid) data['sid'] = sid;
   }
-  
-  Request.hasSession = function(){
-    return !!uid && !!sid && !!ulid;
-  }
-  
-  Request.getUID = function(){
-    return uid;
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  Request.upload = function(file, data, OnError, OnSuccess){
-    if(!FileTransfer) return OnError({
-      code: -1,
-      message: 'FileTransfer dependancy not met'
-    });
-    if(!file) return OnError({
-      code: -1,
-      message: 'a file must be provided'
-    });
-    
-    data.uid = Request.getUID();
-    
-    var request = new Request('upload/geturl')
-    request.post({}, RecievedUploadURL, OnError);
-    
-    function RecievedUploadURL(event){
-      var ft = new FileTransfer(),
-          path = file.fullPath,
-          filename = file.name;
-      ft.upload(
-        path,
-        encodeURI(event.url),
-        function(event){
-          app.console.log('Upload Success');
-          OnSuccess(event);
-        },
-        function(event) {
-          app.console.warn('Upload Failed');
-          OnError({
-            code: -1,
-            message: 'Unknown FileTransfer Error'
-          });
-        },{
-          fileName: filename,
-          params: data
-        }
-      );
-      app.console.log('Upload Sent')
-    }
-    
-  }
-  
-  
-  
+
   
   
   

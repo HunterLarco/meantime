@@ -2,7 +2,8 @@ div.button{
   display:inline-block;
   position:relative;
   padding:6px 14px;
-  border-bottom:3px solid rgb(82,181,195);
+  border:none !important;
+  border-bottom:3px solid rgb(82,181,195) !important;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;

@@ -40,7 +40,7 @@
     unlock.innerHTML = 'working';
     var request = new Request('user/unlock');
     function Callback(event){
-      app.hideshow(document.getElementById('passlocked_frame'), document.getElementById('inbox_frame'));
+      app.showframe(document.getElementById('inbox_frame'));
     }
     function OnError(event){
       UnlockForm();
@@ -80,7 +80,7 @@
     button.innerHTML = 'working';
     var request = new Request('user/changepassword');
     function Callback(event){
-      app.hideshow(document.getElementById('passlocked_frame'), document.getElementById('inbox_frame'));
+      app.showframe(document.getElementById('inbox_frame'));
       setTimeout(function(){app.show(document.getElementById('header_buttons'));}, 550);
     }
     function OnError(event){

@@ -104,7 +104,7 @@ class AuthRequestHandler(CookieHandler):
     #check manual override
     if hasattr(self, 'override'):
       status = self.override(*args, **kwargs)
-      if not status:
+      if not status and status != None:
         return
 
     method = getattr(handle, self.request.method.lower(), None)

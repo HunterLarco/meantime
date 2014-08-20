@@ -4,35 +4,32 @@ from Engine import delegate
 import Permissions
 
 class APIHandler(AuthRequestHandler):
+  
+  def override(self, *args, **kwargs):
+    self.setHeaders()
 
   class nosession:
     def default(cls, self, dictionary, method):
-      self.setHeaders()
       self.RunGuest(dictionary, method)
 
   class nouser:
     def default(cls, self, dictionary, method):
-      self.setHeaders()
       self.response.out.write(response.throw(203, compiled=True))
 
   class passlocked:
     def default(cls, self, dictionary, method):
-      self.setHeaders()
       self.RunPassLockedUser(dictionary, method)
   
   class sessionlocked:
     def default(cls, self, dictionary, method):
-      self.setHeaders()
       self.RunSessionLockedUser(dictionary, method)
 
   class hacker:
     def default(cls, self, dictionary, method):
-      self.setHeaders()
       self.response.out.write(response.throw(002, compiled=True))
 
   class auth:
     def default(cls, self, dictionary, method):
-      self.setHeaders()
       self.RunAuthUser(dictionary, method, additionalPayload={
         'setsession': True,
         'session': self.user.session.toDict()

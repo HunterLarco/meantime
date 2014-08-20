@@ -1,0 +1,153 @@
+div.settings{
+  z-index:1;
+  width:0px;
+  overflow:visible;
+  left:initial;
+  right:0px;
+}
+div.settings div.sidebar{
+  position:absolute;
+  right:0px;
+  top:0px;
+  height:100%;
+  min-width:300px;
+	-webkit-transform: translate3d(100%, 0, 0);
+	-moz-transform:    translate3d(100%, 0, 0);
+	transform:         translate3d(100%, 0, 0);
+  -webkit-transition: all 400ms ease;
+  -moz-transition:    all 400ms ease;
+  -ms-transition:     all 400ms ease;
+  -o-transition:      all 400ms ease;
+  transition:         all 400ms ease;
+}
+div.settings div.sidebar.opened{
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform:    translate3d(0, 0, 0);
+	transform:         translate3d(0, 0, 0);
+}
+div.settings div.sidebar div.menu{
+  position:absolute;
+  top:0px;
+  left:100%;
+  width:100%;
+  height:100%;
+	-webkit-transform: translate3d(0, 0, 0);
+	-moz-transform:    translate3d(0, 0, 0);
+	transform:         translate3d(0, 0, 0);
+  background:rgb(255,255,255);
+  -webkit-transition: all 400ms ease;
+  -moz-transition:    all 400ms ease;
+  -ms-transition:     all 400ms ease;
+  -o-transition:      all 400ms ease;
+  transition:         all 400ms ease;
+  cursor:default;
+  z-index:1;
+  overflow-y:scroll;
+  overflow-x:hidden;
+}
+div.settings div.sidebar div.menu.opened{
+  left:0px;
+}
+div.settings div.sidebar div.menu::after{
+  position:absolute;
+  left:0px;
+  top:0px;
+  height:0%;
+  width:100%;
+  background:rgba(0,0,0,0);
+  -webkit-transition: background 400ms ease, height 0ms linear 400ms;
+  -moz-transition:    background 400ms ease, height 0ms linear 400ms;
+  -ms-transition:     background 400ms ease, height 0ms linear 400ms;
+  -o-transition:      background 400ms ease, height 0ms linear 400ms;
+  transition:         background 400ms ease, height 0ms linear 400ms;
+  content:'';
+}
+div.settings div.sidebar div.menu.covered::after{
+  -webkit-transition: background 400ms ease;
+  -moz-transition:    background 400ms ease;
+  -ms-transition:     background 400ms ease;
+  -o-transition:      background 400ms ease;
+  transition:         background 400ms ease;
+  background:rgba(0,0,0,0.2);
+  height:100%;
+}
+div.settings div.sidebar div.title{
+  padding:18px 20px;
+  color:rgb(102,102,102);
+  font-size:20px;
+  text-align:center;
+}
+div.settings div.sidebar div.menuitem{
+  margin:0px 20px;
+  padding:10px 4px;
+  color:rgb(142,142,142);
+  font-size:15px;
+  border-top:1px solid rgb(230,230,230);
+  cursor:pointer;
+}
+div.settings div.sidebar div.menuitem:last-child{
+  border-bottom:1px solid rgb(230,230,230);
+}
+div.settings div.sidebar div.back{
+  background:rgb(245,245,245);
+  border-top:1px solid rgb(230,230,230);
+  margin:0px 20px;
+  padding:6px 4px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+div.settings div.sidebar div.back.line{
+  border-bottom:1px solid rgb(230,230,230);
+}
+
+/* end of sidebar styling */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+div.settings p{
+  padding:0px 20px;
+  font-size:12px;
+}
+div.settings p.center{
+  text-align:center;
+}
+div.settings p.warning{
+  background:rgb(223,62,62);
+  border:1px solid rgb(170,0,0);
+  padding:6px 0px;
+  margin:14px 20px;
+  color:rgb(255,255,255);
+  font-weight:700;
+  font-size:13px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius:    3px;
+  border-radius:         3px;
+}
+div.settings div.buttonframe{
+  padding-top:20px;
+  text-align:center;
+}
+div.settings div.button{
+  padding: 6px 14px !important;
+  color: rgb(142,142,142) !important;
+  background: rgb(230,230,230) !important;
+  border-color: rgb(190,190,190) !important;
+}

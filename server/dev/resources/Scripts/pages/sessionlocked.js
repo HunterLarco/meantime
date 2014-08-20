@@ -28,7 +28,7 @@
       }
     }
     function Callback(){
-      app.hideshow(document.getElementById('sessionlocked_frame'), document.getElementById('inbox_frame'));
+      app.showframe(document.getElementById('inbox_frame'));
       setTimeout(function(){app.show(document.getElementById('header_buttons'));}, 550);
     }
     function SendLogin(){

@@ -77,6 +77,16 @@ class Admin:
 # guest access map
 class Guest:
   
+  class alpha:
+    @require('email')
+    def signup(self, payload):
+      from ..testing.alphas import emails
+      status = emails.add(payload['email'])
+      if status == emails.EMAIL_IS_USED:
+        return response.throw(200)
+  
+  
+  
   class user:
     @require('email', 'password')
     def signup(self, payload):

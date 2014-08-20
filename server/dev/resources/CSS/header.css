@@ -4,6 +4,7 @@ div.header{
   line-height:58px;
   font-family:'lato';
   font-weight:100;
+  z-index:2;
 }
 div.header div.logo{
   color:rgb(255,255,255);

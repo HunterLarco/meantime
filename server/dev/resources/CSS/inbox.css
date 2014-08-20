@@ -11,8 +11,8 @@ div.inbox div.gift{
   height:68px;
   position:relative;
   -moz-box-shadow:    0px 2px 3px rgba(0,0,0,0.05);
-	-webkit-box-shadow: 0px 2px 3px rgba(0,0,0,0.05);
-	box-shadow:         0px 2px 3px rgba(0,0,0,0.05);
+  -webkit-box-shadow: 0px 2px 3px rgba(0,0,0,0.05);
+  box-shadow:         0px 2px 3px rgba(0,0,0,0.05);
 }
 div.inbox div.gift div.image{
   height:40px;

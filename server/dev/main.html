@@ -4,11 +4,11 @@
 body{
   background:rgb(239,239,239);
   font-family:'lato';
-  font-weight:100;
+  font-weight:200;
 }
 .full{
   position:fixed;
-  top:86px;
+  top:87px;
   left:0px;
   width:100%;
   bottom:0px;
@@ -95,7 +95,6 @@ div.capture div.display div.b.restart{
 }
 
 
-
 </style>
 <html>
 <head>
@@ -103,11 +102,10 @@ div.capture div.display div.b.restart{
 <title>Try Sealed</title>
 
 <link rel="stylesheet" href="/resources/CSS/resets.css"/>
-<link rel='stylesheet' href='/resources/CSS/raleway.css'/>
 <link rel='stylesheet' href='/resources/CSS/button.css'/>
 <link rel='stylesheet' href='/resources/CSS/header.css'/>
 
-<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:100,300,700'/>
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:200,300,700'/>
 <link href='http://fonts.googleapis.com/css?family=Raleway:100,300' rel='stylesheet' type='text/css'>
 
 <link rel='stylesheet' href='/resources/CSS/signup.css'/>
@@ -115,11 +113,11 @@ div.capture div.display div.b.restart{
 <link rel='stylesheet' href='/resources/CSS/passlocked.css'/>
 <link rel='stylesheet' href='/resources/CSS/sessionlocked.css'/>
 <link rel='stylesheet' href='/resources/CSS/firstvisit.css'/>
+<link rel='stylesheet' href='/resources/CSS/settings.css'/>
 
 <script src='//api.capaching.appspot.com/?gateway=/api/'></script>
 <script src='/resources/Scripts/codrops_menu/classie.js'></script>
 
-<link rel='stylesheet' href='/resources/CSS/codrop_menu/component.css'/>
 <script src='/resources/Scripts/codrops_menu/mlpushmenu.js'></script>
 <script src='/resources/Scripts/codrops_menu/modernizr.custom.js'></script>
 
@@ -127,374 +125,347 @@ div.capture div.display div.b.restart{
 <script src='/resources/Scripts/pages/passlocked.js'></script>
 <script src='/resources/Scripts/pages/sessionlocked.js'></script>
 <script src='/resources/Scripts/pages/firstvisit.js'></script>
+<script src='/resources/Scripts/pages/settings.js'></script>
 
 </head>
 <body>
 
 
-<div class='mp-container'>
-	<!-- Push Wrapper -->
-	<div class="mp-pusher" id="mp-pusher">
 
-		<!-- mp-menu -->
-		<nav id="mp-menu" class="mp-menu">
-			<div class="mp-level">
-				<h2 class="icon icon-world">All Categories</h2>
-				<ul>
-					<li class="icon icon-arrow-left">
-						<a class="icon icon-display" href="#">Devices</a>
-						<div class="mp-level">
-							<h2 class="icon icon-display">Devices</h2>
-							<a class="mp-back" href="#">back</a>
-							<ul>
-								<li class="icon icon-arrow-left">
-									<a class="icon icon-phone" href="#">Mobile Phones</a>
-									<div class="mp-level">
-										<h2>Mobile Phones</h2>
-										<a class="mp-back" href="#">back</a>
-										<ul>
-											<li><a href="#">Super Smart Phone</a></li>
-											<li><a href="#">Thin Magic Mobile</a></li>
-											<li><a href="#">Performance Crusher</a></li>
-											<li><a href="#">Futuristic Experience</a></li>
-										</ul>
-									</div>
-								</li>
-								<li class="icon icon-arrow-left">
-									<a class="icon icon-tv" href="#">Televisions</a>
-									<div class="mp-level">
-										<h2>Televisions</h2>
-										<a class="mp-back" href="#">back</a>
-										<ul>
-											<li><a href="#">Flat Superscreen</a></li>
-											<li><a href="#">Gigantic LED</a></li>
-											<li><a href="#">Power Eater</a></li>
-											<li><a href="#">3D Experience</a></li>
-											<li><a href="#">Classic Comfort</a></li>
-										</ul>
-									</div>
-								</li>
-								<li class="icon icon-arrow-left">
-									<a class="icon icon-camera" href="#">Cameras</a>
-									<div class="mp-level">
-										<h2>Cameras</h2>
-										<a class="mp-back" href="#">back</a>
-										<ul>
-											<li><a href="#">Smart Shot</a></li>
-											<li><a href="#">Power Shooter</a></li>
-											<li><a href="#">Easy Photo Maker</a></li>
-											<li><a href="#">Super Pixel</a></li>
-										</ul>
-									</div>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<li class="icon icon-arrow-left">
-						<a class="icon icon-news" href="#">Magazines</a>
-						<div class="mp-level">
-							<h2 class="icon icon-news">Magazines</h2>
-							<a class="mp-back" href="#">back</a>
-							<ul>
-								<li><a href="#">National Geographic</a></li>
-								<li><a href="#">Scientific American</a></li>
-								<li><a href="#">The Spectator</a></li>
-								<li><a href="#">The Rambler</a></li>
-								<li><a href="#">Physics World</a></li>
-								<li><a href="#">The New Scientist</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="icon icon-arrow-left">
-						<a class="icon icon-shop" href="#">Store</a>
-						<div class="mp-level">
-							<h2 class="icon icon-shop">Store</h2>
-							<a class="mp-back" href="#">back</a>
-							<ul>
-								<li class="icon icon-arrow-left">
-									<a class="icon icon-t-shirt" href="#">Clothes</a>
-									<div class="mp-level">
-										<h2 class="icon icon-t-shirt">Clothes</h2>
-										<a class="mp-back" href="#">back</a>
-										<ul>
-											<li class="icon icon-arrow-left">
-												<a class="icon icon-female" href="#">Women's Clothing</a>
-												<div class="mp-level">
-													<h2 class="icon icon-female">Women's Clothing</h2>
-													<a class="mp-back" href="#">back</a>
-													<ul>
-														<li><a href="#">Tops</a></li>
-														<li><a href="#">Dresses</a></li>
-														<li><a href="#">Trousers</a></li>
-														<li><a href="#">Shoes</a></li>
-														<li><a href="#">Sale</a></li>
-													</ul>
-												</div>
-											</li>
-											<li class="icon icon-arrow-left">
-												<a class="icon icon-male" href="#">Men's Clothing</a>
-												<div class="mp-level">
-													<h2 class="icon icon-male">Men's Clothing</h2>
-													<a class="mp-back" href="#">back</a>
-													<ul>
-														<li><a href="#">Shirts</a></li>
-														<li><a href="#">Trousers</a></li>
-														<li><a href="#">Shoes</a></li>
-														<li><a href="#">Sale</a></li>
-													</ul>
-												</div>
-											</li>
-										</ul>
-									</div>
-								</li>
-								<li>
-									<a class="icon icon-diamond" href="#">Jewelry</a>
-								</li>
-								<li>
-									<a class="icon icon-music" href="#">Music</a>
-								</li>
-								<li>
-									<a class="icon icon-food" href="#">Grocery</a>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<li><a class="icon icon-photo" href="#">Collections</a></li>
-					<li><a class="icon icon-wallet" href="#">Credits</a></li>
-				</ul>
-					
-			</div>
-		</nav>
-		<!-- /mp-menu -->
-
-		<div class="mp-scroller"><!-- this is for emulating position fixed of the nav -->
-			<div class="mp-scroller-inner">
-				
-        
-        
-        
-        
-        
-        
-        <div class='header'>
-          <div class='logo'>
-            <img src='/images/header/logo.png'/>
-            <span class='text'>sealed</span>
-          </div>
-          <div class='buttons hideshow {{visibility.header}}' id='header_buttons'>
-            <img class='plus' src='/images/header/plus.png'/>
-            <div class='img' id='header_settingsbutton'>
-               <img src='https://lh4.googleusercontent.com/-ba60YI6W9K8/AAAAAAAAAAI/AAAAAAAAAAA/ikLBu2Kmzh8/s128-c-k/photo.jpg'/>
-               <div class='shadow'></div>
-            </div>
-          </div>
-          <div class='clearFix'></div>
-        </div>
-
-
-        <div class='full firstvisit hideshow {{visibility.firstvisit}}' id='firstvisit_frame'>
-          <div class='email'>
-            <h1>Welcome to Sealed!</h1>
-            <p>You're viewing this page because you've been invited to try Sealed.</p>
-            <p>Welcome to Sealed, an app for time-delayed photo and video messaging. As we are currently in our alpha release, you will be one of the first people to use Sealed. We will therefore be immensely curious to hear about your experience and hope you’ll be willing to share your thoughts and ideas so that we can make Sealed the best it can be.</p>
-            <p>Have fun, and thanks for trying Sealed.</p>
-            <p class='signature'>- Alex &amp; Hunter</p>
-          </div>
-          <div class='buttonframe'><div class='button' id='firstvisit_button'>Get Started</div></div>
-        </div>
-
-
-        <div class='full sessionlocked hideshow {{visibility.sessionlocked}}' id='sessionlocked_frame'>
-          <div class='notification'>
-            <img class='key' src='/images/sessionlocked/key.png'/>
-            <div class='content'>
-              <h1>Oh Dear...</h1>
-              <p>You've been locked out of your account because we think someone is trying to hack into it.</p>
-              <p>Please log in to verify you aren't our hacker.</p>
-            </div>
-          </div>
-          <div class='signin'>
-            <input class='first' type='text' placeholder='email' id='sessionlocked_email'/>
-            <input class='last' type='password' placeholder='password' id='sessionlocked_password'/>
-            <div class='button' id='sessionlocked_button'>log in</div>
-            <div class='error' id='sessionlocked_error'></div>
-          </div>
-        </div>
-
-
-        <div class='full passlocked hideshow {{visibility.passlocked}}' id='passlocked_loggedin_frame'>
-          <div class='notification'>
-            <img class='key' src='/images/passlocked/key.png'/>
-            <div class='content'>
-              <h1>Oh Dear...</h1>
-              <p>There were a suspicious amount of login attempts on your account. We think someone was trying to hack it.</p>
-              <p>You can change your password here if you'd like, but don't worry. Nobody got your password.</p>
-            </div>
-            <div class='changepass'>
-              <input id='passlocked_oldpass' class='first' type='password' placeholder='old password'/>
-              <input id='passlocked_newpass' type='password' placeholder='new password'/>
-              <input id='passlocked_newpass2' class='last' type='password' placeholder='retype new password'/>
-              <div class='button change' id='passlocked_changepass'>Change Password</div><div class='button skip' id='passlocked_unlock'>Skip &amp; Unlock</div>
-              <div class='error' id='passlocked_error'></div>
-            </div>
-          </div>
-        </div>
-
-
-        <div class='full passlocked hideshow opaque gone' id='passlocked_frame'>
-          <div class='notification'>
-            <img class='key' src='/images/passlocked/key.png'/>
-            <div class='content'>
-              <h1>Oh Dear...</h1>
-              <p>There have been a suspicious amount of login attempts on your account. So we locked it.</p>
-              <p>Please check your email for instructions towards unlocking the account</p>
-            </div>
-          </div>
-        </div>
-
-
-        <div class='full signup hideshow {{visibility.signup}}' id='signup_frame'>
-          <div class='form'>
-            <div class='error' id='signup_error'></div>
-            <div class='shade'>
-              <div class='slider'>
-                <div class='pane'><h1>Sign Up!</h1></div>
-                <div class='pane'><h1>Welcome Back!</h1></div>
-              </div>
-              <div class='slider slow'>
-                <div class='pane'>
-                  <div class='content'>
-                    <input type='text' id='signup_s_email' name='email' placeholder='email'/>
-                    <input type='password' id='signup_s_password' name='password' placeholder='password'/>
-                    <input type='password' id='signup_s_password2' name='password_verification' placeholder='retype password'/>
-                    <div class='spacer'></div>
-                    <div class='buttonframe'>
-                      <div class='button' id='signup_s_button'>sign up</div>
-                    </div>
-                    <div id='signup_gotologin' class='note'>already have an account? <a>log in here</a>.</div>
-                  </div>
-                </div>
-                <div class='pane'>
-                  <div class='content'>
-                    <input type='text' id='signup_l_email' name='email' placeholder='email'/>
-                    <input type='password' id='signup_l_password' name='password' placeholder='password'/>
-                    <div class='spacer'></div>
-                    <div class='buttonframe'>
-                      <div class='button' id='signup_l_button'>log in</div>
-                    </div>
-                    <div class='loginspacer'></div>
-                    <div id='signup_gotosignup' class='note'>don't have an account? <a>sign up here</a>.</div>
-                  </div>
-                </div>
+  <div class='settings full'>
+    <div class='sidebar'>
+      <div class='menu opened' id='settings_root'>
+        <div class='title'>Hunter Larco</div>
+        <div class='menuitem' name='account'>
+          My Account
+          <div class='menu'>
+            <div class='title'>My Account</div>
+            <div class='back'>Back</div>
+            <div class='menuitem' name='name'>Name</div>
+            <div class='menuitem' name='mobile'>Mobile Number</div>
+            <div class='menuitem' name='email'>Email</div>
+            <div class='menuitem' name='password'>Change Password</div>
+            <div class='menuitem' name='delete'>
+              Delete Account
+              <div class='menu'>
+                <div class='title'>Delete Acount</div>
+                <div class='back line'>Back</div>
+                <p class='center warning'>WARNING. This action cannot be undone</p>
+                <div class='buttonframe'><div class='menuitem button' name='delete'>Delete Account</div></div>
               </div>
             </div>
           </div>
         </div>
-
-
-        <div class='full inbox hideshow {{visibility.inbox}}' id='inbox_frame'>
-          <div class='center'>
-    
-    
-            <div class='gift notviewable sent'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Laney Larco</div>
-                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-              </div>
-            </div>
-            <div class='gift notviewable'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Prince Leah</div>
-                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-              </div>
-            </div>
-            <div class='gift viewable'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Richard Branson</div>
-                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-              </div>
-            </div>
-            <div class='gift viewable'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Laney Larco</div>
-                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-              </div>
-            </div>
-            <div class='gift viewable sent'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Prince Leah</div>
-                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-              </div>
-            </div>
-            <div class='gift'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Richard Branson</div>
-                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-              </div>
-            </div>
-            <div class='gift'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Laney Larco</div>
-                <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-              </div>
-            </div>
-            <div class='gift'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Prince Leah</div>
-                <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-              </div>
-            </div>
-            <div class='gift'>
-              <div class='image'></div>
-              <div class='text'>
-                <div class='title'>Richard Branson</div>
-                <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-              </div>
-            </div>
-    
-    
+        <div class='menuitem' name='info'>FAQ</div>
+        <div class='menuitem' name='advanced'>
+          Advanced
+          <div class='menu'>
+            <div class='title'>Advanced</div>
+            <div class='back'>Back</div>	 
+            <div class='menuitem' name='notifications'>Notification Settings</div>
           </div>
         </div>
-
-
-        <div class='full capture hideshow opaque gone'>
-          <div class='display'>
-            <canvas id='capture_canvas'></canvas>
-            <div class='buttons'>
-              <div class='row'>
-                <div class='b record' id='capture_record'></div>
-                <div class='b pause'></div>
-                <div class='b stop'></div>
-              </div>
-              <div class='row'>
-                <div class='b restart'></div>
-                <div class='b cancel'></div>
-                <div class='b check'></div>
-              </div>
-            </div>
-          </div>
+        <div class='menuitem' name='contact'>
+          Contact Sealed
+        </div>
+        <div class='menuitem' name='share'>
+          Share Sealed
         </div>
         
         
+        <div class='menuitem' name='about'>
+          About
+          <div class='menu'>
+            <div class='title'>About</div>
+            <div class='back'>Back</div>	 
+            <div class='menuitem' name='privacy'>
+              Privacy Policy
+              <div class='menu'>
+                <!-- Privacy Policy -->
+                <div class='title'>Privacy Policy</div>
+                <div class='back line'>Back</div>
+                <p>Sealed provides this Privacy Policy to inform users of our policies and procedures regarding the collection, use and disclosure of personally identifiable information received from users of this website, located at http://trysealed.com ("Site" ).</p>
+                <p>By using our Site you are consenting to our processing of your information as set forth in this Privacy Policy now and as amended by us. "Processing" means using cookies on a computer or using or touching information in any way, including, but not limited to, collecting, storing, deleting, using, combining and disclosing information, all of which activities will take place in the United States. If you reside outside the USA your personally identifiable information will be transferred to the USA, and processed and stored there under USA privacy standards.</p>
+                <p>By visiting our Site and providing information to us, you consent to such transfer to, and processing in the USA.</p>
+                <p>Information Collection and Use</p>
+                <p>Our primary goals in collecting personally identifiable information are to provide you with the product and services made available through the Site, including, but not limited, to the Service, to communicate with you, and to manage your registered user account, if you have one.</p>
+                <p>Information Collected Upon Registration</p>
+                <p>If you desire to have access to certain restricted sections of the Site, you will be required to become a registered user, and to submit certain personally identifiable information to Sealed. Personally identifiable information that we may collect in such instances may include your IP address, full user name, password, email address, city, time zone, telephone number, and other information that you decide to provide us with.</p>
+                <p>Use of Contact Information</p>
+                <p>In addition, we may use your contact information to market to you, and provide you with information about, our products and services, including but not limited to our Service. If you decide at any time that you no longer wish to receive such information or communications from us, please un-follow us, or follow the unsubscribe instructions provided in any of the communications.</p>
+                <p>Log Data</p>
+                <p>When you visit the Site, our servers automatically record information that your browser sends whenever you visit a website ("Log Data" ). This Log Data may include information such as your IP address, browser type or the domain from which you are visiting, the web-pages you visit, the search terms you use, and any advertisements on which you click. For most users accessing the Internet from an Internet service provider the IP address will be different every time you log on. We use Log Data to monitor the use of the Site and of our Service, and for the Site’s technical administration. We do not associate your IP address with any other personally identifiable information to identify you personally, except in case of violation of the Terms of Service.</p>
+                <p>Cookies</p>
+                <p>Like many websites, we also use "cookie" technology to collect additional website usage data and to improve the Site and our service. A cookie is a small data file that we transfer to your computer's hard disk. We do not use cookies to collect personally identifiable information. Sealed may use both session cookies and persistent cookies to better understand how you interact with the Site and our Service, to monitor aggregate usage by our users and web traffic routing on the Site, and to improve the Site and our services. A session cookie enables certain features of the Site and our service and is deleted from your computer when you disconnect from or leave the Site. A persistent cookie remains after you close your browser and may be used by your browser on subsequent visits to the Site. Persistent cookies can be removed by following your web browser help file directions. Most Internet browsers automatically accept cookies. You can instruct your browser, by editing its options, to stop accepting cookies or to prompt you before accepting a cookie from the websites you visit.</p>
+                <p>Information Sharing and Disclosure</p>
+                <p>Service Providers</p>
+                <p>We may engage certain trusted third parties to perform functions and provide services to us, including, without limitation, hosting and maintenance, billing, customer relationship, database storage and management, and direct marketing campaigns. We will share your personally identifiable information with these third parties, but only to the extent necessary to perform these functions and provide such services, and only pursuant to binding contractual obligations requiring such third parties to maintain the privacy and security of your data.</p>
+                <p>Compliance with Laws and Law Enforcement</p>
+                <p>Sealed cooperates with government and law enforcement officials or private parties to enforce and comply with the law. We may disclose any information about you to government or law enforcement officials or private parties as we, in our sole discretion, believe necessary or appropriate to respond to claims, legal process (including subpoenas), to protect the property and rights of Sealed or a third party, the safety of the public or any person, to prevent or stop any illegal, unethical, or legally actionable activity, or to comply with the law.</p>
+                <p>Business Transfers</p>
+                <p>Sealed may sell, transfer or otherwise share some or all of its assets, including your personally identifiable information, in connection with a merger, acquisition, reorganization or sale of assets or in the event of bankruptcy. You will have the opportunity to opt out of any such transfer if the new entity's planned processing of your information differs materially from that set forth in this Privacy Policy.</p>
+                <p>Changing or Deleting Information</p>
+                <p>If you are a registered user of the Site, you may access and update or correct the information you provided to us by e-mailing us at admin@trysealed.com.</p>
+                <p>Security</p>
+                <p>Sealed is very concerned about safeguarding the confidentiality of your personally identifiable information. We employ administrative, physical and electronic measures designed to protect your information from unauthorized access. We will make any legally-required disclosures of any breach of the security, confidentiality, or integrity of your unencrypted electronically stored personal data to you via email or conspicuous posting on this Site in the most expedient time possible and without unreasonable delay, consistent with (i) the legitimate needs of law enforcement or (ii) any measures necessary to determine the scope of the breach and restore the reasonable integrity of the data system.</p>
+                <p>Our Policy Towards Children</p>
+                <p>The Site is not directed to persons under 13. If a parent or guardian becomes aware that his or her child has provided us with personally identifiable information without their consent, he or she should contact us at admin@trysealed.com. We do not knowingly collect personally identifiable information from children under 13. If we become aware that a child under 13 has provided us with personal identifiable Information, we will delete such information from our files.</p>
+                <p>Changes to this Policy</p>
+                <p>This Privacy Policy may be updated from time to time for any reason; each version will apply to information collected while it was in place. We will notify you of any material changes to our Privacy Policy by posting the new Privacy Policy on our Site. You are advised to consult this Privacy Policy regularly for any changes.</p>
+                <p>This Privacy Policy is effective as of August 19, 2014.</p>
+                <p>If you have any thoughts or questions about this Privacy Policy please let us know.</p>
+                <!-- end privacy policy -->
+              </div>
+            </div>
+            <div class='menuitem' name='terms'>
+              Terms of Use
+              <div class='menu'>
+                <div class='title'>Terms of Use</div>
+                <div class='back line'>Back</div>
+                <!-- terms of use -->
+                <p>Terms</p>
+                <p>By accessing this web site, you are agreeing to be bound by these web site Terms and Conditions of Use, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this web site are protected by applicable copyright and trade mark law.</p>
+                <p>Use License</p>
+                <p>Permission is granted to temporarily download one copy of the materials (information or software) on Sealed's web site for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+                <p>1. modify or copy the materials;<br/>
+                  2. use the materials for any commercial purpose, or for any public display (commercial or non-commercial);<br/>
+                  3. attempt to decompile or reverse engineer any software contained on Sealed's web site;<br/>
+                  4. remove any copyright or other proprietary notations from the materials; or<br/>
+                  5. transfer the materials to another person or "mirror" the materials on any other server.</p>
+                <p>This license shall automatically terminate if you violate any of these restrictions and may be terminated by Sealed at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.</p>
+                <p>Disclaimer</p>
+                <p>The materials on Sealed's web site are provided "as is". Sealed makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights. Further, Sealed does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its Internet web site or otherwise relating to such materials or on any sites linked to this site.</p>
+                <p>Limitations</p>
+                <p>In no event shall Sealed or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption,) arising out of the use or inability to use the materials on Sealed's Internet site, even if Sealed or a Sealed authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.</p>
+                <p>Revisions and Errata</p>
+                <p>The materials appearing on Sealed's web site could include technical, typographical, or photographic errors. Sealed does not warrant that any of the materials on its web site are accurate, complete, or current. Sealed may make changes to the materials contained on its web site at any time without notice. Sealed does not, however, make any commitment to update the materials.</p>
+                <p>Links</p>
+                <p>Sealed has not reviewed all of the sites linked to its Internet web site and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Sealed of the site. Use of any such linked web site is at the user's own risk.</p>
+                <p>Site Terms of Use Modifications</p>
+                <p>Sealed may revise these terms of use for its web site at any time without notice. By using this web site you are agreeing to be bound by the then current version of these Terms and Conditions of Use.</p>
+                <p>Governing Law</p>
+                <p>Any claim relating to Sealed's web site shall be governed by the laws of the State of Massachusetts without regard to its conflict of law provisions.</p>
+                <!-- end of terms of use -->
+              </div>
+            </div>
+            <div class='menuitem' name='attribution'>Attribution</div>
+            <div class='menuitem' name='team'>About The Team</div>
+          </div>
+        </div>
         
         
-        
-        
-        
-			</div><!-- /scroller-inner -->
-		</div><!-- /scroller -->
+        <div class='menuitem' name='logout'>Logout</div>
+      </div>
+    </div>
+  </div>
 
-	</div><!-- /pusher -->
-</div><!-- /container -->
 
+<div class='header'>
+  <div class='logo'>
+    <img src='/images/header/logo.png'/>
+    <span class='text'>sealed</span>
+  </div>
+  <div class='buttons hideshow {{visibility.header}}' id='header_buttons'>
+    <img class='plus' src='/images/header/plus.png'/>
+    <div class='img' id='header_settingsbutton'>
+       <img src='https://lh4.googleusercontent.com/-ba60YI6W9K8/AAAAAAAAAAI/AAAAAAAAAAA/ikLBu2Kmzh8/s128-c-k/photo.jpg'/>
+       <div class='shadow'></div>
+    </div>
+  </div>
+  <div class='clearFix'></div>
+</div>
+
+
+<div class='full firstvisit hideshow {{visibility.firstvisit}}' id='firstvisit_frame' name='appframe'>
+  <div class='email'>
+    <h1>Welcome to Sealed!</h1>
+    <p>You're viewing this page because you've been invited to try Sealed.</p>
+    <p>Welcome to Sealed, an app for time-delayed photo and video messaging. As we are currently in our alpha release, you will be one of the first people to use Sealed. We will therefore be immensely curious to hear about your experience and hope you'll be willing to share your thoughts and ideas so that we can make Sealed the best it can be.</p>
+    <p>Have fun, and thanks for trying Sealed.</p>
+    <p class='signature'>- Alex &amp; Hunter</p>
+  </div>
+  <div class='buttonframe'><div class='button' id='firstvisit_button'>Get Started</div></div>
+</div>
+
+
+<div class='full sessionlocked hideshow {{visibility.sessionlocked}}' id='sessionlocked_frame' name='appframe'>
+  <div class='notification'>
+    <img class='key' src='/images/sessionlocked/key.png'/>
+    <div class='content'>
+      <h1>Oh Dear...</h1>
+      <p>You've been locked out of your account because we think someone is trying to hack into it.</p>
+      <p>Please log in to verify you aren't our hacker.</p>
+    </div>
+  </div>
+  <div class='signin'>
+    <input class='first' type='text' placeholder='email' id='sessionlocked_email'/>
+    <input class='last' type='password' placeholder='password' id='sessionlocked_password'/>
+    <div class='button' id='sessionlocked_button'>log in</div>
+    <div class='error' id='sessionlocked_error'></div>
+  </div>
+</div>
+
+
+<div class='full passlocked hideshow {{visibility.passlocked}}' id='passlocked_loggedin_frame' name='appframe'>
+  <div class='notification'>
+    <img class='key' src='/images/passlocked/key.png'/>
+    <div class='content'>
+      <h1>Oh Dear...</h1>
+      <p>There were a suspicious amount of login attempts on your account. We think someone was trying to hack it.</p>
+      <p>You can change your password here if you'd like, but don't worry. Nobody got your password.</p>
+    </div>
+    <div class='changepass'>
+      <input id='passlocked_oldpass' class='first' type='password' placeholder='old password'/>
+      <input id='passlocked_newpass' type='password' placeholder='new password'/>
+      <input id='passlocked_newpass2' class='last' type='password' placeholder='retype new password'/>
+      <div class='button change' id='passlocked_changepass'>Change Password</div><div class='button skip' id='passlocked_unlock'>Skip &amp; Unlock</div>
+      <div class='error' id='passlocked_error'></div>
+    </div>
+  </div>
+</div>
+
+
+<div class='full passlocked hideshow opaque gone' id='passlocked_frame' name='appframe'>
+  <div class='notification'>
+    <img class='key' src='/images/passlocked/key.png'/>
+    <div class='content'>
+      <h1>Oh Dear...</h1>
+      <p>There have been a suspicious amount of login attempts on your account. So we locked it.</p>
+      <p>Please check your email for instructions towards unlocking the account</p>
+    </div>
+  </div>
+</div>
+
+
+<div class='full signup hideshow {{visibility.signup}}' id='signup_frame' name='appframe'>
+  <div class='form'>
+    <div class='error' id='signup_error'></div>
+    <div class='shade'>
+      <div class='slider'>
+        <div class='pane'><h1>Sign Up!</h1></div>
+        <div class='pane'><h1>Welcome Back!</h1></div>
+      </div>
+      <div class='slider slow'>
+        <div class='pane'>
+          <div class='content'>
+            <input type='text' id='signup_s_email' name='email' placeholder='email'/>
+            <input type='password' id='signup_s_password' name='password' placeholder='password'/>
+            <input type='password' id='signup_s_password2' name='password_verification' placeholder='retype password'/>
+            <div class='spacer'></div>
+            <div class='buttonframe'>
+              <div class='button' id='signup_s_button'>sign up</div>
+            </div>
+            <div id='signup_gotologin' class='note'>already have an account? <a>log in here</a>.</div>
+          </div>
+        </div>
+        <div class='pane'>
+          <div class='content'>
+            <input type='text' id='signup_l_email' name='email' placeholder='email'/>
+            <input type='password' id='signup_l_password' name='password' placeholder='password'/>
+            <div class='spacer'></div>
+            <div class='buttonframe'>
+              <div class='button' id='signup_l_button'>log in</div>
+            </div>
+            <div class='loginspacer'></div>
+            <div id='signup_gotosignup' class='note'>don't have an account? <a>sign up here</a>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class='full inbox hideshow {{visibility.inbox}}' id='inbox_frame' name='appframe'>
+  <div class='center'>
+
+
+    <div class='gift notviewable sent'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Laney Larco</div>
+        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+      </div>
+    </div>
+    <div class='gift notviewable'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Prince Leah</div>
+        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+      </div>
+    </div>
+    <div class='gift viewable'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Richard Branson</div>
+        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+      </div>
+    </div>
+    <div class='gift viewable'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Laney Larco</div>
+        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+      </div>
+    </div>
+    <div class='gift viewable sent'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Prince Leah</div>
+        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Richard Branson</div>
+        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Laney Larco</div>
+        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Prince Leah</div>
+        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
+      </div>
+    </div>
+    <div class='gift'>
+      <div class='image'></div>
+      <div class='text'>
+        <div class='title'>Richard Branson</div>
+        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<div class='full capture hideshow opaque gone' name='appframe'>
+  <div class='display'>
+    <canvas id='capture_canvas'></canvas>
+    <div class='buttons'>
+      <div class='row'>
+        <div class='b record' id='capture_record'></div>
+        <div class='b pause'></div>
+        <div class='b stop'></div>
+      </div>
+      <div class='row'>
+        <div class='b restart'></div>
+        <div class='b cancel'></div>
+        <div class='b check'></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -506,7 +477,21 @@ var app = new (function(){
   self.hide = HideElement;
   self.show = ShowElement;
   self.hideshow = HideShow;
+  self.showframe = ShowFrame;
   self.cookies = new CookieWorker();
+  self.currentframe = FindCurrentFrame;
+  self.data = {};
+  
+  function ShowFrame(element){
+    self.hideshow(self.currentframe(), element);
+  }
+  
+  function FindCurrentFrame(){
+    var elems = document.getElementsByName('appframe');
+    for(var i=0,elem; elem=elems[i++];)
+      if(!elem.classList.contains('opaque') && !elem.classList.contains('gone'))
+        return elem;
+  }
   
   function CookieWorker(){
     this.get = function(c_name){
@@ -555,10 +540,18 @@ var app = new (function(){
 })();
 
 
+
 window.addEventListener('load', function(){
-	new mlPushMenu(document.getElementById('mp-menu'), document.getElementById('header_settingsbutton'), {
-		type: 'cover'
-	});
+  var tree = app.data.sidebar.tree();
+  
+  tree.menu.items.logout.self.addEventListener('click', Logout);
+  
+  function Logout(){
+    Request.logout();
+    app.data.sidebar.toggle();
+    app.showframe(document.getElementById('signup_frame'));
+  }
+  
 });
 
 </script>
