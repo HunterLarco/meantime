@@ -6,28 +6,11 @@ from lib.users.handlers import AuthRequestHandler
 
 
 class MainHandler(AuthRequestHandler):
-  def render(self, name, header_visible=False):
-    # check first visit cookie
-    if self.request.cookies.get('firstvisit') != 'done' and self.user == None:
-      name = 'firstvisit'
-      header_visible = False
-    # generate template values
-    gone = 'opaque gone'
+  def render(self, name):
+    import json
     template_values = {
-      'visibility': {
-        'inbox': gone,
-        'signup': gone,
-        'passlocked': gone,
-        'sessionlocked': gone,
-        'header': gone,
-        'firstvisit': gone
-      }
+      'user': json.dumps(self.user.toDict() if self.user != None else None)
     }
-    # set visibility for css
-    if name in template_values['visibility']:
-      template_values['visibility'][name] = ''
-    if header_visible:
-      template_values['visibility']['header'] = ''
     # render
     path = os.path.join(os.path.dirname(__file__), 'main.html')
     self.response.out.write(template.render(path, template_values))
@@ -54,7 +37,7 @@ class MainHandler(AuthRequestHandler):
   
   class auth:
     def get(cls, self):
-      self.render('inbox', header_visible=True)
+      self.render('inbox')
 
 
 app = webapp2.WSGIApplication([

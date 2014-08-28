@@ -2,6 +2,9 @@
 import response
 
 
+# any function returning false bypasses auto-added responses
+
+
 ### Purpose
 # this function takes a dictionary name and method name to run an API MAP, really an example will make it clear. It essentially allows remote access to selective functions within the system through the API engine. Callback functions may be used in get requests with the URL parameter 'callback'. Also the kwarg 'additionalPayload' contains data to be added to the api response.
 ### NOTE
@@ -34,11 +37,15 @@ def delegate(Webapp2Instance, DictionaryName, MethodName, API_HANDLERS_MAP, addi
           payload = ParseJSON(Webapp2Instance.request.body)
           payload['__Webapp2Instance__'] = Webapp2Instance
           result = func(payload)
+          if result == False:
+            return
           result = response.reply() if result == None else result
       else:
         if DictionaryName == 'get':
           # if there is a callback function specified, use it
           result = func(Webapp2Instance)
+          if result == False:
+            return
           result = response.reply() if result == None else result
           result = dict(result.items() + additionalPayload.items())
           if Webapp2Instance.request.get('callback') != None and Webapp2Instance.request.get('callback') != '':

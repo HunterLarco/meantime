@@ -64,6 +64,9 @@ div.signup a{
   text-decoration:none;
   cursor:pointer;
 }
+div.signup a.disabled{
+  cursor:not-allowed;
+}
 div.signup div.loginspacer{
   height:36px;
 }

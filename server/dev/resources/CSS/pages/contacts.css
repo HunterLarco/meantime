@@ -1,0 +1,117 @@
+div.contacts div.frame{
+  position:absolute;
+  top:80px;
+  bottom:0px;
+  width:400px;
+  left:0px;
+  right:0px;
+  margin:0px auto;
+  background:rgb(255,255,255);
+  -webkit-border-top-left-radius:  2px;
+  -webkit-border-top-right-radius: 2px;
+  -moz-border-radius-topleft:      2px;
+  -moz-border-radius-topright:     2px;
+  border-top-left-radius:          2px;
+  border-top-right-radius:         2px;
+  padding:8px 0px;
+  z-index:0;
+  overflow:hidden;
+}
+div.contacts div.title{
+  font-size:19px;
+  color:rgb(200,200,200);
+  padding:11px 30px;
+  font-weight:100;
+}
+div.contacts div.filler{
+  height:20px;
+}
+div.contacts div.contact.input div.text::after{
+  content:none !important;
+}
+div.contacts div.contact.input div.text{
+  padding:0px;
+}
+div.contacts div.contact.input input{
+  font-weight: 300;
+  font-style:italic;
+  border:none;
+  margin:0px;
+  padding:10px 4px;
+  outline:none;
+  width:100%;
+  cursor:text;
+}
+div.contacts ::-webkit-input-placeholder{
+  color:rgb(200,200,200) !important;
+}
+div.contacts ::-moz-placeholder{
+  color:rgb(200,200,200) !important;
+}
+div.contacts :-moz-placeholder{
+  color:rgb(200,200,200) !important;
+}
+div.contacts ::-moz-placeholder{
+  color:rgb(200,200,200) !important;
+}
+div.contacts :-ms-input-placeholder{
+  color:rgb(200,200,200) !important;
+}
+div.contacts div.scroller{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  bottom:100px;
+  overflow:scroll;
+}
+div.contacts div.buttons{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  width:100%;
+  height:100px;
+  overflow:scroll;
+  text-align:center;
+  line-height:100px;
+}
+div.contacts div.buttons div.check{
+  display:inline-block;
+  vertical-align:middle;
+  background-repeat:no-repeat;
+  background-size:50px 50px;
+  height:50px;
+  width:50px;
+  margin:3px;
+  cursor:not-allowed;
+  background-color:rgb(200,200,200);
+  -webkit-transition: background-color 500ms ease;
+  -moz-transition:    background-color 500ms ease;
+  -ms-transition:     background-color 500ms ease;
+  -o-transition:      background-color 500ms ease;
+  transition:         background-color 500ms ease;
+  background-image:url(/images/contacts/check.png);
+}
+div.contacts div.buttons div.check.ready{
+  background-color:rgb(102,201,215);
+  cursor:pointer;
+}
+div.contacts div.buttons div.arrow{
+  cursor:pointer;
+  position:absolute;
+  left:30px;
+  top:30px;
+  background-repeat:no-repeat;
+  background-size:50px 50px;
+  height:50px;
+  width:50px;
+  background-image:url(/images/contacts/arrow.png);
+}
+div.contacts div.none{
+  text-align:center;
+  color:rgb(200,200,200);
+  font-size:15px;
+  margin:0px 30px 0px 40px;
+  padding:20px 4px;
+  border-top:1px solid rgb(230,230,230);
+}

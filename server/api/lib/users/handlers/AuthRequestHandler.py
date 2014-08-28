@@ -52,9 +52,9 @@ class AuthRequestHandler(CookieHandler):
     
     # get from cookies if none exist in the request body
     if uid == None or ulid == None or sid == None:
-      uid = self.request.cookies.get('uid') if self.request.cookies.get('uid') != '' else None
-      ulid = self.request.cookies.get('ulid') if self.request.cookies.get('ulid') != '' else None
-      sid = self.request.cookies.get('sid') if self.request.cookies.get('sid') != '' else None
+      uid = self.cookies.get('uid') if self.cookies.get('uid') != '' else None
+      ulid = self.cookies.get('ulid') if self.cookies.get('ulid') != '' else None
+      sid = self.cookies.get('sid') if self.cookies.get('sid') != '' else None
     
     user = self.__userclass__.getBySession(uid, ulid, sid)
     errorstatus = None
@@ -73,6 +73,11 @@ class AuthRequestHandler(CookieHandler):
       return
     
     self.user = user
+    
+    if self.user.session.changed:
+      self.cookies.set('uid', self.user.session.uid)
+      self.cookies.set('ulid', self.user.session.ulid)
+      self.cookies.set('sid', self.user.session.sid)
     
     if user.isLocked():
       errorstatus = self.PASSWORD_LOCKED

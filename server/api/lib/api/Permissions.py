@@ -96,7 +96,8 @@ class Guest:
         return response.throw(200)
       return response.reply({
         'setsession': True,
-        'session': user.session.toDict()
+        'session': user.session.toDict(),
+        'user': user.toDict()
       })
     
     @require('email', 'password')
@@ -115,7 +116,8 @@ class Guest:
       else:
         return response.reply({
           'setsession': True,
-          'session': user.session.toDict()
+          'session': user.session.toDict(),
+          'user': user.toDict()
         })
 
 
@@ -134,12 +136,78 @@ class Guest:
 
 # authenticated user map
 class AuthUser:
-  class upload:
-    def geturl(self, payload):
-      from .. import caps
+  
+  class get:
+    def message(self, webapp2instance):
+      key = webapp2instance.request.get('key')
+      user = webapp2instance.user
+      message = user.getMessage(key)
+      
+      if message == None or (not message.isViewable()) or (message.isDisappearing() and message.isRead()):
+        # blank 1x1 gif
+        uri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+      else:
+        uri = message.uri
+      
+      mimetype = uri[uri.index(':')+1 : uri.index(';')]
+      data = uri[uri.index(',')+1:]
+      
+      webapp2instance.response.headers['Content-Type'] = str(mimetype)
+      webapp2instance.response.out.write(data.decode('base64'))
+      
+      return False
+  
+  
+  
+  class user:
+    
+    @require('email')
+    def setemail(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      if user.changeEmail(payload['email']) == user.EMAIL_IS_USED:
+        return response.throw(200)
+    
+    @require('name')
+    def setname(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      user.changeName(payload['name'])
+    
+    @require('mobile')
+    def setmobile(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      user.changePhone(payload['mobile'])
+    
+    def delete(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      user.delete()
+    
+    @require('password', 'old_password')
+    def changepassword(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      worked = user.changePassword(payload['old_password'], payload['password'])
+      if not worked:
+        return response.throw(201)
+      user.unlock()
+    
+  class messages:
+    
+    @require('uri', 'recipients', 'date')
+    def send(self, payload):
+      disappearing = payload['disappearing'] if 'disappearing' in payload else False
+      user = payload['__Webapp2Instance__'].user
+      user.sendMessage(
+        payload['uri'],
+        payload['recipients'],
+        payload['date'],
+        disappearing
+      )
+    
+    def get(self, payload):
+      user = payload['__Webapp2Instance__'].user
       return response.reply({
-        'url': caps.uploader.getUrl()
+        'messages': user.getMessages(json=True)
       })
+      
         
 
 
@@ -150,19 +218,17 @@ class PassLockedUser:
   class user:
     def unlock(self, payload):
       user = payload['__Webapp2Instance__'].user
-      if user == None:
-        return response.throw(203)
       user.unlock()
+      return response.reply({'passlocked':False})
     
     @require('password', 'old_password')
     def changepassword(self, payload):
       user = payload['__Webapp2Instance__'].user
-      if user == None:
-        return response.throw(203)
       worked = user.changePassword(payload['old_password'], payload['password'])
       if not worked:
         return response.throw(201)
       user.unlock()
+      return response.reply({'passlocked':False})
 
 
 

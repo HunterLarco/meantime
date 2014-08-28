@@ -12,7 +12,7 @@ div.header div.logo{
   vertical-align:top;
   float:left;
   font-family:'raleway';
-  cursor:default;
+  cursor:pointer;
 }
 div.header div.logo img{
   vertical-align:middle;
@@ -34,44 +34,35 @@ div.header div.buttons{
 div.header.signedin div.buttons{
   opacity:1;
 }
-div.header div.buttons div.img{
-  height:56px;
-  width:56px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius:    50%;
-  border-radius:         50%;
-  vertical-align:middle;
-  border:2px solid rgb(255,255,255);
-  position:relative;
-  overflow:hidden;
-  display:inline-block;
-  cursor:pointer;
-}
-div.header div.buttons div.img div.shadow{
-  -webkit-border-radius: 50%;
-  -moz-border-radius:    50%;
-  border-radius:         50%;
-  position:absolute;
-  top:0px;
-  left:0px;
-  width:100%;
-  height:100%;
-  -moz-box-shadow:    inset 0px 5px 20px rgba(0,0,0,0.5);
-	-webkit-box-shadow: inset 0px 5px 20px rgba(0,0,0,0.5);
-	box-shadow:         inset 0px 5px 20px rgba(0,0,0,0.5);
-}
-div.header div.buttons div.img img{
-  position:absolute;
-  top:0px;
-  left:0px;
-  width:100%;
-  height:100%;
-}
+div.header div.buttons div.settings,
 div.header div.buttons img.plus{
   vertical-align:middle;
   display:inline-block;
-  margin:0px 30px;
+  margin:10px 20px;
   height:36px;
   width:36px;
   cursor:pointer;
+}
+div.header div.buttons div.settings{
+  background-size:36px 36px;
+  background-image:url(/images/header/settings.png);
+  background-repeat:no-repeat;
+  position:relative;
+}
+div.header div.buttons div.settings div.notification{
+  position:absolute;
+  top:-2px;
+  left:30px;
+  font-size:12px;
+  color:rgb(255,255,255);
+  background:rgb(22,121,135);
+  -webkit-border-radius: 50%;
+  -moz-border-radius:    50%;
+  border-radius:         50%;
+  vertical-align:middle;
+  line-height:16px;
+  min-width:16px;
+  height:16px;
+  text-align:center;
+  font-weight:700;
 }

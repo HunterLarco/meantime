@@ -161,7 +161,7 @@
   	}
   };
   
-  this.logout = function(){
+  Request.logout = function(){
     cookies.delete('uid');
     cookies.delete('ulid');
     cookies.delete('sid');
@@ -170,11 +170,11 @@
   function CheckNewSession(data){
     if(!data['setsession']) return;
     if(!!data.session.uid)
-      cookies.set('uid',uid,30);
+      cookies.set('uid',data.session.uid,30);
     if(!!data.session.ulid)
-     cookies.set('ulid',ulid,30);
+     cookies.set('ulid',data.session.ulid,30);
     if(!!data.session.sid)
-      cookies.set('sid',sid,30);
+      cookies.set('sid',data.session.sid,30);
   }
   
   function AddSessionToPost(data){

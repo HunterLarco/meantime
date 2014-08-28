@@ -1,0 +1,90 @@
+div.capture div.display{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  margin:auto;
+  width:600px;
+  height:400px;
+  background:rgb(71,71,71);
+  overflow:visible;
+}
+div.capture div.display canvas{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+}
+div.capture div.display div.buttons{
+  position:absolute;
+  top:50%;
+  left:100%;
+  -ms-transform:     translate(0px, -50%);
+ 	-webkit-transform: translate(0px, -50%);
+  -moz-transform:    translate(0px, -50%);
+  -o-transform:      translate(0px, -50%);
+  transform:         translate(0px, -50%);
+  margin-left:50px;
+  padding:12px;
+}
+div.capture div.display div.row{
+  white-space:nowrap;
+}
+div.capture div.display div.b.vertical{
+  display:block;
+}
+div.capture div.display div.b{
+  display:inline-block;
+  vertical-align:top;
+  background-repeat:no-repeat;
+  background-size:50px 50px;
+  height:50px;
+  width:50px;
+  margin:3px;
+  cursor:not-allowed;
+  background-color:rgb(200,200,200);
+  -webkit-transition: background-color 500ms ease;
+  -moz-transition:    background-color 500ms ease;
+  -ms-transition:     background-color 500ms ease;
+  -o-transition:      background-color 500ms ease;
+  transition:         background-color 500ms ease;
+}
+div.capture div.display div.b.usable:hover{
+  background-color:rgb(62,161,175);
+}
+div.capture div.display div.b.usable{
+  background-color:rgb(102,201,215);
+  cursor:pointer;
+}
+div.capture div.display div.b.record{
+  background-image:url(/images/capture/record.png);
+}
+div.capture div.display div.b.stop{
+  background-image:url(/images/capture/stop.png);
+}
+div.capture div.display div.b.pause{
+  background-image:url(/images/capture/pause.png);
+}
+div.capture div.display div.b.check{
+  background-image:url(/images/capture/check.png);
+}
+div.capture div.display div.b.cancel{
+  background-image:url(/images/capture/cancel.png);
+}
+div.capture div.display div.b.restart{
+  background-image:url(/images/capture/restart.png);
+}
+div.capture div.display div.b.snap{
+  background-image:url(/images/capture/photo.png);
+}
+div.capture div.notice{
+  position:absolute;
+  top:50%;
+  left:0px;
+  width:100%;
+  text-align:center;
+  font-size:15px;
+  color:rgb(245,245,245);
+}

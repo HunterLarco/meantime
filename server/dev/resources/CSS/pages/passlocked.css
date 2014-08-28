@@ -53,7 +53,7 @@ div.passlocked div.changepass div.button.skip{
   width:96px;
   vertical-align:top;
   background:rgb(190,190,190);
-  border-bottom:3px solid rgb(150,150,150);
+  border-bottom:3px solid rgb(150,150,150) !important;
 }
 div.passlocked div.changepass div.error{
   margin:30px 0px 0px 0px;

@@ -1,96 +1,146 @@
-function Sidebar(root){
-  var self = this;
+(function(){
   
+  function LoadSettings(){
+  	var sidebar = new Sidebar(
+      document.getElementById('sidebar'),
+      document.getElementById('header_settingsbutton')
+    );
+    var tree = sidebar.tree();
   
-  self.toggle = ToggleVisiblity;
-  self.tree = GetTree;
+    /* ----------------------- LOGOUT ----------------------- */
+
+    tree.menu.children.logout.self.addEventListener('click', Logout);
+    function Logout(){
+      app.getUser().logout();
+      sidebar.toggle();
+      location.reload()
+    }
   
+    /* ----------------------- ACCOUNT NOTIFICATIONS ----------------------- */
   
-  var itemtree = {};
-  
-  
-  ShowRoot();
-  LoadItemTree();
-  
-  
-  
-  function GetTree(){
-    return itemtree;
-  }
-  function ToggleVisiblity(){
-    root.parentElement.classList.toggle('opened');
-  }
-  
-  
-  function BindMenu(node){
-    if(!node.menu.exists) return;
-    
-    if(!!node.menu.back)
-      node.menu.back.addEventListener('click', function(event){
-        event.stopPropagation();
-        node.menu.element.classList.remove('opened');
-        node.parent.menu.element.classList.remove('covered');
-      });
-    
-    node.self.addEventListener('click', function(){
-      node.menu.element.classList.add('opened');
-      node.parent.menu.element.classList.add('covered');
-    });
-    
-  }
-  
-  
-  function ShowRoot(){
-    root.classList.add('opened');
-    root.setAttribute('name', 'root');
-  }
-  
-  
-  function LoadItemTree(){
-    function Recurse(treenode, nodemenu){
-      for(var i=0,elem; elem=nodemenu.children[i++];){
-        if(elem.classList.contains('back'))
-          treenode.menu.back = elem;
-        if(!elem.classList.contains('menuitem') && elem != root) continue;
-        var buzzword = elem.getAttribute('name');
-        if(!buzzword) continue;
-        var menu = elem.children.length == 0 ? null : elem.children[0],
-            back = null;
-        treenode.menu.items[buzzword] = {
-          'menu': {
-            'exists': !!menu,
-            'element': menu,
-            'back': null,
-            'items': {}
-          },
-          'self': elem,
-          'parent': treenode
+    app.addEventListener('userload', RenderAccountDetails);
+    if(!!app.getUser()) RenderAccountDetails();
+    function RenderAccountDetails(){
+      var user = app.getUser();
+      
+      (function BindFullName(){
+        var title  = document.getElementById('sidebar_name'),
+            input  = document.getElementById('sidebar_name_input'),
+            button = document.getElementById('sidebar_name_button');
+        
+        if(!user.getFullName())
+          tree.menu.children.account.menu.children.name.setNotifications(1);
+        
+        title.innerHTML   = user.getFullName() || '';
+        input.placeholder = user.getFullName() || 'Prince Leah';
+        button.addEventListener('click', SendUpdate);
+        
+        function SendUpdate(event){
+          event.stopPropagation();
+          if(input.value.length == 0) return;
+          if(input.value.split(' ').length < 2) return;
+          user.setFullName(input.value);
+          title.innerHTML = input.value;
+          input.placeholder = input.value;
+          input.value = '';
+          tree.menu.children.account.menu.children.name.menu.back.click();
+          tree.menu.children.account.menu.children.name.setNotifications(0);
         }
-        if(!!menu) Recurse(treenode.menu.items[buzzword], menu);
-        BindMenu(treenode.menu.items[buzzword]);
-      }
+      })();
+      
+      (function BindMobileNumber(){
+        var title  = document.getElementById('sidebar_mobile'),
+            input  = document.getElementById('sidebar_mobile_input'),
+            button = document.getElementById('sidebar_mobile_button');
+        
+        if(!user.getMobileNumber())
+          tree.menu.children.account.menu.children.mobile.setNotifications(1);
+        
+        title.innerHTML   = user.getMobileNumber() || '';
+        input.placeholder = user.getMobileNumber() || '555 555-5555';
+        button.addEventListener('click', SendUpdate);
+        
+        function SendUpdate(event){
+          event.stopPropagation();
+          if(input.value.length == 0) return;
+          if(input.value.replace(/[^0-9]/g,'').length < 7) return;
+          user.setMobileNumber(input.value);
+          title.innerHTML = input.value;
+          input.placeholder = input.value;
+          input.value = '';
+          tree.menu.children.account.menu.children.mobile.menu.back.click();
+          tree.menu.children.account.menu.children.mobile.setNotifications(0);
+        }
+      })();
+      
+      (function BindEmail(){
+        var title  = document.getElementById('sidebar_email'),
+            input  = document.getElementById('sidebar_email_input'),
+            button = document.getElementById('sidebar_email_button');
+        
+        title.innerHTML   = user.getEmail();
+        input.placeholder = user.getEmail();
+        button.addEventListener('click', SendUpdate);
+        
+        function SendUpdate(event){
+          event.stopPropagation();
+          if(input.value.length == 0) return;
+          var isValidEmail = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(input.value);
+          if(!isValidEmail) return;
+          user.setEmail(input.value);
+          title.innerHTML = input.value;
+          input.placeholder = input.value;
+          input.value = '';
+          tree.menu.children.account.menu.children.email.menu.back.click();
+        }
+      })();
+      
+      (function BindChangePassword(){
+        var input    = document.getElementById('sidebar_changepassword'),
+            input2   = document.getElementById('sidebar_changepassword_verify'),
+            oldinput = document.getElementById('sidebar_changepassword_old'),
+            button   = document.getElementById('sidebar_changepassword_button');
+        
+        button.addEventListener('click', SendUpdate);
+        
+        function SendUpdate(event){
+          event.stopPropagation();
+          if(input.value.length == 0 || input2.value.length == 0) return;
+          if(input.value != input2.value) return;
+          
+          var errormap = {};
+          errormap[User.ERRORS.INCORRECTCREDENTIALS] = function(){
+            return;
+          }
+          
+          user.changePassword(oldinput.value, input.value, 
+            function OnSuccess(){
+              input.value  = '';
+              input2.value = '';
+              oldinput.value = ''
+              tree.menu.children.account.menu.children.password.menu.back.click();
+            }, errormap
+          );
+        }
+      })();
+      
+      (function BindDelete(){
+        var button  = document.getElementById('sidebar_delete_button');
+        
+        button.addEventListener('click', SendUpdate);
+        
+        function SendUpdate(event){
+          app.getUser().delete(function(){
+            location.reload();
+          });
+        }
+      })();
     }
-    itemtree.menu = {
-      'exists': true,
-      'element': root,
-      'back': null,
-      'items': {}
-    }
-    itemtree.parent = null;
-    itemtree.self = root;
-    Recurse(itemtree, root);
-  }
+  
+  };
   
   
-}
-
-
-
-
-
-
-window.addEventListener('load', function(){
-	var sidebar = new Sidebar(document.getElementById('settings_root'));
-  document.getElementById('header_settingsbutton').addEventListener('click', sidebar.toggle);
-  app.data.sidebar = sidebar;
-});
+  window.Settings = {};
+  window.Settings.load = LoadSettings;
+  
+})();

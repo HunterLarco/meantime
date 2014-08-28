@@ -30,22 +30,32 @@ class APIHandler(AuthRequestHandler):
 
   class auth:
     def default(cls, self, dictionary, method):
-      self.RunAuthUser(dictionary, method, additionalPayload={
-        'setsession': True,
-        'session': self.user.session.toDict()
-      } if self.user.session.changed else {})
+      self.RunAuthUser(dictionary, method)
 
   def RunSessionLockedUser(self, dictionary, method):
-    delegate(self, dictionary, method, Permissions.SessionLockedUser, additionalPayload={'userlocked':True})
+    additionalPayload = {
+      'setsession': True,
+      'session': self.user.session.toDict()
+    } if self.user.session.changed else {}
+    additionalPayload['sesslocked'] = True
+    delegate(self, dictionary, method, Permissions.SessionLockedUser, additionalPayload=additionalPayload)
 
   def RunPassLockedUser(self, dictionary, method):
-    delegate(self, dictionary, method, Permissions.PassLockedUser, additionalPayload={'userlocked':True})
+    additionalPayload = {
+      'setsession': True,
+      'session': self.user.session.toDict()
+    } if self.user.session.changed else {}
+    additionalPayload['passlocked'] = True
+    delegate(self, dictionary, method, Permissions.PassLockedUser, additionalPayload=additionalPayload)
 
   def RunGuest(self, dictionary, method):
     delegate(self, dictionary, method, Permissions.Guest)
 
-  def RunAuthUser(self, dictionary, method, additionalPayload={}):
-    delegate(self, dictionary, method, Permissions.AuthUser, additionalPayload=additionalPayload)
+  def RunAuthUser(self, dictionary, method):
+    delegate(self, dictionary, method, Permissions.AuthUser, additionalPayload={
+      'setsession': True,
+      'session': self.user.session.toDict()
+    } if self.user.session.changed else {})
 
   def setHeaders(self):
     self.response.headers['Access-Control-Allow-Origin'] = '*'

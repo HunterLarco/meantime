@@ -1,5 +1,4 @@
 from lib import api
-from lib.caps import uploader
 
 import webapp2
 import os
@@ -20,7 +19,5 @@ class MainHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
                 ('/([^/]+)/([^/]+)/?',         api.handler),
-                ('/data/upload/?',             uploader.UploadHandler),
-                ('/data/(.*)/?',               uploader.DownloadHandler),
                 ('.*',                         MainHandler)
               ], debug=True)
