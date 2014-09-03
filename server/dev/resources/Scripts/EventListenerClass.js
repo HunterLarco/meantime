@@ -1,8 +1,11 @@
 function EventListenerClass(){
-  this.addEventListener = AddEventListener;
-  this.removeEventListener = RemoveEventListener;
-  this.__events__ = {};
-  this.__events__.fire = FireEvent;
+  var self = this;
+  
+  
+  self.addEventListener = AddEventListener;
+  self.removeEventListener = RemoveEventListener;
+  self.__events__ = [];
+  self.__events__.fire = FireEvent;
   
   
   var listeners = {};
@@ -10,6 +13,7 @@ function EventListenerClass(){
   
   function AddEventListener(event, funct){
     if(typeof event != 'string' || typeof funct != 'function') return;
+    if(self.__events__.indexOf(event) == -1) self.__events__.push(event);
     if(!listeners[event]) listeners[event] = [];
     listeners[event].push(funct);
   }
@@ -17,6 +21,7 @@ function EventListenerClass(){
   
   function RemoveEventListener(event, funct){
     if(typeof event != 'string' || typeof funct != 'function') return;
+    if(self.__events__.indexOf(event) != -1) self.__events__.splice(self.__events__.indexOf(event), 1);
     if(!listeners[event]) return;
     var index = listeners[event].indexOf(funct);
     while(index>-1){

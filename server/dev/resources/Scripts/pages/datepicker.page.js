@@ -8,7 +8,7 @@
     self.getDate = GetSelectedDateTime;
     self.getContacts = GetSelectedContacts;
     
-    self.reset =  Reset;
+    self.reset = new Function();
     
     
     function GetSelectedDateTime(){
@@ -19,6 +19,7 @@
     function ShowDatePicker(){
       self.elements.picker.frame.classList.add('show');
       ResetQuickPicker();
+      GenerateDays();
     }
     function HideDatePicker(){
       self.elements.picker.frame.classList.remove('show');
@@ -30,10 +31,18 @@
       if(!date || contacts.length == 0) self.elements.buttons.continue.classList.remove('ready');
       else self.elements.buttons.continue.classList.add('ready');
     }
+    function Continue(){
+      if(!self.elements.buttons.continue.classList.contains('ready')) return;
+      app.pages['sendmessage'].focus();
+    }
     
     function Reset(){
       ResetDatePicker();
-      ResetQuickPicker();ResetQuickPicker
+      ResetQuickPicker();
+      self.elements.frames.contacts.innerHTML = '';
+      checkboxes = [];
+      HideDatePicker();
+      self.elements.buttons.continue.classList.remove('ready');
     }
     
     
@@ -55,21 +64,21 @@
       for(var i=0,contact; contact=contacts[i++];){
         var title = contact.name || contact.email || contact.mobile;
         
-        var contact = document.createElement('div');
-        contact.classList.add('contact');
+        var div = document.createElement('div');
+        div.classList.add('contact');
           var checkbox = document.createElement('input');
           checkbox.setAttribute('type', 'checkbox');
           checkbox.contact = contact;
           checkbox.addEventListener('click', CheckContinueButton);
           checkbox.checked = true;
           checkboxes.push(checkbox);
-          contact.appendChild(checkbox);
+          div.appendChild(checkbox);
           var text = document.createElement('div');
           text.classList.add('text');
           text.innerHTML = title;
-          contact.appendChild(text);
+          div.appendChild(text);
         
-        self.elements.frames.contacts.appendChild(contact);
+        self.elements.frames.contacts.appendChild(div);
       }
     }
     
@@ -151,7 +160,6 @@
     }
     
     function BindDatePicker(){
-      GenerateDays();
       self.elements.picker.buttons.left.addEventListener('click', Prev);
       self.elements.picker.buttons.right.addEventListener('click', Next);
       self.elements.picker.buttons.header.addEventListener('click', NextLevel);
@@ -323,14 +331,17 @@
     // ------------------- END OF DATE PICKER CODE ------------------- //
     
     (function Constructor(){
-      self.addEventListener('focus', LoadContacts);
+      self.addEventListener('focus', function(){
+        Reset();
+        LoadContacts();
+      });
       BindDatePicker();
       BindQuickPicker();
       onquickchange = CheckContinueButton;
       ondatechange = CheckContinueButton;
       self.elements.picker.button.addEventListener('click', ShowDatePicker);
-      self.elements.buttons.back.addEventListener('click', app.pages['contacts'].focus);
-      self.elements.buttons.back.addEventListener('click', app.pages['sendmessage'].focus);
+      self.elements.buttons.back.addEventListener('click', function(){app.pages['contacts'].focus()});
+      self.elements.buttons.continue.addEventListener('click', Continue);
     })();
   }
   

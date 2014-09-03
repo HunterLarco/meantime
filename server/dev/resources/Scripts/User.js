@@ -169,30 +169,58 @@
   })();
   
   
-  var Message = function Message(data){
+  var Message = function Message(user, data){
     var self = this;
     self.super();
     
     
     self.getURL = GetURL;
+    
+    self.getSender = GetSender;
+    self.getSentDate = GetSentDate;
+    
+    self.isRead = IsRead;
+    self.getReadDate = GetReadDate;
+    
+    self.isViewable = IsViewable;
     self.getViewableDate = GetViewableDate
     self.getPendingTime = GetPendingTime;
     
     
     var key = data.key,
         disappearing = data.disappearing    || false,
-        viewable_date = (data.viewable_date || (Date.now()/1000)) * 1000;
+        viewable_date = user.time.toLocalTime(data.viewable_date) || Date.now(),
+        sender = data.sender,
+        isread = !!data.readdate,
+        readdate = isread ? user.time.toLocalTime(data.readdate) : null,
+        sentdate = user.time.toLocalTime(data.sent_date);
         
         
+    function IsViewable(){
+      return GetPendingTime() <= 0; 
+    }
     function GetViewableDate(){
       return viewable_date;
     }
     function GetURL(){
+      readdate = Date.now();
       return '/api/get/message?key='+key;
     }
     function GetPendingTime(){
       var time = viewable_date - Date.now();
-      return time < 0 ? 0 : time;
+      return time;
+    }
+    function GetSender(){
+      return sender;
+    }
+    function IsRead(){
+      return isread;
+    }
+    function GetReadDate(){
+      return readdate;
+    }
+    function GetSentDate(){
+      return sentdate;
     }
     
         
@@ -204,7 +232,7 @@
   
   
   // REMOINDER: locks listeners
-  // EVENTS: onlogout, onpasslock, onsesslock
+  // EVENTS: onlogout, onpasslock, onsesslock, onmessage
   var User = function User(data){
     var self = this;
     self.super();
@@ -232,6 +260,10 @@
     self.delete = Delete;
     
     self.sendMessage = SendMessage;
+    
+    self.time = {}
+    self.time.toLocalTime = ServerToLocalTime;
+    self.time.toServerTime = LocalToServerTime;
     
     
     var email    = data.email    || null,
@@ -386,13 +418,16 @@
       });
     }
     
-    function SendMessage(uri, recipients, date, disappearing, OnSuccess, errormap){
+    function SendMessage(uri, recipients, date, disappearing, OnSuccess){
       Request('messages/send', {
         'uri': uri,
         'recipients': recipients,
         'disappearing': typeof disappearing == 'boolean' ? disappearing : false,
-        'date': Math.round(LocalToServerTime(date)/1000)
-      }, OnSuccess, errormap);
+        'date': LocalToServerTime(date)
+      }, function(event){
+        contacts = event.contacts;
+        if(typeof OnSuccess == 'function') OnSuccess();
+      }, {default: function(event){event.retry();}});
     }
     
     function StartPollingMessages(){
@@ -409,16 +444,24 @@
       for(var i=0,message; message=event.messages[i++];){
         if(messages_loaded.indexOf(message.key) > -1) continue;
         messages_loaded.push(message.key);
-        messages.push(new Message(message));
+        var newmessage = new Message(self, message);
+        messages.push(newmessage);
+        self.__events__.fire('message', {
+          user: self,
+          message: newmessage
+        });
       }
     }
     
     
-    // both get and return milliseconds
+    // gets milliseconds returns seconds
     function LocalToServerTime(time){
-      return (time-markedtime)+synctime;
+      var time = (time-markedtime)+synctime;
+      return Math.round(time/1000);
     }
+    // gets seconds returns milliseconds
     function ServerToLocalTime(time){
+      time *= 1000;
       return (time-synctime)+markedtime;
     }
     

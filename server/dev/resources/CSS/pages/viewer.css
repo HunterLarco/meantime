@@ -1,0 +1,54 @@
+div.viewer{
+  background:rgba(0,0,0,0.9);
+  color:rgb(245,245,245);
+}
+div.viewer img.close{
+  margin:8px;
+  padding:10px;
+  width:36px;
+  height:36px;
+  position:absolute;
+  top:0px;
+  right:0px;
+  cursor:pointer;
+  opacity:0.7;
+}
+div.viewer img.close:hover{
+  opacity:1;
+}
+div.viewer label{
+  color:rgb(190,190,190);
+}
+div.viewer div.meta{
+  position:absolute;
+  bottom:0px;
+  left:0px;
+  padding:20px;
+}
+div.viewer div.h1{
+  font-weight:100;
+  font-size:34px;
+  font-style:italic;
+}
+div.viewer div.frame{
+  position:absolute;
+  top:0px;
+  left:0px;
+  right:0px;
+  bottom:0px;
+  margin:80px 60px;
+  text-align:center;
+}
+div.viewer div.frame img{
+  -moz-box-shadow:    0px 0px 15px rgb(0,0,0);
+	-webkit-box-shadow: 0px 0px 15px rgb(0,0,0);
+	box-shadow:         0px 0px 15px rgb(0,0,0);
+  border:18px solid rgb(245,245,245);
+  height:100%;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+  background: url(/images/viewer/background.png);
+}

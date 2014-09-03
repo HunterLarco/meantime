@@ -52,6 +52,8 @@ body{
 <link rel='stylesheet' href='/resources/CSS/pages/capture.css'/>
 <link rel='stylesheet' href='/resources/CSS/pages/contacts.css'/>
 <link rel='stylesheet' href='/resources/CSS/pages/datepicker.css'/>
+<link rel='stylesheet' href='/resources/CSS/pages/sendmessage.css'/>
+<link rel='stylesheet' href='/resources/CSS/pages/viewer.css'/>
 
 <!-- core files -->
 <script src='/resources/Scripts/extend.js'></script>
@@ -76,6 +78,7 @@ body{
 <script src='/resources/Scripts/pages/header.js'></script>
 <script src='/resources/Scripts/pages/contacts.page.js'></script>
 <script src='/resources/Scripts/pages/datepicker.page.js'></script>
+<script src='/resources/Scripts/pages/sendmessage.page.js'></script>
 
 <!-- misc. -->
 <script src='/resources/Scripts/pages/easteregg.js'></script>
@@ -116,6 +119,15 @@ body{
                     <div class='title'>Change Mobile Number</div>
                     <div class='back line'>Back</div>
                     <input type='text' id='sidebar_mobile_input'/>
+                    <!--<select>
+                      <option>Service Provider</option>
+                      <option>Service Provider</option>
+                      <option>Service Provider</option>
+                      <option>Service Provider</option>
+                      <option>Service Provider</option>
+                      <option>Service Provider</option>
+                      <option>Service Provider</option>
+                    </select>-->
                     <div class='buttonframe'><div class='button' id='sidebar_mobile_button'>save</div></div>
                   </div>
                 </div>
@@ -511,75 +523,7 @@ body{
 
 
 <div class='full inbox opaque gone' id='inbox'>
-  <div class='center'>
-
-
-    <div class='gift notviewable sent'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Laney Larco</div>
-        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-      </div>
-    </div>
-    <div class='gift notviewable'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Prince Leah</div>
-        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-      </div>
-    </div>
-    <div class='gift viewable'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Richard Branson</div>
-        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-      </div>
-    </div>
-    <div class='gift viewable'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Laney Larco</div>
-        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-      </div>
-    </div>
-    <div class='gift viewable sent'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Prince Leah</div>
-        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-      </div>
-    </div>
-    <div class='gift'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Richard Branson</div>
-        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-      </div>
-    </div>
-    <div class='gift'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Laney Larco</div>
-        <div class='data'>sent 2 hours ago - viewed - viewable now</div>
-      </div>
-    </div>
-    <div class='gift'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Prince Leah</div>
-        <div class='data'>recieved 4 hours ago - viewable today at 6:30p</div>
-      </div>
-    </div>
-    <div class='gift'>
-      <div class='image'></div>
-      <div class='text'>
-        <div class='title'>Richard Branson</div>
-        <div class='data'>sent 2 days ago - viewable in 4 days at 11p</div>
-      </div>
-    </div>
-
-
-  </div>
+  <div class='center' data-name='frames.messages'></div>
 </div>
 
 
@@ -613,7 +557,7 @@ body{
   <div class='frame'>
     <div class='scroller'>
       <div class='title'>send to</div>
-      <div data-name='frames.contacts.new'>
+      <div>
         <div class='contact'>
           <input type='checkbox' data-name='buttons.self'/>
           <div class='text'>self</div>
@@ -623,12 +567,11 @@ body{
             <input type='text' data-name='input' placeholder='enter phone number or email address here'/>
           </div>
         </div>
+        <div  data-name='frames.contacts.new'></div>
       </div>
       <div class='filler'></div>
       <div class='title'>recent</div>
-      <div data-name='frames.contacts.recent'>
-        <div class='none'>no recent contacts</div>
-      </div>
+      <div data-name='frames.contacts.recent'></div>
     </div>
     <div class='buttons'>
       <div class='b arrow' data-name='buttons.back'></div>
@@ -794,7 +737,46 @@ body{
 </div>
 
 
-<div class='full datepicker opaque gone' id='sendmessage'></div>
+<!-- done -->
+<div class='full sendmessage opaque gone' id='sendmessage'>
+  <div class='frame'>
+    <div class='scroll'>
+      <div class='title'>sending to</div>
+      <div class='content' data-name='frames.contacts'></div>
+      <div class='title'>viewable in</div>
+      <div class='content'>
+        <div class='contact date'>
+          <div class='text' data-name='labels.date'></div>
+        </div>
+      </div>
+      <div class='title'>additional options</div>
+      <div class='content'>
+        <div class='contact'>
+          <input type='checkbox' data-name='buttons.disappearing'/>
+          <div class='text'>Content disappears after viewing?</div>
+        </div>
+      </div>
+    </div>
+    <div class='buttons'>
+      <div class='b arrow' data-name='buttons.back'></div>
+      <div class='centeredbuttonframe'>
+        <div class='buttonframe'><div class='button' data-name='buttons.continue'>send message</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- done -->
+<div class='full viewer opaque gone' id='viewer'>
+  <img class='close' id='viewer_close' src='/images/viewer/close.png'/>
+  <div class='meta'>
+    <div class='h1'><label>from</label> <span id='viewer_sender'>Hunter Larco</span></div>
+  </div>
+  <div class='frame'>
+    <img id='viewer_image'/>
+  </div>
+</div>
 
 
 <script type='text/javascript'>
@@ -850,8 +832,6 @@ body{
   });
   
 })();
-
-
 
 
 

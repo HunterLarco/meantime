@@ -142,19 +142,7 @@ class AuthUser:
       key = webapp2instance.request.get('key')
       user = webapp2instance.user
       message = user.getMessage(key)
-      
-      if message == None or (not message.isViewable()) or (message.isDisappearing() and message.isRead()):
-        # blank 1x1 gif
-        uri = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-      else:
-        uri = message.uri
-      
-      mimetype = uri[uri.index(':')+1 : uri.index(';')]
-      data = uri[uri.index(',')+1:]
-      
-      webapp2instance.response.headers['Content-Type'] = str(mimetype)
-      webapp2instance.response.out.write(data.decode('base64'))
-      
+      message.serve(webapp2instance)
       return False
   
   
@@ -195,12 +183,15 @@ class AuthUser:
     def send(self, payload):
       disappearing = payload['disappearing'] if 'disappearing' in payload else False
       user = payload['__Webapp2Instance__'].user
-      user.sendMessage(
+      contacts = user.sendMessage(
         payload['uri'],
         payload['recipients'],
         payload['date'],
         disappearing
       )
+      return response.reply({
+        'contacts': contacts
+      })
     
     def get(self, payload):
       user = payload['__Webapp2Instance__'].user

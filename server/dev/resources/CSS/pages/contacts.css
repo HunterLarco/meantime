@@ -31,6 +31,10 @@ div.contacts div.contact.input div.text::after{
 }
 div.contacts div.contact.input div.text{
   padding:0px;
+  border-bottom:1px solid rgb(230,230,230);
+}
+div.contacts div.contact.input div.text.noline{
+  border-bottom:none;
 }
 div.contacts div.contact.input input{
   font-weight: 300;

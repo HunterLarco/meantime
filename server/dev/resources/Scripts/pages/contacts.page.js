@@ -6,12 +6,21 @@
     
     
     self.getContacts = GetSelectedContacts;
-    self.reset =  Reset;
+    self.reset = new Function();
     
     
     function Reset(){
+      ClearFrames();
+      LoadRecentContacts();
       self.elements.input.value = '';
       self.elements.buttons.self.checked = false;
+      self.elements.buttons.continue.classList.remove('ready');
+      self.elements.input.parentElement.classList.remove('noline');
+    }
+    
+    function ClearFrames(){
+      self.elements.frames.contacts.new.innerHTML = '';
+      self.elements.frames.contacts.recent.innerHTML = '';
     }
     
     function GotoCapture(){
@@ -48,10 +57,10 @@
       
       var frame = self.elements.frames.contacts.new;
       
-      if(frame.children.length < 3)
+      if(frame.children.length == 0)
         frame.appendChild(contact);
       else
-        frame.insertBefore(contact, frame.children[2]);
+        frame.insertBefore(contact, frame.children[0]);
         
       setTimeout(checkbox.click.bind(checkbox), 10);
       self.elements.input.value = '';
@@ -69,6 +78,9 @@
       return list;
     }
     function CheckContinueButton(){
+      if(self.elements.frames.contacts.new.children.length == 0) self.elements.input.parentElement.classList.remove('noline');
+      else self.elements.input.parentElement.classList.add('noline');
+      
       var contacts = GetSelectedContacts();
       if(contacts.length > 0)
         self.elements.buttons.continue.classList.add('ready');
@@ -84,6 +96,37 @@
         self.elements.buttons.self.contact['mobile'] = app.getUser().getMobileNumber();
     }
     
+    function LoadRecentContacts(){
+      var contacts = app.getUser().getContacts();
+      
+      if(contacts.length == 0){
+        var div = document.createElement('div');
+        div.setAttribute('class', 'none');
+        div.innerHTML = 'no recent contacts';
+        self.elements.frames.contacts.recent.appendChild(div);
+        return;
+      }
+      
+      self.elements.frames.contacts.recent.innerHTML = '';
+      
+      for(var i=0,meta; meta=contacts[i++];){
+        var contact = document.createElement('div');
+        contact.classList.add('contact');
+            var checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.contact = {};
+            if(!!meta.email) checkbox.contact['email'] = meta.email;
+            if(!!meta.phone) checkbox.contact['phone'] = meta.phone;
+            checkbox.addEventListener('click', CheckContinueButton);
+            contact.appendChild(checkbox);
+            var text = document.createElement('div');
+            text.classList.add('text');
+            text.innerHTML = meta.fullname || meta.email || meta.phone;
+            contact.appendChild(text);
+        self.elements.frames.contacts.recent.appendChild(contact);
+      }
+    };
+    
     
     (function Constructor(){
       if(!!app.getUser()) LoadSelfContact();
@@ -92,6 +135,7 @@
       self.elements.buttons.back.addEventListener('click', GotoCapture);
       self.elements.buttons.continue.addEventListener('click', GotoDatePicker);
       self.elements.input.addEventListener('keyup', BindEnterKey);
+      self.addEventListener('focus', Reset);
     })();
   }
   

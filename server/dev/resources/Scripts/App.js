@@ -123,6 +123,7 @@
       
       
       function Focus(callback){
+        if(self == currentpage) return;
         var event = {callback:null};
         if(!self.__events__.fire('focus', event)) return;
         function __callback__(){

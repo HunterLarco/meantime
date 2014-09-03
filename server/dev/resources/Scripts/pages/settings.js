@@ -6,6 +6,10 @@
       document.getElementById('header_settingsbutton')
     );
     var tree = sidebar.tree();
+    
+    /* ----------------------- ON CAPTURE CLOSE SETTINGS ----------------------- */
+    
+    document.getElementById('header_capturebutton').addEventListener('click', sidebar.hide);
   
     /* ----------------------- LOGOUT ----------------------- */
 

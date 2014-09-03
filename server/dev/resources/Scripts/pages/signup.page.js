@@ -78,7 +78,7 @@
       var isValidEmail = (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(email);
       if(!isValidEmail) return ThrowError('Please Use A Valid Email');
       var errormap = {};
-      errormap[User.ERRORS.EMAILUSED] = function(){ThrowError('Email &amp; Password Combination Not Recognized');};
+      errormap[User.ERRORS.EMAILUSED] = function(){ThrowError('Email Already In Use');};
       errormap['default'] = function(){ThrowError('Uh Oh! Unknown Error');}
       errormap['always'] = EnableForm
       DisableForm();
@@ -132,7 +132,7 @@
     }
     
     function Reset(){
-      self.elements.signup.name.value = '';
+      self.elements.signup.email.value = '';
       self.elements.signup.password.default.value = '';
       self.elements.signup.password.verify.value = '';
       self.elements.signup.button.innerHTML = 'sign up';

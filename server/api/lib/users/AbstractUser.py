@@ -178,6 +178,13 @@ class AbstractUser(ndb.Model):
   BRUTE_SUSPECTED   = 'ABCU3'
   
   
+  meta_entity = ndb.KeyProperty(indexed=False)
+  
+  
+  def loadMeta(self):
+    self.__parent__ = self.meta_entity.get()
+  
+  
   @property
   def __parent__(self):
     return self.__parententity__ if hasattr(self, '__parententity__') else None
@@ -228,6 +235,7 @@ class AbstractUser(ndb.Model):
     if meta == UserMetaData.EMAIL_IS_USED:
       return cls.EMAIL_IS_USED
     user = cls()
+    user.meta_entity = meta.key
     user.__parent__ = meta
     return user
   
