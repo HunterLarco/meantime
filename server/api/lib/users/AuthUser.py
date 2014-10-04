@@ -88,8 +88,3 @@ class Model(AbstractUser):
     return user
 
 
-
-
-
-
-

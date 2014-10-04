@@ -6,10 +6,11 @@ from lib.users.handlers import AuthRequestHandler
 
 
 class MainHandler(AuthRequestHandler):
-  def render(self, name):
+  def render(self):
     import json
     template_values = {
-      'user': json.dumps(self.user.toDict() if self.user != None else None)
+      'user': json.dumps(self.user.toDict() if self.user != None else None),
+      'client': self.request.get('c')
     }
     # render
     path = os.path.join(os.path.dirname(__file__), 'main.html')
@@ -17,7 +18,7 @@ class MainHandler(AuthRequestHandler):
   
   class nouser:
     def get(cls, self):
-      self.route('nosession')
+      self.route()
   
   class hacker:
     def get(cls, self):
@@ -25,19 +26,19 @@ class MainHandler(AuthRequestHandler):
   
   class sessionlocked:
     def get(cls, self):
-      self.render('sessionlocked')
+      self.render()
   
   class passlocked:
     def get(cls, self):
-      self.render('passlocked')
+      self.render()
   
   class nosession:
     def get(cls, self):
-      self.render('signup')
+      self.render()
   
   class auth:
     def get(cls, self):
-      self.render('inbox')
+      self.render()
 
 
 app = webapp2.WSGIApplication([

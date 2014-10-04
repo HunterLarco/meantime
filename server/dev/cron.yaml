@@ -1,0 +1,4 @@
+cron:
+- description: Scheduled Session Tokens Cleanup
+  url: /cron/cleansessions
+  schedule: every wed 00:00

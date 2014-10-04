@@ -1,3 +1,13 @@
+/*
+
+blue | viewable
+purple | locked
+grey | viewed
+  sand on bottom | viewable
+  sand gone | not viewable
+light circle | dissapearing
+
+*/
 (function(){
   
   function InboxPage(frame){
@@ -58,6 +68,7 @@
       document.getElementById('viewer_sender').innerHTML = message.getSender().fullname || message.getSender().email || message.getSender().phone;
       document.getElementById('viewer_image').addEventListener('load', Show);
       document.getElementById('viewer_image').setAttribute('src', message.getURL());
+      if (message.getSender().email != app.getUser().getEmail()) message.read();
       document.getElementById('viewer_close').addEventListener('click', Hide);
       function Hide(){
         document.getElementById('viewer_image').removeEventListener(Show);
@@ -72,6 +83,8 @@
     }
     
     function AddNewMessage(event){
+      if(messages.length == 0) self.elements.frames.messages.innerHTML = '';
+      
       var user = event.user,
           message = event.message;
           
@@ -101,14 +114,15 @@
       // end of sorter
       
       var index = messages.indexOf(message),
-          sender = message.getSender();
+          sender = message.getSender(),
+          isent = sender.email == app.getUser().getEmail();
       
       var div = document.createElement('div');
       div.classList.add('gift');
         var image = document.createElement('div');
         image.classList.add('image');
           var skin = document.createElement('img');
-          skin.setAttribute('src', '/images/inbox/empty.png');
+          skin.setAttribute('src', '/images/inbox/empty_locked.png');
           image.appendChild(skin);
           var canvas = document.createElement('canvas');
           image.appendChild(canvas);
@@ -117,16 +131,40 @@
         text.classList.add('text');
           var title = document.createElement('div');
           title.classList.add('title');
-          title.innerHTML = sender.fullname || sender.email || sender.phone;
+          if (isent) title.innerHTML = message.getRecipient().fullname || message.getRecipient().email || message.getRecipient().phone || message.getRecipient();
+          else title.innerHTML = sender.fullname || sender.email || sender.phone;
           text.appendChild(title);
           var data = document.createElement('div');
           data.classList.add('data');
           
+          function DrawHourglass(){
+            var ctx = canvas.getContext('2d'),
+                width = canvas.width,
+                height = canvas.height,
+                percent = (message.getPendingTime()) / Math.abs(message.getViewableDate() - message.getSentDate());
+            percent = Math.max(Math.min(percent, 1), 0);
+            ctx.clearRect(0,0,width,height);
+            ctx.fillStyle = 'rgb(255,246,209)';
+            ctx.fillRect(width*20/80,height*40/80,width*36/80,-percent*23/80*height);
+            ctx.fillRect(width*20/80,height*(1-17/80),width*36/80,(1-percent)*-23/80*height);
+            
+            if(message.isDisappearing() && message.isRead() && !isent) ctx.clearRect(0,0,width,height);
+            
+            if(message.isViewable()) skin.setAttribute('src', '/images/inbox/empty.png');
+            if(message.isRead()) skin.setAttribute('src', '/images/inbox/empty_gone.png');
+          }
+          
           function SetLabel(){
+            DrawHourglass();
             var stamp = FormatDateTime(Date.now()-message.getSentDate(), message.getSentDate());
-            stamp = stamp.type == 'time' ?
-                    'recieved '+stamp.stamp+' ago' :
-                    'recieved on '+stamp.stamp;
+            if(isent)
+              stamp = stamp.type == 'time' ?
+                      'sent '+stamp.stamp+' ago' :
+                      'sent on '+stamp.stamp;
+            else
+              stamp = stamp.type == 'time' ?
+                      'recieved '+stamp.stamp+' ago' :
+                      'recieved on '+stamp.stamp;
             data.innerHTML = stamp + ' - ';
           
             if(message.isRead())
@@ -142,7 +180,7 @@
           }
           
           function ReadMessage(){
-            if(!message.isViewable()) return;
+            if(!message.isViewable() || (message.isRead() && message.isDisappearing() && !isent)) return;
             OpenViewer(message, function(){
               self.elements.frames.messages.removeChild(div);
               SetLabel();

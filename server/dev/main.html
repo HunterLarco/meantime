@@ -32,6 +32,13 @@ body{
 <html>
 <head>
 <meta charset="utf-8" />
+
+<!-- facebook meta tags -->
+<meta property="og:title" content="Sealed: Time Delayed Photo &amp; Video Messaging"/>
+<meta property="og:url" content="http://www.trysealed.com"/>
+<meta property="og:site_name" content="Try Sealed"/>
+<meta property="og:image" content="http://trysealed.com/images/general/logo.png"/>
+
 <title>Try Sealed</title>
 
 <link rel="stylesheet" href="/resources/CSS/resets.css"/>
@@ -183,8 +190,9 @@ body{
                   <div class='scroller'>
                     <div class='title'>What is Sealed?</div>
                     <div class='back'>Back</div>
-                    <p class='big'>Sealed is an app for time-delayed photo and video messaging. Think of the messages like digital time capsules. You can take a photo or a video and choose when a recipient will be able to see the content, whether it be in 10 minutes or 10 years. </p>
+                    <p class='big'>Sealed is an app for time-delayed photo and video* messaging. Think of the messages like digital time capsules. You can take a photo or a video and choose when a recipient will be able to see the content, whether it be in 10 minutes or 10 years.</p>
                     <p class='big'>That’s it! How you use it is up to you. We think it could be useful for sending messages to be viewable on specific events, such as birthdays, holidays, anniversaries, etc., but we think that the ‘birthday card’ use is just the tip of the iceberg. We’re counting on you to take Sealed to the next level.</p>
+                    <p class='big'><i>* video messaging not yet available in beta mode</i></p>
                   </div>
                 </div>
               </div>
@@ -194,20 +202,9 @@ body{
                   <div class='scroller'>
                     <div class='title'>How do I send a message with Sealed?</div>
                     <div class='back'>Back</div>
-                    <p class='big'>Look to the top right corner of the header and click the plus (+) sign. This prompts the webcam. When your computer prompts you, click “allow” under Camera Settings. Record your message by clicking on the record icon, a circle with a dot in the center.</p>
-                    <p class='big'>When you are finished recording, click on the check mark, which takes you to the next pane. On this pane, enter the email address or phone number of the person you wish to send your message to, or select a friend from your recent contacts list. You can select one or several people, including yourself. After you are finished selecting recipients, click the checkmark at the bottom of the white box.</p>
-                    <p class='big'>On the next pane, you should see your recipients listed at the top of the white box, and the time-delay selection field below it. Select your time delay by clicking a number and a unit (i.e. 7 minutes) or by clicking on, <i>“or, set time delay”</i>, to enter in the exact date and time in the future that you wish your message to be viewed. After you have selected your time delay, send your message by clicking “send message”.</p>
-                    <p class='big'>The recipient will immediately be notified that you have sent him or her a message, but will not be able to access the content until the time that you specified.</p>
-                  </div>
-                </div>
-              </div>
-              <div class='menuitem' name='lengthlimitation'>
-                How long can my video messages be?
-                <div class='menu'>
-                  <div class='scroller'>
-                    <div class='title'>How long can my video messages be?</div>
-                    <div class='back'>Back</div>
-                    <p class='big'>Any length up to one hour.</p>
+                    <p class='big'>Look to the top right corner of the header and click the plus (+) sign. This prompts the webcam. When your computer prompts you, click “allow” under Camera Settings. Capture an image by clicking on the camera icon. If you wish to re-take the image, click the X icon. When you are happy with your image, click on the check mark, which takes you to the next pane.</p>
+                    <p class='big'>On this pane, enter the email address or phone number of the person you wish to send your message to, or select a friend from your recent contacts list. You can select one or several people, including yourself. After you are finished selecting recipients, click the checkmark at the bottom of the white box.</p>
+                    <p class='big'>On the next pane, you should see your recipients listed at the top of the white box, and the time-delay selection field below it. Select your time delay by clicking a number and a unit (i.e. 7 minutes) or by clicking on, <i>“or, set time delay”</i>, to enter in the exact date and time in the future that you wish your message to be viewed. After you have selected your time delay, send your message by clicking “send message”. The recipient will immediately be notified that you have sent him or her a message, but will not be able to access the content until the time that you specified.</p>
                   </div>
                 </div>
               </div>
@@ -296,11 +293,20 @@ body{
             </div>
           </div>
         </div>
-        <div class='menuitem' name='contact'>
-          Contact Sealed
-        </div>
+        <a target='blank' href='mailto:admin@trysealed.com' style='text-decoration:none;'>
+          <div class='menuitem' name='contact' style='border-bottom:none;'>Contact Sealed</div>
+        </a>
         <div class='menuitem' name='share'>
           Share Sealed
+          <div class='menu share'>
+            <div class='scroller'>
+              <div class='title'>Share Sealed</div>
+              <div class='back line'>Back</div>
+              <a href='' id='settings_share_facebook'>Facebook</a>
+              <a target='blank' href='https://twitter.com/home?status=Try%20sending%20a%20time%20capsule%20message%20with%20Sealed%20@trySealed%20signup%20for%20the%20beta%20trysealed.com'>Twitter</a>
+              <a target='blank' href='https://plus.google.com/share?url=www.trysealed.com'>Google+</a>
+            </div>
+          </div>
         </div>
         <div class='menuitem' name='about'>
           About
@@ -388,7 +394,7 @@ body{
                   <div class='scroller'>
                     <div class='title'>About The Team</div>
                     <div class='back line'>Back</div>
-                    <p class='big'>Sealed was created by <label class='dark'>Alex Cantrell</label> (design & vision) and <label class='dark'>Hunter Larco</label> (computer magician), neighborhood friends from the greater Boston area.</p>
+                    <p class='big'>Sealed was created by <label class='dark'>Alex Cantrell</label> (design) and <label class='dark'>Hunter Larco</label> (code), neighborhood friends from the greater Boston area.</p>
                     <p class='big'>Follow us on twitter at @alcantrell22 and @hjlarco.</p>
                   </div>
                 </div>
@@ -396,7 +402,44 @@ body{
             </div>
           </div>
         </div>
-        <div class='menuitem' name='logout'>Logout</div>
+        <div class='menuitem line' name='logout'>Logout</div>
+        
+        
+        <div class='title'>Feedback</div>
+        <div class='menuitem' name='fidea'>
+          The Idea
+          <div class='menu'>
+            <div class='scroller'>
+              <div class='title'>Feedback | The Idea</div>
+              <div class='back line'>Back</div>
+              <textarea placeholder='What do you think of Sealed?' id='settings_fidea_text'></textarea>
+              <div class='buttonframe'><div class='button' id='settings_fidea_button'>Send</div></div>
+            </div>
+          </div>
+        </div>
+        <div class='menuitem' name='fdesign'>
+          Design / Aesthetics
+          <div class='menu'>
+            <div class='scroller'>
+              <div class='title'>Feedback | Design / Aesthetics</div>
+              <div class='back line'>Back</div>
+              <textarea placeholder='How do you feel about the design?' id='settings_fdesign_text'></textarea>
+              <div class='buttonframe'><div class='button' id='settings_fdesign_button'>Send</div></div>
+            </div>
+          </div>
+        </div>
+        <div class='menuitem' name='fgeneral'>
+          General Feedback
+          <div class='menu'>
+            <div class='scroller'>
+              <div class='title'>Feedback | General</div>
+              <div class='back line'>Back</div>
+              <textarea placeholder='Help us improve Sealed!' id='settings_fgeneral_text'></textarea>
+              <div class='buttonframe'><div class='button' id='settings_fgeneral_button'>Send</div></div>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -494,7 +537,7 @@ body{
       <div class='slider slow'>
         <div class='pane'>
           <div class='content'>
-            <input type='text' data-name='signup.email' placeholder='email'/>
+            <input type='text' data-name='signup.email' placeholder='email' value='{{client}}'/>
             <input type='password' data-name='signup.password.default' placeholder='password'/>
             <input type='password' data-name='signup.password.verify' placeholder='retype password'/>
             <div class='spacer'></div>
@@ -523,7 +566,12 @@ body{
 
 
 <div class='full inbox opaque gone' id='inbox'>
-  <div class='center' data-name='frames.messages'></div>
+  <div class='center' data-name='frames.messages'>
+    <div class='nomessages'>
+      <img src='/images/inbox/logo.png'/>
+      <div class='h1'>send messages to begin trying sealed!</div>
+    </div>
+  </div>
 </div>
 
 
@@ -533,7 +581,7 @@ body{
     <canvas data-name='video.canvas'></canvas>
     <div class='notice hideshow' data-name='video.notice'>Accessing Webcam...</div>
     <div class='buttons'>
-      <div class='b vertical usable snap' data-name='buttons.snap'></div>
+      <div class='b vertical snap' data-name='buttons.snap'></div>
       <div class='b vertical cancel' data-name='buttons.cancel'></div>
       <div class='b vertical check' data-name='buttons.continue'></div>
       <!--

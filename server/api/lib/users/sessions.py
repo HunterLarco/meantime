@@ -17,11 +17,26 @@ HACKER_FOUND = 'S3'
 """
 from google.appengine.ext import ndb
 class Session(ndb.Model):
+  lastedit = ndb.DateTimeProperty(indexed=True, auto_now=True)
   expiration = ndb.DateTimeProperty(indexed=False)
   SID = ndb.StringProperty(indexed=False)
   watching = ndb.BooleanProperty(indexed=False)
   watchingTokens = ndb.PickleProperty(indexed=False)
   user_key = ndb.KeyProperty(indexed=True)
+
+
+"""
+' PURPOSE
+'   Removes tokens which haven't been changed in over two months
+' PARAMETERS
+'   Nothing
+' RETURNS
+'   None
+"""
+def clean():
+  import datetime
+  query = Session.query(Session.lastedit < datetime.datetime.now()-datetime.timedelta(days=30*2))
+  ndb.delete_multi(query.fetch(keys_only=True))
 
 
 """

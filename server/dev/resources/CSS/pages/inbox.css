@@ -50,3 +50,14 @@ div.inbox div.gift div.text div.title{
   color:rgb(0,0,0);
   margin:3px 0px;
 }
+
+
+div.inbox div.nomessages img{
+  display:block;
+  width:100%;
+}
+div.inbox div.nomessages div.h1{
+  color:rgb(140,140,140);
+  font-size:24px;
+  text-align:center;
+}

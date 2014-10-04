@@ -12,7 +12,8 @@ class SealedUser(users.AuthUser.Model):
   
   name = ndb.StringProperty(indexed=True)
   phone = ndb.StringProperty(indexed=True)
-  contacts = ndb.PickleProperty(indexed=False)
+  contacts = ndb.KeyProperty(indexed=False, repeated=True)
+  pendingcontacts = ndb.StringProperty(indexed=True, repeated=True)
   
   
   def __init__(self, *args, **kwargs):
@@ -26,59 +27,82 @@ class SealedUser(users.AuthUser.Model):
   
   def getMessage(self, identifier):
     message = messages.SealedMessage.getById(identifier)
-    if message.key.parent() != self.key:
+    if message.key.parent() != self.key and message.sender != self.key:
       return None
     return message
   
   
-  def sendMessage(self, uri, recipients, date, disappearing=False):
-    notsignedup = []
-    sent_uids = []
-    
+  
+  
+  
+  
+  
+  
+  @classmethod
+  def updateAllPendingContacts(cls, user, value):
+    pending = cls.query(cls.pendingcontacts == value).fetch()
+    for entity in pending:
+      entity.pendingcontacts.remove(value)
+      if not user.key in entity.contacts:
+        entity.contacts.append(user.key)
+        entity.put()
+    messages.PendingMessage.checkNewContact(value, user)
+  
+  
+  @classmethod
+  def getAllRecipients(cls, recipients):
+    output = []
     for recipient in recipients:
-      user = self.__class__.getByEmail(recipient)
-      if user == self.USER_DOESNT_EXIST:
-        user = self.__class__.getByPhoneNumber(recipient)
-        if user == self.USER_DOESNT_EXIST:
-          notsignedup.append(recipient)
+      recipient = str(recipient)
+      user = cls.getByEmail(recipient)
+      if user == cls.USER_DOESNT_EXIST:
+        user = cls.getByPhoneNumber(recipient)
+        if user == cls.USER_DOESNT_EXIST:
+          output.append(recipient)
           continue
-      
-      sent_uids.append(user.uid)
-      messages.SealedMessage.create(uri, self, user, date, disappearing=disappearing)
+      output.append(user)
+    return output
+  
+  
+  def sendMessage(self, uri, recipients, date, disappearing=False):
+    recipients = self.__class__.getAllRecipients(recipients)
     
-    self.contacts = list(set(self.contacts + sent_uids))
+    for user in recipients:
+      if isinstance(user, str):
+        if not user in self.pendingcontacts:
+          self.pendingcontacts.append(user)
+      elif not user.key in self.contacts:
+        self.contacts.append(user.key)
+    
     self.put()
     
-    sender = self.name if self.name != None else (self.phone if self.phone != None else self.email)
+    messages.send(uri, self, recipients, date, disappearing=disappearing)
     
-    from ..net import smsclient
-    from ..net import emailclient
-    
-    for recipient in notsignedup:
-      if '@' in recipient:
-        emailclient.send(recipient, """
-I've Invited You to Sealed!
-
-To accept this invitation, click the following link,
-or copy and paste the URL into your browser's address
-bar:
-
-http://trysealed.com?c=%s
-  """ % recipient)
-      else:
-        smsclient.send(recipient, '%s has sent you a message on Sealed! Sign up at trysealed.com today to view your message!' % sender)
-    
-    return [contact.toPublicDict() for contact in self.getContacts()]
+    return self.getContactList()
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   def getContacts(self):
     contacts = []
-    for uid in self.contacts:
-      user = self.__class__.getByUID(uid)
-      if not isinstance(user, self.__class__):
+    for key in self.contacts:
+      user = key.get()
+      if user == None:
         continue
+      user.loadMeta()
       contacts.append(user)
     return contacts
+  
+  
+  def getContactList(self):
+    return [contact.toPublicDict() for contact in self.getContacts()] + self.pendingcontacts
   
   
   def changeName(self, name):
@@ -87,6 +111,7 @@ http://trysealed.com?c=%s
   
   
   def changePhone(self, phone):
+    self.__class__.updateAllPendingContacts(self, phone)
     self.phone = phone
     self.put()
   
@@ -109,7 +134,7 @@ http://trysealed.com?c=%s
       email      = self.email,
       fullname   = self.name,
       phone      = self.phone,
-      contacts   = [contact.toPublicDict() for contact in self.getContacts()],
+      contacts   = self.getContactList(),
       messages   = self.getMessages(json=True),
       synctime   = int(time.time()),
       passlocked = self.isLocked(),
@@ -132,5 +157,10 @@ http://trysealed.com?c=%s
     if not isinstance(user, cls):
       return user
     user.contacts = []
+    user.pendingcontacts = []
     user.put()
+    
+    # users with this contact pending
+    cls.updateAllPendingContacts(user, email)
+    
     return user

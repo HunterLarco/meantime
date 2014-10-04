@@ -9,7 +9,7 @@
     self.reset = Reset;
     
     
-    var video;
+    var video, recording = false;
     
     
     function GetCapture(){
@@ -25,11 +25,14 @@
       video = new Camera(self.elements.video.canvas);
       video.addEventListener('record', function(){
         app.hide(self.elements.video.notice);
+        recording = true;
+        self.elements.buttons.snap.classList.add('usable');
       });
       video.record();
     }
     
     function TakePicture(){
+      if(!recording) return;
       self.elements.buttons.snap.removeEventListener('click', TakePicture);
       self.elements.buttons.cancel.addEventListener('click', Cancel);
       self.elements.buttons.continue.addEventListener('click', Continue);

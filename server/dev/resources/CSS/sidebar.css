@@ -99,6 +99,7 @@ div.sidebar div.frame div.menuitem{
   border-top:1px solid rgb(230,230,230);
   cursor:pointer;
 }
+div.sidebar div.frame div.menuitem.line,
 div.sidebar div.frame div.menuitem:last-child{
   border-bottom:1px solid rgb(230,230,230);
 }

@@ -179,12 +179,18 @@
     self.getSender = GetSender;
     self.getSentDate = GetSentDate;
     
+    self.getRecipient = GetRecipient;
+    
     self.isRead = IsRead;
     self.getReadDate = GetReadDate;
     
     self.isViewable = IsViewable;
     self.getViewableDate = GetViewableDate
     self.getPendingTime = GetPendingTime;
+    
+    self.isDisappearing = IsDisappearing;
+    
+    self.read = Read;
     
     
     var key = data.key,
@@ -193,7 +199,8 @@
         sender = data.sender,
         isread = !!data.readdate,
         readdate = isread ? user.time.toLocalTime(data.readdate) : null,
-        sentdate = user.time.toLocalTime(data.sent_date);
+        sentdate = user.time.toLocalTime(data.sent_date),
+        recipient = data.recipient;
         
         
     function IsViewable(){
@@ -221,6 +228,16 @@
     }
     function GetSentDate(){
       return sentdate;
+    }
+    function GetRecipient(){
+      return recipient;
+    }
+    function IsDisappearing(){
+      return disappearing;
+    }
+    function Read(){
+      isread = true;
+      readdate = Date.now()
     }
     
         
@@ -265,6 +282,8 @@
     self.time.toLocalTime = ServerToLocalTime;
     self.time.toServerTime = LocalToServerTime;
     
+    self.sendFeedback = SendFeedback;
+    
     
     var email    = data.email    || null,
         mobile   = data.phone    || null,
@@ -281,6 +300,14 @@
         sesslocked = data.sesslocked || false,
         unlockfunction = [];
     
+    
+    function SendFeedback(content, tags, callback){
+      Request('feedback/send', {
+        content: content,
+        tags: tags
+      },
+      callback, {default:function(event){event.retry();}});
+    }
     
     function RequestOverhead(response){
       if(!response) return true;

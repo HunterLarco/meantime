@@ -64,6 +64,7 @@
         if(!checkbox.checked) continue;
         if(!!checkbox.contact.email) list.push(checkbox.contact.email);
         else if(!!checkbox.contact.mobile) list.push(checkbox.contact.mobile);
+        else list.push(checkbox.contact);
       }
       return list;
     }
@@ -72,7 +73,7 @@
       var contacts = app.pages['datepicker'].getContacts();
       
       for(var i=0,contact; contact=contacts[i++];){
-        var title = contact.name || contact.email || contact.mobile;
+        var title = contact.name || contact.email || contact.mobile || contact;
         
         var div = document.createElement('div');
         div.classList.add('contact');

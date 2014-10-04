@@ -67,10 +67,11 @@
         function SendUpdate(event){
           event.stopPropagation();
           if(input.value.length == 0) return;
-          if(input.value.replace(/[^0-9]/g,'').length < 7) return;
-          user.setMobileNumber(input.value);
-          title.innerHTML = input.value;
-          input.placeholder = input.value;
+          var number = input.value.replace(/[^0-9]/g,'');
+          if(number.length < 7) return;
+          user.setMobileNumber(number);
+          title.innerHTML = number;
+          input.placeholder = number;
           input.value = '';
           tree.menu.children.account.menu.children.mobile.menu.back.click();
           tree.menu.children.account.menu.children.mobile.setNotifications(0);
@@ -140,6 +141,77 @@
         }
       })();
     }
+    
+    /* ----------------------- FEEDBACK ----------------------- */
+    
+    
+    (function BindIdea(){
+      var text = document.getElementById('settings_fidea_text'),
+          button = document.getElementById('settings_fidea_button');
+      button.addEventListener('click', function Send(){
+        if(text.value.length == 0) return;
+        user = app.getUser();
+        user.sendFeedback(text.value, ['idea']);
+        text.value = '';
+        setTimeout(function(){
+          tree.menu.children.fidea.menu.back.click()
+        }, 0);
+      });
+    })();
+    
+    (function BindDesign(){
+      var text = document.getElementById('settings_fdesign_text'),
+          button = document.getElementById('settings_fdesign_button');
+      button.addEventListener('click', function Send(){
+        if(text.value.length == 0) return;
+        user = app.getUser();
+        user.sendFeedback(text.value, ['design']);
+        text.value = '';
+        setTimeout(function(){
+          tree.menu.children.fdesign.menu.back.click()
+        }, 0);
+      });
+    })();
+    
+    (function BindGeneral(){
+      var text = document.getElementById('settings_fgeneral_text'),
+          button = document.getElementById('settings_fgeneral_button');
+      button.addEventListener('click', function Send(){
+        if(text.value.length == 0) return;
+        user = app.getUser();
+        user.sendFeedback(text.value, ['general']);
+        text.value = '';
+        setTimeout(function(){
+          tree.menu.children.fgeneral.menu.back.click()
+        }, 0);
+      });
+    })();
+    
+    
+    /* ----------------------- FACEBOOK SHARE BUTTON ----------------------- */
+    
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+    
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '743458165713605',
+        xfbml      : true,
+        version    : 'v2.0'
+      });
+    };
+    
+    document.getElementById('settings_share_facebook').addEventListener('click', function(){
+      FB.ui({
+        method: 'share',
+        href: 'http://trysealed.com',
+      }, function(response){});
+    });
   
   };
   

@@ -62,7 +62,7 @@
     function LoadContacts(){
       var contacts = app.pages['contacts'].getContacts();
       for(var i=0,contact; contact=contacts[i++];){
-        var title = contact.name || contact.email || contact.mobile;
+        var title = contact.name || contact.email || contact.mobile || contact;
         
         var div = document.createElement('div');
         div.classList.add('contact');

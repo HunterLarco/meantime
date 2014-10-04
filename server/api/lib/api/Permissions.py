@@ -30,6 +30,16 @@ def require(*keys):
 
 
 
+class Cron:
+  class get:
+    def cleansessions(self, *args, **kwargs):
+      from lib.users import sessions
+      sessions.clean()
+
+
+
+
+
 
 class Admin:
   class alphas:
@@ -136,6 +146,16 @@ class Guest:
 
 # authenticated user map
 class AuthUser:
+  
+  
+  class feedback:
+    @require('content', 'tags')
+    def send(self, payload):
+      user = payload['__Webapp2Instance__'].user
+      from .. import feedback
+      feedback.create(user, payload['content'], payload['tags'])
+  
+  
   
   class get:
     def message(self, webapp2instance):

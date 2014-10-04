@@ -117,11 +117,12 @@
             checkbox.contact = {};
             if(!!meta.email) checkbox.contact['email'] = meta.email;
             if(!!meta.phone) checkbox.contact['phone'] = meta.phone;
+            if(typeof meta == 'string') checkbox.contact = meta;
             checkbox.addEventListener('click', CheckContinueButton);
             contact.appendChild(checkbox);
             var text = document.createElement('div');
             text.classList.add('text');
-            text.innerHTML = meta.fullname || meta.email || meta.phone;
+            text.innerHTML = meta.fullname || meta.email || meta.phone || meta;
             contact.appendChild(text);
         self.elements.frames.contacts.recent.appendChild(contact);
       }
