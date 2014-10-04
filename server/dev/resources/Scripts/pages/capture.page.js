@@ -42,6 +42,7 @@
     
     function Cancel(){
       ToggleButtons();
+      video.restart();
       self.elements.buttons.cancel.removeEventListener('click', Cancel);
       self.elements.buttons.continue.removeEventListener('click', Continue);
       self.elements.buttons.snap.addEventListener('click', TakePicture);

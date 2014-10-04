@@ -35,6 +35,10 @@ class Cron:
     def cleansessions(self, *args, **kwargs):
       from lib.users import sessions
       sessions.clean()
+    
+    def notifications(self, *args, **kwargs):
+      from lib.sealeduser.messages import SealedMessage
+      SealedMessage.sendNotifications()
 
 
 
@@ -115,7 +119,8 @@ class Guest:
       from ..sealeduser.model import SealedUser
       user = SealedUser.login(
         payload['email'],
-        payload['password']
+        payload['password'],
+        timezone = None if not 'timezone' in payload else payload['timezone']
       )
       if user == SealedUser.USER_DOESNT_EXIST:
         return response.throw(203)

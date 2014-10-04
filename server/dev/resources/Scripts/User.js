@@ -514,7 +514,8 @@
     }
     Request('user/login', {
       email: email,
-      password: password
+      password: password,
+      timezone: new Date().getTimezoneOffset()
     }, __OnSuccess__, errormap);
   }
   

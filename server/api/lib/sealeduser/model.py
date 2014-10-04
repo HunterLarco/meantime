@@ -14,6 +14,7 @@ class SealedUser(users.AuthUser.Model):
   phone = ndb.StringProperty(indexed=True)
   contacts = ndb.KeyProperty(indexed=False, repeated=True)
   pendingcontacts = ndb.StringProperty(indexed=True, repeated=True)
+  timezone = ndb.IntegerProperty(indexed=True)
   
   
   def __init__(self, *args, **kwargs):
@@ -142,12 +143,34 @@ class SealedUser(users.AuthUser.Model):
     )
 
 
+  def getTimezone(self):
+    return 0 if self.timezone == None else self.timezone
+
+
+  def setTimezone(self, offset):
+    if self.timezone == offset:
+      return
+    self.timezone = offset
+    self.put()
+
+
   @classmethod
   def getByPhoneNumber(cls, number):
     user = cls.query(cls.phone == number).get()
     if user == None:
       return cls.USER_DOESNT_EXIST
     user.loadMeta()
+    return user
+
+
+  @classmethod
+  def login(cls, email, password, timezone=None):
+    user = super(SealedUser, cls).login(email, password)
+    if not isinstance(user, cls):
+      return user
+    if timezone == None:
+      return user
+    user.setTimezone(timezone)
     return user
 
 

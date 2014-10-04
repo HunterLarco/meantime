@@ -1,4 +1,9 @@
 cron:
+  
 - description: Scheduled Session Tokens Cleanup
   url: /cron/cleansessions
   schedule: every wed 00:00
+
+- description: Send out Viewable Notifications
+  url: /cron/notifications
+  schedule: every 1 mins

@@ -78,7 +78,7 @@ class PendingMessage(ndb.Model):
   
   
   def send(self, recipient):
-    message = SealedMessage.create(self.uri, self.sender.get(), recipient, self.viewable, disappearing=self.disappearing, sent_date=self.sent_date)
+    message = SealedMessage.create(self.uri, self.sender.get(), recipient, self.viewable, disappearing=self.disappearing, sent_date=self.sent_date, notificationBypass=True)
     self.key.delete()
     return message
   
@@ -134,10 +134,11 @@ class SealedMessage(ndb.Model):
   
   uri = ndb.TextProperty(indexed=False)
   disappearing = ndb.BooleanProperty(indexed=False)
-  viewable_timestamp = ndb.IntegerProperty(indexed=False)
+  viewable_timestamp = ndb.IntegerProperty(indexed=True)
   read_date = ndb.IntegerProperty(indexed=False)
   sender = ndb.KeyProperty(indexed=True)
   sent_date = ndb.IntegerProperty(indexed=False)
+  has_sent_notification = ndb.BooleanProperty(indexed=True)
   
   
   def serve(self, webapp2instance):
@@ -173,7 +174,7 @@ class SealedMessage(ndb.Model):
   # give or take a day for time zones
   def isViewable(self):
     import time
-    return int(time.time()) > self.viewable_timestamp-60*60*24
+    return int(time.time()) > self.viewable_timestamp-self.getRecipient().getTimezone()
   
   
   def isDisappearing(self):
@@ -217,7 +218,7 @@ class SealedMessage(ndb.Model):
 
 
   @classmethod
-  def create(cls, uri, sender, recipient, date, disappearing=False, sent_date=None):
+  def create(cls, uri, sender, recipient, date, disappearing=False, sent_date=None, notificationBypass=False):
     import time
     message = cls(parent=recipient.key)
     message.uri = uri
@@ -225,6 +226,63 @@ class SealedMessage(ndb.Model):
     message.viewable_timestamp = date
     message.sender = sender.key
     message.sent_date = int(time.time()) if sent_date == None else sent_date
+    message.has_sent_notification = False
     message.put()
     
+    if notificationBypass:
+      return
+    
+    # the rest of the code sends a notification that a message has been sent to you
+    
+    sent = False
+    sender = sender.name if sender.name != None else (sender.phone if sender.phone != None else sender.email)
+    
+    if recipient.phone != None:
+      from ..net import smsclient
+      try:
+        smsclient.send(recipient.phone, '%s has sent you a message on Sealed!' % sender)
+        sent = True
+      except:
+        pass
+    
+    if not sent:
+      from ..net import emailclient
+      emailclient.send(recipient.email, """
+      %s has sent you a message on Sealed!
+    
+      http://trysealed.com
+      """, '%s has sent you a message on Sealed!' % sender)
+  
+  
+  def sendNotification(self):
+    self.has_sent_notification = True
+    self.put()
+    
+    sent = False
+    recipient = self.getRecipient()
+    
+    if recipient.phone != None:
+      from ..net import smsclient
+      try:
+        smsclient.send(recipient.phone, 'A message on Sealed is now viewable!')
+        sent = True
+      except:
+        pass
+    
+    if not sent:
+      from ..net import emailclient
+      emailclient.send(recipient.email, """
+      A message on Sealed is now viewable!
+    
+      http://trysealed.com
+      """, 'A message on Sealed is now viewable!')
+  
+  
+  @classmethod
+  def sendNotifications(cls):
+    import time
+    query = cls.query(ndb.AND(cls.has_sent_notification == False, cls.viewable_timestamp < int(time.time())))
+    for message in query:
+      if message.isViewable():
+        message.sendNotification()
   
