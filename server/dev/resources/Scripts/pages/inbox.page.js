@@ -122,10 +122,8 @@ light circle | dissapearing
         var image = document.createElement('div');
         image.classList.add('image');
           var skin = document.createElement('img');
-          skin.setAttribute('src', '/images/inbox/empty_locked.png');
+          skin.setAttribute('src', '/images/inbox/logos.png');
           image.appendChild(skin);
-          var canvas = document.createElement('canvas');
-          image.appendChild(canvas);
         div.appendChild(image);
         var text = document.createElement('div');
         text.classList.add('text');
@@ -138,20 +136,14 @@ light circle | dissapearing
           data.classList.add('data');
           
           function DrawHourglass(){
-            var ctx = canvas.getContext('2d'),
-                width = canvas.width,
-                height = canvas.height,
-                percent = (message.getPendingTime()) / Math.abs(message.getViewableDate() - message.getSentDate());
-            percent = Math.max(Math.min(percent, 1), 0);
-            ctx.clearRect(0,0,width,height);
-            ctx.fillStyle = 'rgb(255,246,209)';
-            ctx.fillRect(width*20/80,height*40/80,width*36/80,-percent*23/80*height);
-            ctx.fillRect(width*20/80,height*(1-17/80),width*36/80,(1-percent)*-23/80*height);
-            
-            if(message.isDisappearing() && message.isRead() && !isent) ctx.clearRect(0,0,width,height);
-            
-            if(message.isViewable()) skin.setAttribute('src', '/images/inbox/empty.png');
-            if(message.isRead()) skin.setAttribute('src', '/images/inbox/empty_gone.png');
+            if(message.isViewable()) classie.add(div, 'viewable');
+            else classie.remove(div, 'viewable');
+            if(message.isRead()) classie.add(div, 'read');
+            else classie.remove(div, 'read');
+            if(message.isDisappearing()) classie.add(div, 'disappearing');
+            else classie.remove(div, 'disappearing');
+            if(message.isSent()) classie.add(div, 'sent');
+            else classie.remove(div, 'sent');
           }
           
           function SetLabel(){

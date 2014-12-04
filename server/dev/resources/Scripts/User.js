@@ -48,7 +48,8 @@
           var data = JSON.parse(event.target.response);
           if(data.stat == 'fail'){
             onerror(new ErrorEvent(data.code, data.message, data));
-          }else{CheckNewSession(data);
+          }else{
+            CheckNewSession(data);
             callback(data);
           }
         }else{
@@ -190,6 +191,8 @@
     
     self.isDisappearing = IsDisappearing;
     
+    self.isSent = IsSent;
+    
     self.read = Read;
     
     
@@ -203,6 +206,9 @@
         recipient = data.recipient;
         
         
+    function IsSent(){
+      return sender.email == user.getEmail();
+    }
     function IsViewable(){
       return GetPendingTime() <= 0; 
     }
