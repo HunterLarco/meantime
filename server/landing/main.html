@@ -1,113 +1,289 @@
 <!DOCTYPE html>
 <style>
-div.body{
-  padding:40px 0px 20px 0px;
-}
-div.body div.frame{
-  margin:60px 0px;
+
+body{
   font-family:'raleway';
-  font-weight:100;
-  text-align:center;
-}
-div.body div.frame div.text{
-  font-size:46px;
-  padding:60px 0px;
-  color:rgb(180,180,180);
-  cursor:default;
-}
-div.body div.frame div.beta{
-  border-top:    1px solid rgb(220,220,220);
-  border-bottom: 1px solid rgb(220,220,220);
-  padding:6px 0px;
-  color:rgb(200,200,200);
-  font-size:18px;
-  width:500px;;
-  display:block;
-  margin:0px auto;
-  cursor:default;
-}
-div.body div.frame input{
-  border:none;
-  outline:none;
-  color:rgb(51,51,51);
-  font-size:18px;
-  font-weight:100;
-  border-bottom:1px solid rgb(220,220,220);
-  padding:6px 0px;
-  text-align:center;
-  width:400px;
-  display:block;
-  margin:0px auto;
-  cursor:text;
-  -webkit-transition: color 500ms ease 250ms;
-  -moz-transition:    color 500ms ease 250ms;
-  -ms-transition:     color 500ms ease 250ms;
-  -o-transition:      color 500ms ease 250ms;
-  transition:         color 500ms ease 250ms;
-}
-div.body div.frame input:disabled{
-  cursor:not-allowed;
-  color:rgb(200,200,200);
-}
-div.body div.frame button{
-  border:none;
-  outline:none;
-  display:block;
-  position:relative;
-  padding:5px 0px;
-  border-bottom:3px solid rgb(82,181,195);
-  -webkit-border-radius: 3px;
-  -moz-border-radius:    3px;
-  border-radius:         3px;
-  background:rgb(102,201,215);
-  color:rgb(255,255,255);
-  outline:none;
-  cursor:pointer;
-  text-align:center;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  margin-top:20px;
-  width:100px;
-  margin-left:auto;
-  margin-right:auto;
-  -webkit-transition: opacity 500ms ease;
-  -moz-transition:    opacity 500ms ease;
-  -ms-transition:     opacity 500ms ease;
-  -o-transition:      opacity 500ms ease;
-  transition:         opacity 500ms ease;
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
+	bottom:0px;
+	overflow:scroll;
+	font-weight:100;
+	-webkit-font-smoothing:antialiased;
 }
-div.body div.frame button:not(:disabled):hover{
-  border-bottom:2px solid rgb(82,181,195);
-  margin-top:21px;
+
+div.header{
+	position:relative;
+	height:80%;
+	background:rgb(50,202,215);
 }
-div.body div.frame button:not(:disabled):active{
-  border-bottom:1px solid rgb(82,181,195);
-  margin-top:22px;
+div.header div.text{
+	position:absolute;
+	left:80px;
+	bottom:120px;
+	color:rgb(255,255,255);
+	font-size:68px;
+	letter-spacing:1px;
 }
-div.body div.frame button:disabled{
-  opacity:0.6;
-  cursor:not-allowed;
-  -webkit-transition: opacity 500ms ease 250ms;
-  -moz-transition:    opacity 500ms ease 250ms;
-  -ms-transition:     opacity 500ms ease 250ms;
-  -o-transition:      opacity 500ms ease 250ms;
-  transition:         opacity 500ms ease 250ms;
+div.header div.text h1 img{
+	margin-right:4px;
+	height:75px;
+	width:75px;
+	vertical-align:bottom;
 }
-div.body div.frame div.content{
-  border-bottom:1px solid rgb(220,220,220);
-  color:rgb(51,51,51);
-  width:360px;
-  padding:14px;
-  text-align:center;
-  display:none;
-  margin:0px auto;
-  opacity:0;
-  line-height:24px;
+div.header div.text p{
+	font-size:26px;
+	font-weight:700;
 }
+div.header div.text img.badge{
+	height:70px;
+	margin-top:18px;
+}
+
+div.signup{
+	height:220px;
+	position:relative;
+	overflow:visible;
+}
+div.signup img.preview{
+	position:absolute;
+	right:140px;
+	bottom:0px;
+}
+div.signup input{
+	margin-left:80px;
+}
+
+div.input{
+	position:relative;
+	font-size:24px;
+	font-weight:300;
+	color:rgb(51,51,51);
+	padding:40px 0px 0px 0px;
+}
+div.input input{
+	text-align:left;
+	-webkit-border-radius: 3px;
+	-moz-border-radius:    3px;
+	border-radius:         3px;
+	border:none;
+	background:rgb(241,241,241);
+	padding:12px 26px;
+	width:350px;
+	vertical-align:top;
+}
+div.input div.button{
+	-webkit-border-radius: 3px;
+	-moz-border-radius:    3px;
+	border-radius:         3px;
+	background:rgb(33,154,199);
+	height:100%;
+	vertical-align:top;
+	padding:12px 40px;
+	display:inline-block;
+	color:rgb(255,255,255);
+	cursor:pointer;
+}
+div.input div.button:hover{
+	background:rgb(53,174,219);
+}
+div.input ::-webkit-input-placeholder{
+   font-style:italic;
+}
+div.input :-moz-placeholder{
+   font-style:italic;
+}
+div.input ::-moz-placeholder{
+   font-style:italic;
+}
+div.input :-ms-input-placeholder{
+   font-style:italic;
+}
+
+@-webkit-keyframes bounce_anim{
+  20%{
+    -webkit-transform:scale(0.95);
+  }
+  60%{
+    -webkit-transform:scale(1.03);
+  }
+  80%{
+    -webkit-transform:scale(.97);
+  }
+  100%{
+    -webkit-transform:scale(1);
+  }
+}
+@keyframes bounce_anim{
+  20%{
+    transform:scale(0.95);
+  }
+  60%{
+    transform:scale(1.03);
+  }
+  80%{
+    transform:scale(.97);
+  }
+  100%{
+    transform:scale(1);
+  }
+}
+.bounce{
+  -webkit-animation:bounce_anim 500ms;
+  animation:bounce_anim 500ms;
+}
+
+div.world{
+	padding:40px 0px;
+	color:rgb(51,51,51);
+	text-align:center;
+	overflow:hidden;
+}
+div.world h1{
+	font-size:28px;
+	font-weight:700;
+	margin-bottom:100px;
+}
+div.world div.note{
+	display:inline-block;
+	max-width:300px;
+	vertical-align:top;
+	padding:0px 75px;
+	position:relative;
+  -webkit-transition: left 800ms ease;
+  -moz-transition:    left 800ms ease;
+  -ms-transition:     left 800ms ease;
+  -o-transition:      left 800ms ease;
+  transition:         left 800ms ease;
+}
+div.world div.note.in{
+	left:0 !important;
+}
+div.world div.note:nth-child(1){
+	left:-300px;
+}
+div.world div.note:nth-child(2){
+	left:300px;
+}
+div.world div.note img{
+	background:rgb(50,202,215);
+	padding:10px;
+	-webkit-border-radius: 50%;
+	-moz-border-radius:    50%;
+	border-radius:         50%;
+	height:180px;
+	width:180px;
+	margin-bottom:10px;
+}
+div.world div.note h2{
+	font-weight:700;
+	font-size:24px;
+}
+div.world div.note p{
+	font-size:21px;
+	font-weight:300;
+	color:rgb(81,81,81);
+	padding-bottom:60px;
+}
+
+div.pitch{
+	background:rgb(242,242,242);
+	padding:80px 0px;
+	text-align:right;
+	position:relative;
+}
+div.pitch img{
+	margin-right:160px;
+	width:300px;
+}
+div.pitch div.text{
+	position:absolute;
+	top:80px;
+	bottom:80px;
+	left:160px;
+	right:620px;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center;
+	font-size:28px;
+	font-weight:300px;
+	line-height:40px;
+}
+
+div.beta{
+	padding:80px 0px 140px 0px;
+}
+div.beta h1{
+	display:block;
+	text-align:center;
+	font-size:40px;
+	font-weight:700;
+	margin-bottom:0px;
+}
+div.beta h2{
+	font-size:18px;
+	font-weight:300;
+	color:rgb(81,81,81);
+	text-align:center;
+}
+div.beta div.input{
+	text-align:center;
+	padding-top:20px;
+}
+
+div.footer{
+	padding-top:35px;
+	background:rgb(50,202,215);
+	text-align:center;
+	color:rgb(255,255,255);
+	font-weight:700;
+	font-size:18px;
+}
+div.footer div.copyright{
+	font-size:15px;
+	padding:30px 0px 20px 0px;
+}
+div.footer a.item{
+	cursor:pointer;
+	width:20%;
+	overflow:hidden;
+	display:inline-block;
+	vertical-align:middle;
+}
+div.footer a.item.i{
+	cursor:default;
+}
+div.footer a.item.b:hover:before{
+	content:'[';
+	padding-right:12px;
+	opacity:1;
+}
+div.footer a.item.b:hover:after{
+	content:']';
+	padding-left:12px;
+	opacity:1;
+}
+div.footer img{
+	width:130px;
+	height:130px;
+}
+
 </style>
 <html>
 <head>
@@ -115,203 +291,138 @@ div.body div.frame div.content{
 <title>Try Sealed</title>
 <link rel="stylesheet" href="/resources/CSS/resets.css"/>
 <link rel='stylesheet' href='/resources/CSS/raleway.css'/>
-<script src='//api.capaching.appspot.com'></script>
-<script src='/resources/Scripts/Transition.js'></script>
 </head>
 <body>
 
 
-<div class='body'>
-  <div class='frame'>
-    <canvas id='icon' height='250' width='250'></canvas>
-    <div class='text'>sealed</div>
-    <div class='beta'><i>sign up to be a beta tester!</i></div>
-    <div class='form' id='form'>
-      <input type='text' autocomplete='off' id='email' placeholder='email'/>
-      <button disabled class='button' id='button'>sign up</button>
-    </div>
-    <div class='content' id='content'>Thank you for trying sealed. We will be contacting you shortly and hope to hear from you in the future!</div>
-    <div class='content' id='error'>This is embarrassing, something went wrong. Take a deep breath and please try again.</div>
-    <div class='content' id='exists'>It seems you've already signed up! We're sorry if you haven't heard from us recently, but we haven't forgotten about you. Sit tight and we'll let you know the next steps soon.</div>
-  </div>
+<div class='header'>
+	<div class='text'>
+		<h1><img src='/images/empty.png'/> sealed</h1>
+		<p>Send time-delayed photos, videos, and gifts.</p>
+		<img class='badge' src='/images/applebadge.png'/>
+	</div>
+</div>
+<div class='signup'>
+	<div class='input'>
+		<input type='text' placeholder='sign up for the beta'/><div class='button'>&#10003;</div>
+	</div>
+	<img class='preview' src='/images/mainpreview.png'>
+</div>
+<div class='world'>
+	<h1>In a world of instant gratification, Sealed does something different.</h1>
+	<div>
+		<div class='note'>
+			<img src='/images/clock.png'/>
+			<h2>Time-delayed messages</h2>
+			<p>Take a picture or record audio or video for up to 5 minutes. Unlimited time delay. Include text or draw on your message.</p>
+		</div>
+		<div class='note'>
+			<img src='/images/gyft.png'/>
+			<h2>Attach Gifts</h2>
+			<p>Attach gift cards to any of over 200 retailers through our partnership with Gyft.</p>
+		</div>
+	</div>
+	<div>
+		<div class='note'>
+			<img src='/images/wand.png'/>
+			<h2>Disappearing messages</h2>
+			<p>Sender can elect messages to disappear after opening.</p>
+		</div>
+		<div class='note'>
+			<img src='/images/groups.png'/>
+			<h2>"Open" capsules</h2>
+			<p>Create group capsules that store submissions in chronological order until the capsule's unlock date.</p>
+		</div>
+	</div>
+</div>
+<div class='pitch'>
+	<div class='text'>
+		<div>Whether you’re sending a birthday message a week in advance or storing away a moment from your first day of college, our hope is that Sealed provides a fun new way for you to connect with your friends, family, and with yourself.</div>
+	</div>
+	<img src='/images/pitchpreview.png'/>
+</div>
+<div class='beta'>
+	<h1>sign up for the beta to<br/>get 3 free $5 gift cards*</h1>
+	<h2>* Gift cards must be sent to people other than yourself</h2>
+	<div class='input'>
+		<input type='text' placeholder='enter your email'/><div class='button'>&#10003;</div>
+	</div>
+</div>
+<div class='footer'>
+	<a class='item b'>FAQ</a><a class='item b'>ABOUT</a><a class='item i'><img src='/images/empty.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
+	<div class='copyright'>Designed in Boston, USA. Copyright &copy; 2014 Sealed. All rights reserved.</div>
 </div>
 
 
 <script type='text/javascript'>
-
-window.onload = function(){
-  LoadForm();
-  InitIcon();
-}
-
-
-
-
-function LoadForm(){
-  var form = document.getElementById('form'),
-      input = document.getElementById('email'),
-      button = document.getElementById('button'),
-      content = document.getElementById('content'),
-      error = document.getElementById('error'),
-      exists = document.getElementById('exists');
-  form.removeAttribute('id');
-  input.removeAttribute('id');
-  button.removeAttribute('id');
-  content.removeAttribute('id');
-  error.removeAttribute('id');
-  exists.removeAttribute('id');
-  
-  button.addEventListener('click', OnSubmit);
-  input.addEventListener('keyup', CheckEmail);
-  input.addEventListener('focus', RemovePlaceholder);
-  input.addEventListener('blur', AddPlaceholder);
-  
-  function RemovePlaceholder(){
-    if(input.value.length == 0)
-      input.removeAttribute('placeholder');
-  }
-  function AddPlaceholder(){
-    if(input.value.length == 0)
-      input.setAttribute('placeholder', 'email');
-  }
-  
-  function CheckEmail(event){
-    button.disabled = !isValidEmail(input.value);
-    if(event.which == 13) OnSubmit();
-  }
-  
-  function OnSubmit(){
-    if(button.disabled) return;
-    button.disabled = input.disabled = true;
-    
-    setTimeout(function(){
-      var request = new Request('alpha/signup');
-      function OnSuccess(event){
-        ShowResponse(content);
-      }
-      function OnError(event){
-        if(event.code == 200)
-          ShowResponse(exists);
-        else
-          ShowResponse(error);
-      }
-      request.post({
-        email: input.value
-      }, OnSuccess, OnError);
-    }, 900);
-    
-    function ShowResponse(elem){
-      Transition.EaseInOut(400, function(percent){
-        form.style.marginTop = Math.round(50*percent*10)/10 + 'px';
-        form.style.opacity = 1-percent;
-      }, function(){
-        elem.style.display = 'block';
-        form.style.display = 'none';
-        setTimeout(function(){
-          Transition.EaseInOut(400, function(percent){
-            elem.style.opacity = percent;
-          });
-        },300);
-      });
-    }
-  }
-  
-  
-  function isValidEmail(email) { 
-      var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-  }
-}
-
-
-
-function InitIcon(){
-  var img = new Image();
-  img.onload = Render;
-  img.src = '/images/empty.png';
-  
-  var canvas = document.getElementById('icon'),
-      ctx = canvas.getContext('2d'),
-      width = canvas.width,
-      height = canvas.height;
-  
-  var alpha = 0,
-      time = 0,
-      rotation = 0;
-  
-  function Sigmoid(x,width){
-    function resizeSigmoid(x,width){
-      var normalization = 1/(rawSigmoid(width,width)-rawSigmoid(0,width));
-      return (rawSigmoid(x,width)-rawSigmoid(0,width))*normalization;
-    }
-    function rawSigmoid(x,width){
-      width /= 2;
-      return 1/(1+Math.exp(-6/width*(x-width)));
-    }
-    function limitSigmoid(val){
-      function max(v,l){
-        return l-(l-v+Math.abs(l-v))/2;
-      }
-      function min(v,l){
-        return (v-l+Math.abs(v-l))/2+l;
-      }
-      return max(min(val,0),1);
-    }
-    return limitSigmoid(resizeSigmoid(x,width));
-  }
-  
-  function Render(){
-    ctx.clearRect(0,0,width,height);
-    ctx.fillStyle = 'rgb(255,246,209)';
-    ctx.strokeStyle = 'rgb(255,246,209)';
-    var globalrotation = Sigmoid(rotation, 1)*-Math.PI;
-    
-    ctx.save();
-    ctx.translate(width/2, height/2);
-    ctx.rotate(globalrotation);
-    ctx.translate(-width/2, -height/2);
-    
-    
-    ctx.save();
-    ctx.translate(width/2, height*(1/2-144/512+time*144/512));
-    ctx.rotate(alpha);
-    ctx.fillRect(-width/2, 0, width, height);
-    ctx.restore();
-    ctx.clearRect(0,height/2,width,height);
-    
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(width/2, height/2);
-    ctx.lineTo(width/2-height/3*Math.cos(alpha-Math.PI/2-globalrotation), height/2-height/3*Math.sin(alpha-Math.PI/2-globalrotation));
-    ctx.stroke();
-    
-    ctx.save();
-    ctx.translate(width/2, height*(1/2+144/512-time*144/512));
-    ctx.rotate(alpha);
-    ctx.fillRect(-width/2, 0, width, height);
-    ctx.restore();
-    ctx.clearRect(0,height/2+144/512*height,width,height);
-    
-    ctx.clearRect(0,0,width/2-width*144/512,height);
-    ctx.clearRect(width/2+width*144/512,0,width,height);
-    
-    ctx.drawImage(img,0,0,width,height);
-    
-    ctx.restore();
-    
-    if(time < 1){
-      time += 0.002;
-    }else if(rotation < 1){
-      time = 1;
-      rotation += 0.02;
-    }else{
-      time = 0;
-      rotation = 0;
-    }
-    requestAnimationFrame(Render);
-  }
-}
-
+(function(){
+	
+	var notemap = [];
+	
+	window.onload = Init;
+	
+	function Init(){
+		BindBubbles();
+		BindInputs();
+	}
+	
+	function BindBubbles(){
+		var bubbles = document.getElementsByClassName('note');
+		for(var i=0,bubble; bubble=bubbles[i++];){
+			notemap.push({elem:bubble, position:bubble.offsetTop});
+		}
+		var lastscroll = window.scrollY, allopen = true, allclosed = false;
+		window.addEventListener('scroll', OnScroll);
+		OnScroll();
+		function OnScroll(){
+			var y = window.scrollY,
+					direction = lastscroll <= y ? 1 : -1;
+			lastscroll = y;
+			if(allclosed && direction == 1) return;
+			if(allopen && direction == -1) return;
+			allclosed = allopen = true;
+			for(var i=0,bubble; bubble=notemap[i++];){
+				if(bubble.elem.getAttribute('class').indexOf('in') == -1) allclosed = false;
+				else allopen = false;
+				if(direction == 1 && y + window.innerHeight > bubble.position) bubble.elem.setAttribute('class', 'note in');
+				else if(direction == -1 && y + window.innerHeight < bubble.position + bubble.elem.offsetHeight/2) bubble.elem.setAttribute('class', 'note');
+			}
+		}
+	}
+	
+	function BindInputs(){
+		var inputs = document.getElementsByTagName('input');
+		for(var i=0,input; input=inputs[i++];){
+			(function(input){
+				var button = input.nextSibling;
+				input.addEventListener('keyup', function(event){
+					if(event.which == 13) button.click();
+				});
+				button.addEventListener('click', function(){SubmitEmail(input, this);});
+			})(input);
+		}
+	}
+	
+	function SubmitEmail(input, button){
+		button.setAttribute('class', 'button bounce');
+		setTimeout(function(){
+			button.setAttribute('class', 'button');
+		}, 550);
+		var email = input.value;
+		if(email.length < 4 || input.value == 'Thank You!') return;
+		post(email);
+		input.value = 'Thank You!';
+	}
+	
+	function post(email) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) xmlhttp = new XMLHttpRequest();
+		else xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		xmlhttp.open('post', '/addemail?email='+email, true);
+		xmlhttp.send();
+	}
+	
+})();
 </script>
 </body>
 </html>
