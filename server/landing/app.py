@@ -21,7 +21,7 @@ def SendEmail(email):
   from google.appengine.api import mail
   message = mail.EmailMessage(sender="Sealed Team <admin@trysealed.com>",
                               subject='New Beta Tester')
-  message.to = 'hjlarco@gmail.com'
+  message.to = 'alcantrell22@gmail.com'
   message.body = "Hey Alex! <%s> just signed up to become a beta tester" % email
   message.html = message.body
   message.send()
