@@ -28,6 +28,7 @@ div.header div.text{
 	position:absolute;
 	left:80px;
 	bottom:120px;
+	right:560px;
 	color:rgb(255,255,255);
 	font-size:68px;
 	letter-spacing:1px;
@@ -77,7 +78,7 @@ div.input input{
 	background:rgb(241,241,241);
 	padding:12px 26px;
 	width:350px;
-	vertical-align:top;
+	vertical-align:middle;
 }
 div.input div.button{
 	-webkit-border-radius: 3px;
@@ -85,7 +86,7 @@ div.input div.button{
 	border-radius:         3px;
 	background:rgb(33,154,199);
 	height:100%;
-	vertical-align:top;
+	vertical-align:middle;
 	padding:12px 40px;
 	display:inline-block;
 	color:rgb(255,255,255);
@@ -105,6 +106,11 @@ div.input ::-moz-placeholder{
 }
 div.input :-ms-input-placeholder{
    font-style:italic;
+}
+@media (max-width: 1120px){
+	body div.input input{
+		width:230px;
+	}
 }
 
 @-webkit-keyframes bounce_anim{
@@ -225,6 +231,12 @@ div.pitch div.text{
 	font-weight:300px;
 	line-height:40px;
 }
+@media (max-width: 1120px){
+	body div.pitch div.text{
+		left:120px;
+		right:580px;
+	}
+}
 
 div.beta{
 	padding:80px 0px 140px 0px;
@@ -284,11 +296,115 @@ div.footer img{
 	height:130px;
 }
 
+/* ---------- MOBILE FRIENDLY CSS BELOW ---------- */
+
+@media (max-width: 900px){
+	body{
+		overflow: hidden;
+    overflow-y: auto;
+	}
+
+	body div.signup{
+		display:none;
+	}
+	body div.pitch{
+		display:none;
+	}
+	
+	body div.header{
+		height:auto;
+	}
+	body div.header div.text{
+		position:initial;
+		text-align:center;
+		padding:40px;
+	}
+	body div.header div.text h1{
+		margin-top:0px;
+		font-size:43px;
+	}
+	body div.header div.text h1 img{
+		height:50px;
+		width:50px;
+	}
+	body div.header div.text img.badge{
+		margin-top:40px;
+		height:50px;
+	}
+	body div.header div.text p{
+		font-size:20px;
+	}
+	
+	body div.world h1{
+		font-size:24px;
+		padding:0px 20px;
+	}
+	body div.world div.note img{
+		width:100px;
+		height:100px;
+	}
+	body div.world div.note h2{
+		font-size:20px;
+	}
+	body div.world div.note p{
+		font-size:17px;
+	}
+	
+	body div.beta{
+		background:rgb(242,242,242);
+		padding:60px 40px;
+	}
+	body div.beta h1{
+		font-size:24px;
+	}
+	body div.beta br,
+	body div.beta br:after{
+		content:' ';
+	}
+	body div.beta h2{
+		font-size:16px;
+	}
+	body div.beta div.input{
+		font-size:18px;
+	}
+	body div.beta input{
+		background:rgb(255,255,255);
+		width:164px;
+		padding:12px 18px;
+	}
+	body div.beta div.input div.button{
+		padding:10px 8px;
+	}
+	
+	body div.footer{
+		padding-left:40px;
+		padding-right:40px;
+	}
+	body div.footer a.item.i{
+		display:none;
+	}
+	body div.footer a.item{
+		display:block;
+		width:initial;
+		padding:4px 0px;
+		font-size:16px;
+	}
+	body div.footer a.item.b:after,
+	body div.footer a.item.b:before{
+		display:none;
+	}
+	body div.footer div.copyright{
+		font-size:12px;
+	}
+}
+
 </style>
 <html>
 <head>
 <meta charset="utf-8" />
 <title>Try Sealed</title>
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport"/>
 <link rel="stylesheet" href="/resources/CSS/resets.css"/>
 <link rel='stylesheet' href='/resources/CSS/raleway.css'/>
 </head>
@@ -367,13 +483,18 @@ div.footer img{
 	}
 	
 	function BindBubbles(){
-		var bubbles = document.getElementsByClassName('note');
-		for(var i=0,bubble; bubble=bubbles[i++];){
-			notemap.push({elem:bubble, position:bubble.offsetTop});
-		}
+		LoadMap();
 		var lastscroll = window.scrollY, allopen = true, allclosed = false;
 		window.addEventListener('scroll', OnScroll);
+		window.addEventListener('orientationchange', LoadMap);
 		OnScroll();
+		function LoadMap(){
+			notemap = [];
+			var bubbles = document.getElementsByClassName('note');
+			for(var i=0,bubble; bubble=bubbles[i++];){
+				notemap.push({elem:bubble, position:bubble.offsetTop});
+			}
+		}
 		function OnScroll(){
 			var y = window.scrollY,
 					direction = lastscroll <= y ? 1 : -1;
