@@ -43,13 +43,22 @@ div.header div.text h1 img{
 	margin-bottom:8px;
 }
 div.header div.text p{
-	font-size:30px;
+	font-size:28px;
 	font-weight:300;
 	letter-spacing:0px;
 }
 div.header div.text img.badge{
 	height:78px;
 	margin-top:18px;
+}
+
+@media (max-width: 1340px){
+	body div.signup img.preview{
+		width:470px;
+	}
+	body div.header div.text{
+		bottom:90px;
+	}
 }
 
 div.signup{
@@ -471,7 +480,7 @@ div.footer img{
 	</div>
 </div>
 <div class='footer'>
-	<a href='/faq' class='item b'>FAQ</a><a class='item b'>ABOUT</a><a class='item i'><img src='/images/logotinted.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
+	<a href='mailto:admin@trysealed.com' target='blank' class='item b'>Contact Us</a><a href='//dev.capaching.appspot.com/' class='item b'>Try The Prototype</a><a class='item i'><img src='/images/logotinted.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
 	<div class='copyright'>Designed in Boston, USA. Copyright &copy; 2014 Sealed. All rights reserved.</div>
 </div>
 
@@ -490,7 +499,6 @@ div.footer img{
 		var lastscroll = window.scrollY, allopen = true, allclosed = false;
 		var bubbles = document.getElementsByClassName('note');
 		window.addEventListener('scroll', OnScroll);
-		window.addEventListener('orientationchange', LoadMap);
 		OnScroll();
 		function OnScroll(){
 			var y = window.scrollY,

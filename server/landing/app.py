@@ -9,14 +9,6 @@ class MainHandler(webapp2.RequestHandler):
     path = os.path.join(os.path.dirname(__file__), 'main.html')
     self.response.out.write(template.render(path, template_values))
 
-
-class FaqHandler(webapp2.RequestHandler):
-  def get(self):
-    template_values = {}
-    path = os.path.join(os.path.dirname(__file__), 'faq.html')
-    self.response.out.write(template.render(path, template_values))
-
-
 class AddEmail(webapp2.RequestHandler):
   def get(self):
     self.redirect('/')
@@ -37,6 +29,5 @@ def SendEmail(email):
 
 app = webapp2.WSGIApplication([
                 ('/addemail/?', AddEmail),
-                ('/faq/?', FaqHandler),
                 ('/.*', MainHandler)
               ], debug=True)
