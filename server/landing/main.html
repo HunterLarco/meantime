@@ -21,42 +21,47 @@ body{
 
 div.header{
 	position:relative;
-	height:80%;
-	background:rgb(50,202,215);
+	height:100%;
+	background:rgb(102,201,215);
 }
 div.header div.text{
 	position:absolute;
-	left:80px;
-	bottom:120px;
+	left:95px;
+	bottom:134px;
 	right:560px;
 	color:rgb(255,255,255);
-	font-size:68px;
+	font-size:92px;
 	letter-spacing:1px;
 }
+div.header div.text h1{
+	margin:30px 0px;
+}
 div.header div.text h1 img{
-	margin-right:4px;
-	height:75px;
-	width:75px;
+	height:85px;
+	width:85px;
 	vertical-align:bottom;
+	margin-bottom:8px;
 }
 div.header div.text p{
-	font-size:26px;
-	font-weight:700;
+	font-size:30px;
+	font-weight:300;
+	letter-spacing:0px;
 }
 div.header div.text img.badge{
-	height:70px;
+	height:78px;
 	margin-top:18px;
 }
 
 div.signup{
-	height:220px;
+	height:240px;
 	position:relative;
 	overflow:visible;
 }
 div.signup img.preview{
 	position:absolute;
-	right:140px;
+	right:90px;
 	bottom:0px;
+	width:530px;
 }
 div.signup input{
 	margin-left:80px;
@@ -107,7 +112,7 @@ div.input ::-moz-placeholder{
 div.input :-ms-input-placeholder{
    font-style:italic;
 }
-@media (max-width: 1120px){
+@media (max-width: 1200px){
 	body div.input input{
 		width:230px;
 	}
@@ -179,7 +184,7 @@ div.world div.note:nth-child(2){
 	left:300px;
 }
 div.world div.note img{
-	background:rgb(50,202,215);
+	background:rgb(102,201,215);
 	padding:10px;
 	-webkit-border-radius: 50%;
 	-moz-border-radius:    50%;
@@ -210,6 +215,7 @@ div.pitch img{
 	width:300px;
 }
 div.pitch div.text{
+	text-align:left;
 	position:absolute;
 	top:80px;
 	bottom:80px;
@@ -261,7 +267,7 @@ div.beta div.input{
 
 div.footer{
 	padding-top:35px;
-	background:rgb(50,202,215);
+	background:rgb(102,201,215);
 	text-align:center;
 	color:rgb(255,255,255);
 	font-weight:700;
@@ -413,7 +419,7 @@ div.footer img{
 
 <div class='header'>
 	<div class='text'>
-		<h1><img src='/images/empty.png'/> sealed</h1>
+		<h1><img src='/images/logotinted.png'/> sealed</h1>
 		<p>Send time-delayed photos, videos, and gifts.</p>
 		<img class='badge' src='/images/applebadge.png'/>
 	</div>
@@ -465,15 +471,13 @@ div.footer img{
 	</div>
 </div>
 <div class='footer'>
-	<a class='item b'>FAQ</a><a class='item b'>ABOUT</a><a class='item i'><img src='/images/empty.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
+	<a class='item b'>FAQ</a><a class='item b'>ABOUT</a><a class='item i'><img src='/images/logotinted.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
 	<div class='copyright'>Designed in Boston, USA. Copyright &copy; 2014 Sealed. All rights reserved.</div>
 </div>
 
 
 <script type='text/javascript'>
 (function(){
-	
-	var notemap = [];
 	
 	window.onload = Init;
 	
@@ -483,18 +487,11 @@ div.footer img{
 	}
 	
 	function BindBubbles(){
-		LoadMap();
 		var lastscroll = window.scrollY, allopen = true, allclosed = false;
+		var bubbles = document.getElementsByClassName('note');
 		window.addEventListener('scroll', OnScroll);
 		window.addEventListener('orientationchange', LoadMap);
 		OnScroll();
-		function LoadMap(){
-			notemap = [];
-			var bubbles = document.getElementsByClassName('note');
-			for(var i=0,bubble; bubble=bubbles[i++];){
-				notemap.push({elem:bubble, position:bubble.offsetTop});
-			}
-		}
 		function OnScroll(){
 			var y = window.scrollY,
 					direction = lastscroll <= y ? 1 : -1;
@@ -502,11 +499,11 @@ div.footer img{
 			if(allclosed && direction == 1) return;
 			if(allopen && direction == -1) return;
 			allclosed = allopen = true;
-			for(var i=0,bubble; bubble=notemap[i++];){
-				if(bubble.elem.getAttribute('class').indexOf('in') == -1) allclosed = false;
+			for(var i=0,bubble; bubble=bubbles[i++];){
+				if(bubble.getAttribute('class').indexOf('in') == -1) allclosed = false;
 				else allopen = false;
-				if(direction == 1 && y + window.innerHeight > bubble.position) bubble.elem.setAttribute('class', 'note in');
-				else if(direction == -1 && y + window.innerHeight < bubble.position + bubble.elem.offsetHeight/2) bubble.elem.setAttribute('class', 'note');
+				if(direction == 1 && y + window.innerHeight > bubble.offsetTop) bubble.setAttribute('class', 'note in');
+				else if(direction == -1 && y + window.innerHeight < bubble.offsetTop + bubble.offsetHeight/2) bubble.setAttribute('class', 'note');
 			}
 		}
 	}
