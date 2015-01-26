@@ -14,7 +14,8 @@ body{
 	left:0px;
 	right:0px;
 	bottom:0px;
-	overflow:scroll;
+	overflow:hidden;
+	overflow-y:scroll;
 	font-weight:100;
 	-webkit-font-smoothing:antialiased;
 }
@@ -325,8 +326,25 @@ div.footer img{
 	body div.signup{
 		display:none;
 	}
+	
 	body div.pitch{
-		display:none;
+		height:500px;
+		overflow:hidden;
+	}
+	body div.pitch div.text{
+		left: 40px;
+		right: 140px;
+		font-size:17px;
+		font-weight:300;
+		line-height:24px;
+	}
+	body div.pitch img{
+		position:absolute;
+		margin:0px;
+		left:100%;
+		margin-left:-100px;
+		top:80px;
+		height:500px;
 	}
 	
 	body div.header{
@@ -369,7 +387,6 @@ div.footer img{
 	}
 	
 	body div.beta{
-		background:rgb(242,242,242);
 		padding:60px 40px;
 	}
 	body div.beta h1{
@@ -386,7 +403,6 @@ div.footer img{
 		font-size:18px;
 	}
 	body div.beta input{
-		background:rgb(255,255,255);
 		width:164px;
 		padding:12px 18px;
 	}
