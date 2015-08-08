@@ -1,0 +1,6 @@
+application: capaching
+
+dispatch:
+# Send all mobile traffic to the mobile frontend.
+- url: "*/api/*"
+  module: api

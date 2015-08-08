@@ -20,115 +20,132 @@ body{
 	-webkit-font-smoothing:antialiased;
 }
 
-div.header{
+.header{
 	position:relative;
 	height:100%;
-	background:url(/images/background.png) rgb(102,201,215);
+  width:100%;
+  
+	background:url(/images/splashes/mainview.jpg);
 	background-repeat:no-repeat;
-	background-position:right bottom;
+	background-size:100% auto;
+  background-position:50% 100%;
+  
+  display: table;
 }
-div.header div.text{
-	position:absolute;
-	left:95px;
-	bottom:134px;
-	right:560px;
-	color:rgb(255,255,255);
-	font-size:92px;
-	letter-spacing:1px;
+.header .badge{
+  position:absolute;
+  
+  height:94px;
+  
+  top:58px;
+  right:113px;
 }
-div.header div.text h1{
-	margin:30px 0px;
+.header h1{
+  display:table-cell;
+  margin:0px;
+  padding:0px;
+  
+  text-align:center;
+  vertical-align:middle;
+  
+  padding-bottom:30px;
+  
+  font-size:48px;
+  font-family:'Avenir Next LT Pro Demi';
+  font-weight:normal;
+  
+  color:rgb(255,255,255);
+  text-shadow:0px 0px 20px rgba(0,0,0,0.25);
 }
-div.header div.text h1 img{
-	height:85px;
-	width:85px;
-	vertical-align:bottom;
-	margin-bottom:8px;
-}
-div.header div.text p{
-	font-size:28px;
-	font-weight:300;
-	letter-spacing:0px;
-}
-div.header div.text img.badge{
-	height:78px;
-	margin-top:18px;
-}
-
-@media (max-width: 1340px){
-	body div.signup{
-		height:180px;
-	}
-	body div.signup img.preview{
-		width:470px;
-	}
-	body div.header div.text{
-		bottom:90px;
-	}
+.header h1 label{
+  font-family:'Raleway';
+  font-weight:300;
 }
 
-div.signup{
-	height:240px;
+.signup{
+	height:740px;
 	position:relative;
 	overflow:visible;
 }
-div.signup img.preview{
+.signup img.preview{
 	position:absolute;
-	right:80px;
-	bottom:0px;
-	width:530px;
+	left:90px;
+	top:-140px;
+	width:400px;
 }
-div.signup input{
-	margin-left:80px;
+.signup .text{
+  position:absolute;
+  
+  left:490px;
+  top:0px;
+  right:0px;
+  
+  font-size:35px;
+  font-weight:normal;
+  font-family:'Avenir Next LT Pro Regular';
+  color:rgb(51,51,51);
+  
+  padding:20px 40px;
+}
+.signup blue{
+  display:inline;
+  
+  font-family:'Raleway';
+  font-weight:300;
+  
+  color:rgb(102,201,215);
 }
 
-div.input{
+.input{
 	position:relative;
-	font-size:24px;
+	font-size:35px;
 	font-weight:300;
 	color:rgb(51,51,51);
 	padding:40px 0px 0px 0px;
+  
+  font-family:Raleway;
 }
-div.input input{
+.input input{
 	text-align:left;
+  
 	-webkit-border-radius: 3px;
 	-moz-border-radius:    3px;
 	border-radius:         3px;
+  
 	border:none;
-	background:rgb(241,241,241);
+	background:rgb(245,245,245);
+  
 	padding:12px 26px;
-	width:350px;
+  
 	vertical-align:middle;
+  
+  font-weight:200;
+  
+  width:490px;
 }
-div.input div.button{
+.input .button{
 	-webkit-border-radius: 3px;
 	-moz-border-radius:    3px;
 	border-radius:         3px;
-	background:rgb(33,154,199);
+  
+	background:rgb(102,201,215);
+  color:rgb(255,255,255);
+  text-shadow:-2px -2px 0px rgba(0,0,0,0.2);
+  
 	height:100%;
 	vertical-align:middle;
+  
 	padding:12px 40px;
+  
 	display:inline-block;
-	color:rgb(255,255,255);
+  
 	cursor:pointer;
 }
-div.input div.button:hover{
-	background:rgb(53,174,219);
-}
-div.input ::-webkit-input-placeholder{
-   font-style:italic;
-}
-div.input :-moz-placeholder{
-   font-style:italic;
-}
-div.input ::-moz-placeholder{
-   font-style:italic;
-}
-div.input :-ms-input-placeholder{
-   font-style:italic;
+.input .button:hover{
+	background:rgb(92,191,205);
 }
 @media (max-width: 1200px){
-	body div.input input{
+	body .input input{
 		width:230px;
 	}
 }
@@ -166,18 +183,13 @@ div.input :-ms-input-placeholder{
   animation:bounce_anim 500ms;
 }
 
-div.world{
+.world{
 	padding:40px 0px;
 	color:rgb(51,51,51);
 	text-align:center;
 	overflow:hidden;
 }
-div.world h1{
-	font-size:28px;
-	font-weight:700;
-	margin-bottom:100px;
-}
-div.world div.note{
+.world .note{
 	display:inline-block;
 	max-width:300px;
 	vertical-align:top;
@@ -189,16 +201,16 @@ div.world div.note{
   -o-transition:      left 800ms ease;
   transition:         left 800ms ease;
 }
-div.world div.note.in{
+.world .note.in{
 	left:0 !important;
 }
-div.world div.note:nth-child(1){
+.world .note:nth-child(1){
 	left:-300px;
 }
-div.world div.note:nth-child(2){
+.world .note:nth-child(2){
 	left:300px;
 }
-div.world div.note img{
+.world .note img{
 	background:rgb(102,201,215);
 	padding:10px;
 	-webkit-border-radius: 50%;
@@ -207,114 +219,127 @@ div.world div.note img{
 	height:180px;
 	width:180px;
 	margin-bottom:10px;
+  
+  box-shadow:0px 0px 10px rgba(0,0,0,0.15);
 }
-div.world div.note h2{
-	font-weight:700;
+.world .note h2{
+  font-family:'Avenir Next LT Pro Demi Condensed';
+  
+	font-size:28px;
+}
+.world .note p{
+  font-family:'Avenir Next LT Pro Medium Condensed';
+  
 	font-size:24px;
-}
-div.world div.note p{
-	font-size:21px;
-	font-weight:300;
 	color:rgb(81,81,81);
 	padding-bottom:60px;
 }
 
-div.pitch{
-	background:rgb(242,242,242);
-	padding:80px 0px;
-	text-align:right;
-	position:relative;
+.pitch{
+	height:100%;
+  
+  background-image:url(/images/splashes/pitch.jpg);
+  background-repeat:no-repeat;
+  background-size:100% auto;
+  background-position:50% 100%;
+  
+  position:relative;
 }
-div.pitch img{
-	margin-right:160px;
-	width:300px;
-}
-div.pitch div.text{
-	text-align:left;
+.pitch h1{
 	position:absolute;
-	top:80px;
-	bottom:80px;
-	left:160px;
-	right:620px;
-  display: -webkit-box;
-  -webkit-box-orient: horizontal;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-  display: -moz-box;
-  -moz-box-orient: horizontal;
-  -moz-box-pack: center;
-  -moz-box-align: center;
-  display: box;
-  box-orient: horizontal;
-  box-pack: center;
-  box-align: center;
-	font-size:28px;
-	font-weight:300px;
-	line-height:40px;
+  
+  bottom:25px;
+  left:0px;
+  right:0px;
+  
+  text-align:center;
+  
+  font-size:78px;
+  font-weight:500;
+  
+  color:rgb(255,255,255);
+  
+  text-transform:uppercase;
 }
 @media (max-width: 1120px){
-	body div.pitch div.text{
+	body .pitch .text{
 		left:120px;
 		right:580px;
 	}
 }
 
-div.beta{
-	padding:80px 0px 140px 0px;
+.beta{
+	padding:80px 0px 110px 0px;
 }
-div.beta h1{
+.beta h1{
 	display:block;
 	text-align:center;
-	font-size:40px;
-	font-weight:700;
-	margin-bottom:0px;
+  
+	font-size:54px;
+	font-weight:500;
+  
+  margin:0px 0px 14px 0px;
+  padding:0px;
 }
-div.beta h2{
-	font-size:18px;
-	font-weight:300;
+.beta h2{
+	font-size:30px;
+	font-weight:400;
+  
+  margin:0px;
+  padding:0px;
+  
 	color:rgb(81,81,81);
 	text-align:center;
 }
-div.beta div.input{
+.beta .input{
 	text-align:center;
-	padding-top:20px;
+  
+	padding-top:50px;
 }
 
-div.footer{
-	padding-top:35px;
-	background:rgb(102,201,215);
+.footer{
+	padding:45px 0px 10px 0px;
+  
+	background:rgb(245,245,245);
+  color:rgb(0,0,0);
+  
 	text-align:center;
-	color:rgb(255,255,255);
-	font-weight:700;
+  
+	font-weight:400;
 	font-size:18px;
 }
-div.footer div.copyright{
-	font-size:15px;
+.footer .copyright{
 	padding:30px 0px 20px 0px;
 }
-div.footer a.item{
+.footer a.item{
 	cursor:pointer;
+  
+  font-size:20px;
+  
 	width:20%;
+  
 	overflow:hidden;
 	display:inline-block;
 	vertical-align:middle;
+  
+  text-transform:uppercase;
 }
-div.footer a.item.i{
+.footer a.item.i{
 	cursor:default;
 }
-div.footer a.item.b:hover:before{
+.footer a.item.b:hover:before{
 	content:'[';
 	padding-right:12px;
 	opacity:1;
 }
-div.footer a.item.b:hover:after{
+.footer a.item.b:hover:after{
 	content:']';
 	padding-left:12px;
 	opacity:1;
 }
-div.footer img{
-	width:130px;
-	height:130px;
+.footer img{
+	width:145px;
+	height:145px;
 }
 
 /* ---------- MOBILE FRIENDLY CSS BELOW ---------- */
@@ -325,26 +350,26 @@ div.footer img{
     overflow-y: auto;
 	}
 
-	body div.signup{
+	body .signup{
 		display:none;
 	}
 	
-	body div.header{
+	body .header{
 		background:rgb(102,201,215);
 	}
 	
-	body div.pitch{
+	body .pitch{
 		height:500px;
 		overflow:hidden;
 	}
-	body div.pitch div.text{
+	body .pitch .text{
 		left: 40px;
 		right: 140px;
 		font-size:17px;
 		font-weight:300;
 		line-height:24px;
 	}
-	body div.pitch img{
+	body .pitch img{
 		position:absolute;
 		margin:0px;
 		left:100%;
@@ -353,160 +378,178 @@ div.footer img{
 		height:500px;
 	}
 	
-	body div.header{
+	body .header{
 		height:auto;
 	}
-	body div.header div.text{
+	body .header .text{
 		position:initial;
 		text-align:center;
 		padding:40px;
 	}
-	body div.header div.text h1{
+	body .header .text h1{
 		margin-top:0px;
 		font-size:43px;
 	}
-	body div.header div.text h1 img{
+	body .header .text h1 img{
 		height:50px;
 		width:50px;
 	}
-	body div.header div.text img.badge{
+	body .header .text img.badge{
 		margin-top:40px;
 		height:50px;
 	}
-	body div.header div.text p{
+	body .header .text p{
 		font-size:20px;
 	}
 	
-	body div.world h1{
+	body .world h1{
 		font-size:24px;
 		padding:0px 20px;
 	}
-	body div.world div.note img{
+	body .world .note img{
 		width:100px;
 		height:100px;
 	}
-	body div.world div.note h2{
+	body .world .note h2{
 		font-size:20px;
 	}
-	body div.world div.note p{
+	body .world .note p{
 		font-size:17px;
 	}
 	
-	body div.beta{
+	body .beta{
 		padding:60px 40px;
 	}
-	body div.beta h1{
+	body .beta h1{
 		font-size:24px;
 	}
-	body div.beta br,
-	body div.beta br:after{
+	body .beta br,
+	body .beta br:after{
 		content:' ';
 	}
-	body div.beta h2{
+	body .beta h2{
 		font-size:16px;
 	}
-	body div.beta div.input{
+	body .beta .input{
 		font-size:18px;
 	}
-	body div.beta input{
+	body .beta input{
 		width:164px;
 		padding:12px 18px;
 	}
-	body div.beta div.input div.button{
+	body .beta .input .button{
 		padding:10px 8px;
 	}
 	
-	body div.footer{
+	body .footer{
 		padding-left:40px;
 		padding-right:40px;
 	}
-	body div.footer a.item.i{
+	body .footer a.item.i{
 		display:none;
 	}
-	body div.footer a.item{
+	body .footer a.item{
 		display:block;
 		width:initial;
 		padding:4px 0px;
 		font-size:16px;
 	}
-	body div.footer a.item.b:after,
-	body div.footer a.item.b:before{
+	body .footer a.item.b:after,
+	body .footer a.item.b:before{
 		display:none;
 	}
-	body div.footer div.copyright{
+	body .footer .copyright{
 		font-size:12px;
 	}
 }
 
+/*
+
+§ Footer
+§ Header
+  Signup
+  World
+§ Pitch
+§ Beta
+  API
+  Signup Button
+  Mobile
+
+*/
+
 </style>
 <html>
 <head>
+  
 <meta charset="utf-8" />
 <title>Try Sealed</title>
+
 <meta content="yes" name="apple-mobile-web-app-capable" />
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport"/>
+
 <link rel="stylesheet" href="/resources/CSS/resets.css"/>
-<link rel='stylesheet' href='/resources/CSS/raleway.css'/>
+<link rel="stylesheet" href="/resources/Fonts/Avenir/style.css"/>
+
+<link href='http://fonts.googleapis.com/css?family=Raleway:200,400,300,100,500,600,700,800,900' rel='stylesheet' type='text/css'>
+
 </head>
 <body>
 
 
 <div class='header'>
-	<div class='text'>
-		<h1><img src='/images/logotinted.png'/> sealed</h1>
-		<p>Send time-delayed photos, videos, and gifts.</p>
-		<img class='badge' src='/images/applebadge.png'/>
-	</div>
+	<img class='badge' src='/images/applebadge.png'/>
+  <h1>In a world of instant gratification,<br/><label>Sealed</label> does something different.</h1>
 </div>
 <div class='signup'>
-	<div class='input'>
-		<input type='text' placeholder='sign up for the beta'/><div class='button'>&#10003;</div>
+	<div class='text'>
+    <p><blue>Sealed</blue> sends time-delayed photos, videos, and gifts.</p>
+    <p>Recipients are immediately notified.</p>
+    <p>And then... they anticipate.</p>
+  	<div class='input'>
+  		<input type='text' placeholder='sign up for the beta'/><div class='button'>&#10003;</div>
+  	</div>
 	</div>
-	<img class='preview' src='/images/mainpreview.png'>
+  <img class='preview' src='/images/phone.png'>
 </div>
 <div class='world'>
-	<h1>In a world of instant gratification, Sealed does something different.</h1>
 	<div>
 		<div class='note'>
-			<img src='/images/clock.png'/>
+			<img src='/images/icons/clock.png'/>
 			<h2>Time-delayed messages</h2>
 			<p>Take a picture or record audio or video for up to 5 minutes. Unlimited time delay. Include text or draw on your message.</p>
 		</div>
 		<div class='note'>
-			<img src='/images/gyft.png'/>
+			<img src='/images/icons/gift.png'/>
 			<h2>Attach Gifts</h2>
 			<p>Attach gift cards to any of over 200 retailers through our partnership with Gyft.</p>
 		</div>
 	</div>
 	<div>
 		<div class='note'>
-			<img src='/images/wand.png'/>
-			<h2>Disappearing messages</h2>
+			<img src='/images/icons/wand.png'/>
+			<h2>Disappearing messages (optional)</h2>
 			<p>Sender can elect messages to disappear after opening.</p>
 		</div>
 		<div class='note'>
-			<img src='/images/groups.png'/>
-			<h2>"Open" capsules</h2>
-			<p>Create group capsules that store submissions in chronological order until the capsule's unlock date.</p>
+			<img src='/images/icons/self.png'/>
+			<h2>Send to yourself</h2>
+			<p>Save moments for later and defy time. Sealed is your personal time capsule.</p>
 		</div>
 	</div>
 </div>
 <div class='pitch'>
-	<div class='text'>
-		<div>Whether you’re sending a birthday message a week in advance or storing away a moment from your first day of college, our hope is that Sealed provides a fun new way for you to connect with your friends, family, and with yourself.</div>
-	</div>
-	<img src='/images/pitchpreview.png'/>
+	<h1>Give something<br/>to look forward to</h1>
 </div>
 <div class='beta'>
-	<h1>sign up for the beta to<br/>get 3 free $5 gift cards*</h1>
-	<h2>* Gift cards must be sent to people other than yourself</h2>
+	<h1>Looking for Beta Testers!</h1>
+	<h2>Be one of the first 1000 people to use sealed.</h2>
 	<div class='input'>
-		<input type='text' placeholder='enter your email'/><div class='button'>&#10003;</div>
+		<input type='text' placeholder='signup for the beta'/><div class='button'>&#10003;</div>
 	</div>
 </div>
 <div class='footer'>
-	<a href='mailto:admin@trysealed.com' target='blank' class='item b'>Contact Us</a><a href='//dev.capaching.appspot.com/' class='item b'>Try The Prototype</a><a class='item i'><img src='/images/logotinted.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
-	<div class='copyright'>Designed in Boston, USA. Copyright &copy; 2014 Sealed. All rights reserved.</div>
+	<a href='mailto:admin@trysealed.com' target='blank' class='item b'>Contact Us</a><a href='//dev.capaching.appspot.com/' class='item b'>Try The Prototype</a><a class='item i'><img src='/images/logo.png'/></a><a target='blank' href='//www.facebook.com/trysealed' class='item b'>FACEBOOK</a><a target='blank' href='//twitter.com/trysealed' class='item b'>TWITTER</a>
+	<div class='copyright'>Made in Boston, USA. Copyright &copy; 2014 Sealed. All rights reserved.</div>
 </div>
 
 

@@ -1,19 +1,11 @@
-# VERSION
-#   v0.0.0
-# AUTHOR
-#   Hunter John Larco
-
 application: capaching
-version: api
+version: 2-0-0
 runtime: python27
 api_version: 1
 threadsafe: yes
+module: api
 
 handlers:
-- url: /favicon\.ico
-  static_files: favicon.ico
-  upload: favicon\.ico
-
 - url: .*
   script: app.app
 
